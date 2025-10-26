@@ -2,15 +2,20 @@ import connection from "../config/db.js";
 
 // Obtener todos los vehículos
 export const getVehiculos = (req, res) => {
-  connection.query("SELECT * FROM vehiculos", (err, results) => {
+  const sql = 'SELECT * FROM vehiculos';
+  
+  connection.query(sql, (err, results) => {
     if (err) {
-      console.error("Error al obtener vehículos:", err);
-      res.status(500).json({ error: "Error al obtener vehículos" });
+      console.error('Error al obtener vehículos:', err);
+      res.status(500).json({ error: 'Error al obtener vehículos' });
       return;
     }
-    res.json(results);
+
+    // Esto debe ser un array puro
+    res.status(200).json(results);
   });
 };
+
 
 // Agregar un nuevo vehículo
 export const addVehiculo = (req, res) => {

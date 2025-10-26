@@ -1,20 +1,20 @@
 import express from 'express';
-import dotenv from 'dotenv';
+import cors from 'cors';
 import vehiculosRoutes from './routes/vehiculos.routes.js';
-
-dotenv.config();
+import bodyParser from 'body-parser';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middlewares
-app.use(express.json());
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // Rutas
 app.use('/vehiculos', vehiculosRoutes);
 
-// Iniciar servidor
+// Arrancar servidor
 app.listen(PORT, () => {
-  console.log(`🚗 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
