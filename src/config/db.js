@@ -1,7 +1,7 @@
 import mysql from 'mysql';
 import dotenv from 'dotenv';
 
-// Cargar variables de entorno **antes de crear la conexión**
+// Cargar variables de entorno antes de crear la conexión
 dotenv.config();
 
 const connection = mysql.createConnection({
@@ -10,8 +10,6 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME
 });
-
-console.log('DB_NAME:', process.env.DB_NAME);
 
 // Conectar a la base de datos
 connection.connect(err => {

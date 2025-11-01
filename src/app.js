@@ -11,7 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// Rutas
+// Cargar rutas
 app.use('/vehiculos', vehiculosRoutes);
 
 // Arrancar servidor
