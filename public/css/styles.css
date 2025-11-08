@@ -1,19 +1,320 @@
+/* ====== Estilos base ====== */
+:root {
+  --color-primario: #1e3a8a;
+  --color-secundario: #2563eb;
+  --color-fondo: #f4f6fa;
+  --color-texto: #1e293b;
+  --color-borde: #d1d5db;
+  --color-exito: #10b981;
+  --color-error: #ef4444;
+  --radio: 10px;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+  font-family: "Inter", Arial, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  background: linear-gradient(
+    135deg,
+    var(--color-primario),
+    var(--color-secundario)
+  );
+  color: white;
+  text-align: center;
+  padding: 1.2rem;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+/* ====== Panel de acciones ====== */
+.panel-acciones {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.panel-acciones button {
+  background-color: var(--color-secundario);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.4rem;
+  border-radius: var(--radio);
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.panel-acciones button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* ====== Tabla ====== */
+.tabla-container {
+  width: 90%;
+  margin: 0 auto;
+  overflow-x: auto; /* 👉 permite scroll horizontal si no cabe */
+  border-radius: var(--radio);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
 
 table {
   width: 100%;
+  margin: 0 auto;
   border-collapse: collapse;
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
 
-th, td {
-  padding: 8px;
-  border: 1px solid #ccc;
-  text-align: left;
+th,
+td {
+  padding: 0.75rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid var(--color-borde);
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: var(--color-primario);
+  color: white;
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: #f1f5f9;
+}
+
+td:last-child {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+button.btn-editar,
+button.btn-eliminar {
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-editar {
+  background-color: var(--color-exito);
+  color: white;
+}
+
+.btn-eliminar {
+  background-color: var(--color-error);
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: #059669;
+}
+
+.btn-eliminar:hover {
+  background-color: #dc2626;
+}
+
+/* ====== MODAL ====== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 200;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(3px);
+  background-color: rgba(0, 0, 0, 0.45);
+  overflow-y: auto;
+  padding: 4rem 0;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  margin: auto;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  width: 85%;
+  max-width: 800px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  animation: aparecer 0.25s ease-out;
+}
+
+/* Cabecera del modal */
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--color-primario);
+  font-size: 1.4rem;
+  border-bottom: 2px solid var(--color-secundario);
+  padding-bottom: 0.6rem;
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  font-size: 1.4rem;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.close:hover {
+  color: var(--color-error);
+}
+
+/* ====== FORMULARIO ====== */
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem 1.5rem; /* menos espacio horizontal */
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* evita que se desborde la segunda columna */
+}
+
+input,
+select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--color-secundario);
+  outline: none;
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #374151;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+/* Botones del formulario */
+.form-buttons {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.form-buttons button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: var(--color-secundario);
+}
+
+.form-buttons #btnCancelar {
+  background-color: var(--color-error);
+}
+
+.form-buttons button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Scroll interno si el formulario es largo */
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-secundario) #f1f5f9;
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+  background: var(--color-secundario);
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tabla-container, .panel-acciones {
+    width: 90%;
+    margin: 5%;
+  }
+
+  table {
+    font-size: 0.85rem;
+    min-width: 700px; /* 👉 evita que las columnas se aplasten demasiado */
+  }
+
+  th,
+  td {
+    padding: 0.6rem 0.8rem;
+  }
+
+  td:last-child {
+    flex-wrap: wrap;
+    gap: 0.2rem;
+  }
+  .modal-content {
+    width: 85%;
+    padding: 1.5rem;
+  }
+
+  form {
+    grid-template-columns: 1fr;
+    gap: 0.8rem 0;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+}
+
+.tabla-container::-webkit-scrollbar {
+  height: 8px;
+}
+.tabla-container::-webkit-scrollbar-thumb {
+  background-color: #94a3b8;
+  border-radius: 4px;
+}
+
+/* ====== Utilidades ====== */
+.hidden {
+  display: none;
 }
