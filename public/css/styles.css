@@ -304,6 +304,17 @@ label {
   .form-buttons {
     flex-direction: column;
   }
+
+  #mantenimientoModal .modal-content {
+    width: 90%;
+    padding: 20px;
+  }
+
+  #mantenimientoForm {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
 }
 
 .tabla-container::-webkit-scrollbar {
@@ -314,7 +325,51 @@ label {
   border-radius: 4px;
 }
 
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+}
+
 /* ====== Utilidades ====== */
 .hidden {
   display: none;
+}
+
+/* ====== FORMULARIO DE MÓDULOS ====== */
+#mantenimientoForm textarea, #ventasForm textarea {
+  width: auto;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+  resize: vertical;
+}
+
+#mantenimientoForm textarea:focus, #ventasForm textarea:focus {
+  border-color: var(--color-secundario);
+  outline: none;
+}
+
+.btn-nuevo-cliente, .btn-crear-cliente {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  margin-top: 2%;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  margin-right: auto;
+}
+
+.btn-nuevo-cliente:hover, .btn-crear-cliente:hover {
+  background-color: #4338ca;
 }

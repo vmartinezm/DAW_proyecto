@@ -14,18 +14,17 @@
   <div class="panel-acciones">
     <button id="btnAddVehiculo">➕ Añadir vehículo</button>
     <button id="btnAddMantenimiento">🔧 Registrar mantenimiento</button>
-    <button id="btnAddVenta">💰 Registrar venta</button>
+    <button id="btnAddVenta">💰 Gestionar venta/reserva</button>
   </div>
 
   <div class="tabla-container">
     <table id="vehiculosTable">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>Matrícula</th>
           <th>Marca</th>
           <th>Modelo</th>
           <th>Versión</th>
-          <th>Matrícula</th>
           <th>Color</th>
           <th>Año</th>
           <th>Kilómetros</th>
@@ -39,7 +38,6 @@
     </table>
   </div>
 
-
   <!-- 🔹 Modal de formulario -->
   <div id="vehiculoModal" class="modal fade">
     <div class="modal-content">
@@ -47,7 +45,11 @@
       <h2 id="form-title">Añadir nuevo vehículo</h2>
 
       <form id="vehiculoForm">
-        <input type="hidden" id="vehiculoId" />
+        <!-- Matrícula -->
+        <div class="form-row">
+          <label for="matricula">Matrícula:</label>
+          <input type="text" id="matricula" required />
+        </div>
 
         <div class="form-row">
           <label for="marca">Marca:</label>
@@ -62,11 +64,6 @@
         <div class="form-row">
           <label for="version">Versión:</label>
           <input type="text" id="version" />
-        </div>
-
-        <div class="form-row">
-          <label for="matricula">Matrícula:</label>
-          <input type="text" id="matricula" required />
         </div>
 
         <div class="form-row">
@@ -86,7 +83,7 @@
 
         <div class="form-row">
           <label for="combustible">Combustible:</label>
-          <select id="combustible">
+          <select id="combustible" required>
             <option value="">Seleccionar...</option>
             <option value="gasolina">Gasolina</option>
             <option value="diesel">Diésel</option>
@@ -112,11 +109,10 @@
         </div>
 
         <div class="form-buttons">
-          <button type="submit">Guardar</button>
+          <button type="submit" id="btnGuardar">Guardar</button>
           <button type="button" id="btnCancelar">Cancelar</button>
         </div>
       </form>
-
     </div>
   </div>
 

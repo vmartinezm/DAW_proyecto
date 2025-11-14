@@ -1,10 +1,10 @@
 import express from 'express';
 import {
-  getVehiculos,
-  getVehiculoById,
-  addVehiculo,
-  updateVehiculo,
-  deleteVehiculo
+  obtenerVehiculos,
+  obtenerVehiculoPorMatricula,
+  anadirVehiculo,
+  actualizarVehiculo,
+  eliminarVehiculo
 } from '../controllers/vehiculos.controller.js';
 
 const router = express.Router();
@@ -12,18 +12,18 @@ const router = express.Router();
 // 📍 Rutas de vehículos
 
 // Obtener todos los vehículos
-router.get('/', getVehiculos);
+router.get('/', obtenerVehiculos);
 
-// Obtener un vehículo por ID
-router.get('/:id', getVehiculoById);
+// Obtener un vehículo por matrícula
+router.get('/:matricula', obtenerVehiculoPorMatricula);
 
 // Agregar un nuevo vehículo
-router.post('/', addVehiculo);
+router.post('/', anadirVehiculo);
 
-// Actualizar un vehículo existente
-router.put('/:id', updateVehiculo);
+// Actualizar un vehículo existente por matrícula
+router.put('/:matricula', actualizarVehiculo);
 
-// Eliminar un vehículo
-router.delete('/:id', deleteVehiculo);
+// Eliminar un vehículo por matrícula
+router.delete('/:matricula', eliminarVehiculo);
 
 export default router;

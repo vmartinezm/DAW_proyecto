@@ -11,11 +11,10 @@ const btnCancelar = document.getElementById("btnCancelar");
 
 // Inputs
 const inputs = {
-  id: document.getElementById("vehiculoId"),
+  matricula: document.getElementById("matricula"),
   marca: document.getElementById("marca"),
   modelo: document.getElementById("modelo"),
   version: document.getElementById("version"),
-  matricula: document.getElementById("matricula"),
   color: document.getElementById("color"),
   ano: document.getElementById("ano"),
   kilometros: document.getElementById("kilometros"),
@@ -23,6 +22,9 @@ const inputs = {
   precio: document.getElementById("precio"),
   estado: document.getElementById("estado"),
 };
+
+// Variable para diferenciar añadir / editar
+let modoEdicion = false;
 
 // ---------- Modal helpers ----------
 function abrirModal() {
@@ -44,65 +46,85 @@ async function cargarVehiculos() {
     const res = await fetch(API_URL);
     const data = await res.json();
 
-    tableBody.innerHTML = "";
+    tableBody.textContent = ""; // Limpiar la tabla
 
-    function formatearNumero(num) {
-      if (num === null || num === undefined) return "";
-      return num.toLocaleString("es-ES"); // 👉 separador de miles según formato español
-    }
+    const formatearNumero = (num) =>
+      num == null ? "" : num.toLocaleString("es-ES");
+
+    const fragment = document.createDocumentFragment();
 
     data.forEach((v) => {
       const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${v.id}</td>
-  <td>${v.marca}</td>
-  <td>${v.modelo}</td>
-  <td>${v.version ?? ""}</td>
-  <td>${v.matricula}</td>
-  <td>${v.color ?? ""}</td>
-  <td>${v.ano ?? ""}</td>
-  <td>${formatearNumero(v.kilometros)}</td>
-  <td>${v.combustible ?? ""}</td>
-  <td>${formatearNumero(v.precio)}</td>
-  <td>${v.estado ?? ""}</td>
-        <td>
-          <button class="btn-editar" data-id="${v.id}">Editar</button>
-          <button class="btn-eliminar" data-id="${v.id}">Eliminar</button>
-        </td>
-      `;
 
-      row
-        .querySelector(".btn-editar")
-        .addEventListener("click", () => editarVehiculo(v));
-      row
-        .querySelector(".btn-eliminar")
-        .addEventListener("click", () => eliminarVehiculo(v.id));
+      // Crear celdas de datos
+      [
+        v.matricula,
+        v.marca,
+        v.modelo,
+        v.version ?? "",
+        v.color ?? "",
+        v.ano ?? "",
+        formatearNumero(v.kilometros),
+        v.combustible ?? "",
+        formatearNumero(v.precio),
+        v.estado ?? "",
+      ].forEach((valor) => {
+        const td = document.createElement("td");
+        td.textContent = valor;
+        row.appendChild(td);
+      });
 
-      tableBody.appendChild(row);
+      // Crear celda de acciones
+      const accionesTd = document.createElement("td");
+
+      const btnEditar = document.createElement("button");
+      btnEditar.className = "btn-editar";
+      btnEditar.textContent = "Editar";
+      btnEditar.addEventListener("click", () => editarVehiculo(v));
+
+      const btnEliminar = document.createElement("button");
+      btnEliminar.className = "btn-eliminar";
+      btnEliminar.textContent = "Eliminar";
+      btnEliminar.addEventListener("click", () => eliminarVehiculo(v.matricula));
+
+      accionesTd.append(btnEditar, btnEliminar);
+      row.appendChild(accionesTd);
+
+      fragment.appendChild(row);
     });
+
+    tableBody.appendChild(fragment);
   } catch (err) {
     console.error("Error al cargar vehículos:", err);
   }
 }
 
-// ---------- Añadir o editar ----------
+// ---------- Abrir modal para añadir ----------
 btnAddVehiculo.addEventListener("click", () => {
   formTitle.textContent = "Añadir nuevo vehículo";
   abrirModal();
+  resetFormulario();
+  modoEdicion = false;
+  inputs.matricula.disabled = false; // La matrícula se puede introducir
 });
 
+// ---------- Abrir modal para editar ----------
 function editarVehiculo(v) {
   formTitle.textContent = "Editar vehículo";
   Object.keys(inputs).forEach((k) => (inputs[k].value = v[k] ?? ""));
   abrirModal();
+  modoEdicion = true;
+  inputs.matricula.disabled = true; // La matrícula no se puede cambiar
 }
 
+// ---------- Reset formulario ----------
 function resetFormulario() {
   vehiculoForm.reset();
-  inputs.id.value = "";
+  inputs.matricula.disabled = false;
+  modoEdicion = false;
 }
 
-// ---------- Guardar (POST / PUT) ----------
+// ---------- Guardar vehículo ----------
 vehiculoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -110,7 +132,6 @@ vehiculoForm.addEventListener("submit", async (e) => {
     marca: inputs.marca.value.trim(),
     modelo: inputs.modelo.value.trim(),
     version: inputs.version.value.trim(),
-    matricula: inputs.matricula.value.trim(),
     color: inputs.color.value.trim(),
     ano: parseInt(inputs.ano.value) || null,
     kilometros: parseInt(inputs.kilometros.value) || null,
@@ -120,9 +141,18 @@ vehiculoForm.addEventListener("submit", async (e) => {
   };
 
   try {
-    const id = inputs.id.value;
-    const method = id ? "PUT" : "POST";
-    const url = id ? `${API_URL}/${id}` : API_URL;
+    let method, url;
+
+    if (modoEdicion) {
+      // Editar vehículo existente
+      method = "PUT";
+      url = `${API_URL}/${inputs.matricula.value}`;
+    } else {
+      // Añadir vehículo nuevo
+      method = "POST";
+      url = API_URL;
+      payload.matricula = inputs.matricula.value.trim();
+    }
 
     const res = await fetch(url, {
       method,
@@ -144,11 +174,11 @@ vehiculoForm.addEventListener("submit", async (e) => {
   }
 });
 
-// ---------- Eliminar ----------
-async function eliminarVehiculo(id) {
+// ---------- Eliminar vehículo ----------
+async function eliminarVehiculo(matricula) {
   if (!confirm("¿Seguro que quieres eliminar este vehículo?")) return;
   try {
-    const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    const res = await fetch(`${API_URL}/${matricula}`, { method: "DELETE" });
     const data = await res.json();
     if (!res.ok) alert(data.error || "Error al eliminar vehículo");
     cargarVehiculos();
@@ -156,5 +186,17 @@ async function eliminarVehiculo(id) {
     console.error("Error al eliminar vehículo:", err);
   }
 }
+
+// ---------- Ir a la página de mantenimientos ----------
+const btnAddMantenimiento = document.getElementById('btnAddMantenimiento');
+btnAddMantenimiento.addEventListener('click', () => {
+  window.location.href = 'mantenimientos.html';
+});
+
+// ---------- Ir a la página de ventas ----------
+const btnAddVenta = document.getElementById('btnAddVenta');
+btnAddVenta.addEventListener('click', () => {
+  window.location.href = 'ventas.html';
+});
 
 window.addEventListener("DOMContentLoaded", cargarVehiculos);

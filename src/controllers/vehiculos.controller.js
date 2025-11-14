@@ -2,7 +2,7 @@
 import connection from "../config/db.js";
 
 // 🟢 Obtener todos los vehículos
-export const getVehiculos = (req, res) => {
+export const obtenerVehiculos = (req, res) => {
   const sql = 'SELECT * FROM vehiculos';
 
   connection.query(sql, (err, results) => {
@@ -11,22 +11,16 @@ export const getVehiculos = (req, res) => {
       return res.status(500).json({ error: 'Error al obtener vehículos' });
     }
 
-    // Enviamos los resultados como array puro
     return res.status(200).json(results);
   });
 };
 
-// 🟢 Obtener un vehículo por ID
-export const getVehiculoById = (req, res) => {
-  const { id } = req.params;
+// 🟢 Obtener un vehículo por matrícula
+export const obtenerVehiculoPorMatricula = (req, res) => {
+  const { matricula } = req.params;
 
-  // Validar ID numérico
-  if (isNaN(id)) {
-    return res.status(400).json({ error: 'ID inválido' });
-  }
-
-  const sql = 'SELECT * FROM vehiculos WHERE id = ?';
-  connection.query(sql, [id], (err, results) => {
+  const sql = 'SELECT * FROM vehiculos WHERE matricula = ?';
+  connection.query(sql, [matricula], (err, results) => {
     if (err) {
       console.error('Error al obtener vehículo:', err);
       return res.status(500).json({ error: 'Error al obtener vehículo' });
@@ -40,12 +34,12 @@ export const getVehiculoById = (req, res) => {
 };
 
 // 🟢 Agregar un nuevo vehículo
-export const addVehiculo = (req, res) => {
+export const anadirVehiculo = (req, res) => {
   const {
+    matricula,
     marca,
     modelo,
     version,
-    matricula,
     color,
     ano,
     kilometros,
@@ -54,19 +48,19 @@ export const addVehiculo = (req, res) => {
     estado,
   } = req.body;
 
-  if (!marca || !modelo || !matricula) {
-    return res.status(400).json({ error: 'Faltan campos obligatorios' });
+  if (!matricula || !marca || !modelo) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios: matricula, marca o modelo' });
   }
 
   const sql = `
-    INSERT INTO vehiculos (marca, modelo, version, matricula, color, ano, kilometros, combustible, precio, estado)
+    INSERT INTO vehiculos (matricula, marca, modelo, version, color, ano, kilometros, combustible, precio, estado)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
   const values = [
+    matricula,
     marca,
     modelo,
     version,
-    matricula,
     color,
     ano,
     kilometros,
@@ -78,64 +72,59 @@ export const addVehiculo = (req, res) => {
   connection.query(sql, values, (err, result) => {
     if (err) {
       console.error('Error al insertar vehículo:', err.sqlMessage || err.message);
+      if (err.code === 'ER_DUP_ENTRY') {
+        return res.status(400).json({ error: 'Ya existe un vehículo con esa matrícula' });
+      }
       return res.status(500).json({ error: 'Error al insertar vehículo' });
     }
 
-    return res
-      .status(201)
-      .json({ mensaje: 'Vehículo añadido correctamente', id: result.insertId });
+    return res.status(201).json({
+      mensaje: 'Vehículo añadido correctamente',
+      matricula: matricula,
+    });
   });
 };
 
 // 🟢 Actualizar un vehículo
-export const updateVehiculo = (req, res) => {
-  const { id } = req.params;
-  const { marca, modelo, version, matricula, color, ano, kilometros, combustible, precio, estado } = req.body;
+export const actualizarVehiculo = (req, res) => {
+  const { matricula } = req.params;
+  const { marca, modelo, version, color, ano, kilometros, combustible, precio, estado } = req.body;
 
   const sql = `
     UPDATE vehiculos
-    SET marca = ?, modelo = ?, version = ?, matricula = ?, color = ?, ano = ?, kilometros = ?, combustible = ?, precio = ?, estado = ?
-    WHERE id = ?
+    SET marca = ?, modelo = ?, version = ?, color = ?, ano = ?, kilometros = ?, combustible = ?, precio = ?, estado = ?
+    WHERE matricula = ?
   `;
-  const values = [marca, modelo, version, matricula, color, ano, kilometros, combustible, precio, estado, id];
+  const values = [marca, modelo, version, color, ano, kilometros, combustible, precio, estado, matricula];
 
   connection.query(sql, values, (err, result) => {
     if (err) {
       console.error('Error al actualizar vehículo:', err.sqlMessage || err.message);
-
-      // Añadimos manejo más claro
       if (err.code === 'ER_DUP_ENTRY') {
         return res.status(400).json({ error: 'Ya existe un vehículo con esa matrícula' });
       }
-
-      res.status(500).json({ error: 'Error al actualizar vehículo' });
-      return;
+      return res.status(500).json({ error: 'Error al actualizar vehículo' });
     }
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Vehículo no encontrado' });
     }
 
-    res.json({ mensaje: 'Vehículo actualizado correctamente' });
+    return res.json({ mensaje: 'Vehículo actualizado correctamente' });
   });
 };
 
-
 // 🟢 Eliminar un vehículo
-export const deleteVehiculo = (req, res) => {
-  const { id } = req.params;
+export const eliminarVehiculo = (req, res) => {
+  const { matricula } = req.params;
 
-  // Validar ID numérico
-  if (isNaN(id)) {
-    return res.status(400).json({ error: 'ID inválido' });
-  }
-
-  const sql = 'DELETE FROM vehiculos WHERE id = ?';
-  connection.query(sql, [id], (err, result) => {
+  const sql = 'DELETE FROM vehiculos WHERE matricula = ?';
+  connection.query(sql, [matricula], (err, result) => {
     if (err) {
       console.error('Error al eliminar vehículo:', err);
       return res.status(500).json({ error: 'Error al eliminar vehículo' });
     }
+
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Vehículo no encontrado' });
     }
