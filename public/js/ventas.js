@@ -125,7 +125,7 @@ async function cargarClientesSelect(disabled = false, clienteActual = null) {
 
     if (clienteActual) clienteSelect.value = clienteActual;
 
-    clienteSelect.disabled = disabled;  
+    clienteSelect.disabled = disabled;
   } catch (err) {
     console.error("Error al cargar clientes:", err);
   }
@@ -266,24 +266,7 @@ tableBody.addEventListener("click", async (e) => {
   }
 });
 
-// ====== ELIMINAR ======
-tableBody.addEventListener("click", async (e) => {
-  if (e.target.classList.contains("btn-eliminar")) {
-    const id = e.target.dataset.id;
-    if (confirm("¿Seguro que deseas eliminar esta venta?")) {
-      try {
-        const res = await fetch(`${API_VENTAS}/${id}`, { method: "DELETE" });
-        const data = await res.json();
-        alert(data.mensaje || "Venta eliminada");
-        cargarVentas();
-      } catch (err) {
-        console.error("Error al eliminar venta:", err);
-      }
-    }
-  }
-});
-
-// ====== SUBMIT FORM ======
+// ====== ENVIAR FORMULARIO AL CREAR NUEVO O EDITAR ======
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -322,8 +305,24 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// Modal de nuevo cliente
+// ====== ELIMINAR ======
+tableBody.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("btn-eliminar")) {
+    const id = e.target.dataset.id;
+    if (confirm("¿Seguro que deseas eliminar esta venta?")) {
+      try {
+        const res = await fetch(`${API_VENTAS}/${id}`, { method: "DELETE" });
+        const data = await res.json();
+        alert(data.mensaje || "Venta eliminada");
+        cargarVentas();
+      } catch (err) {
+        console.error("Error al eliminar venta:", err);
+      }
+    }
+  }
+});
 
+// Modal para añadir nuevo cliente desde formulario de nueva venta
 const clienteModal = document.getElementById("clienteModal");
 const btnAddCliente = document.getElementById("btnAddCliente");
 const cerrarClienteModal = document.getElementById("cerrarClienteModal");
@@ -340,8 +339,7 @@ window.addEventListener("click", (e) => {
   if (e.target === clienteModal) clienteModal.style.display = "none";
 });
 
-// Crear cliente desde el modal
-
+// Crear nuevo cliente desde el modal que se puede abrir desde crear nueva venta
 const clienteForm = document.getElementById("clienteForm");
 
 clienteForm.addEventListener("submit", async (e) => {

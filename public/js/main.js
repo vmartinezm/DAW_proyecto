@@ -48,13 +48,27 @@ async function cargarVehiculos() {
 
     tableBody.textContent = ""; // Limpiar la tabla
 
-    const formatearNumero = (num) =>
-      num == null ? "" : num.toLocaleString("es-ES");
-
     const fragment = document.createDocumentFragment();
 
     data.forEach((v) => {
       const row = document.createElement("tr");
+
+      const precioFmt =
+        v.precio != null
+          ? new Intl.NumberFormat("es-ES", {
+              style: "currency",
+              currency: "EUR",
+            }).format(v.precio)
+          : "";
+
+      const kmFmt =
+        v.kilometros != null
+          ? new Intl.NumberFormat("es-ES", {
+              style: "unit",
+              unit: "kilometer",
+              unitDisplay: "short",
+            }).format(v.kilometros)
+          : "";
 
       // Crear celdas de datos
       [
@@ -64,9 +78,9 @@ async function cargarVehiculos() {
         v.version ?? "",
         v.color ?? "",
         v.ano ?? "",
-        formatearNumero(v.kilometros),
+        kmFmt,
         v.combustible ?? "",
-        formatearNumero(v.precio),
+        precioFmt,
         v.estado ?? "",
       ].forEach((valor) => {
         const td = document.createElement("td");
@@ -85,7 +99,9 @@ async function cargarVehiculos() {
       const btnEliminar = document.createElement("button");
       btnEliminar.className = "btn-eliminar";
       btnEliminar.textContent = "Eliminar";
-      btnEliminar.addEventListener("click", () => eliminarVehiculo(v.matricula));
+      btnEliminar.addEventListener("click", () =>
+        eliminarVehiculo(v.matricula)
+      );
 
       accionesTd.append(btnEditar, btnEliminar);
       row.appendChild(accionesTd);
@@ -128,7 +144,7 @@ function resetFormulario() {
 vehiculoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const payload = {
+  const vehiculo = {
     marca: inputs.marca.value.trim(),
     modelo: inputs.modelo.value.trim(),
     version: inputs.version.value.trim(),
@@ -151,13 +167,13 @@ vehiculoForm.addEventListener("submit", async (e) => {
       // Añadir vehículo nuevo
       method = "POST";
       url = API_URL;
-      payload.matricula = inputs.matricula.value.trim();
+      vehiculo.matricula = inputs.matricula.value.trim();
     }
 
     const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(vehiculo),
     });
 
     const data = await res.json();
@@ -188,15 +204,15 @@ async function eliminarVehiculo(matricula) {
 }
 
 // ---------- Ir a la página de mantenimientos ----------
-const btnAddMantenimiento = document.getElementById('btnAddMantenimiento');
-btnAddMantenimiento.addEventListener('click', () => {
-  window.location.href = 'mantenimientos.html';
+const btnAddMantenimiento = document.getElementById("btnAddMantenimiento");
+btnAddMantenimiento.addEventListener("click", () => {
+  window.location.href = "mantenimientos.html";
 });
 
 // ---------- Ir a la página de ventas ----------
-const btnAddVenta = document.getElementById('btnAddVenta');
-btnAddVenta.addEventListener('click', () => {
-  window.location.href = 'ventas.html';
+const btnAddVenta = document.getElementById("btnAddVenta");
+btnAddVenta.addEventListener("click", () => {
+  window.location.href = "ventas.html";
 });
 
 window.addEventListener("DOMContentLoaded", cargarVehiculos);

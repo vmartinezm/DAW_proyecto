@@ -151,7 +151,13 @@ async function cargarMantenimientos() {
       const creadoFmt = m.creado_at
         ? new Date(m.creado_at).toLocaleDateString("es-ES")
         : "";
-        const costeFmt = m.coste ? m.coste.toFixed(2) : "";
+      const costeFmt = 
+        m.coste != null
+          ? new Intl.NumberFormat("es-ES", {
+              style: "currency",
+              currency: "EUR",
+            }).format(m.coste)
+          : "";
 
       [
         m.mantenimiento_id,

@@ -2,12 +2,13 @@ const API_CLIENTES = "http://localhost:3000/clientes";
 
 // Referencias
 const tableBody = document.querySelector("#clientesTable tbody");
-const btnAddVenta = document.getElementById("btnAddCliente");
+const btnAddCliente = document.getElementById("btnAddCliente");
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
 const modal = document.getElementById("clientesModal");
 const cerrarModal = document.getElementById("cerrarModal");
+const form = document.getElementById("clientesForm");
 const formTitle = document.getElementById("formTitle");
-const btnGuardar = document.getElementById("btnGuardar");
+const grupoCreado = document.getElementById("grupoCreado");
 const btnCancelar = document.getElementById("btnCancelar");
 
 // Inputs del formulario
@@ -21,14 +22,31 @@ const inputs = {
   creado_at: document.getElementById("creado_at"),
 };
 
-// Función para abrir el modal
+// -------------------------
+// 🔵 Función de limpieza total
+// -------------------------
+function limpiarFormulario() {
+  form.reset();
+  form.dataset.modo = "crear";
+
+  // Inputs siempre habilitados excepto creado_at
+  inputs.dni.disabled = false;
+  inputs.creado_at.disabled = true;
+
+  // Ocultar grupo creado
+  grupoCreado.style.display = "none";
+}
+
+// -------------------------
+// 🔵 Abrir y cerrar modal
+// -------------------------
 const abrirModalFn = () => {
   modal.style.display = "block";
 };
 
-// Función para cerrar el modal
 const cerrarModalFn = () => {
   modal.style.display = "none";
+  limpiarFormulario();
 };
 
 cerrarModal.addEventListener("click", cerrarModalFn);
@@ -37,33 +55,33 @@ window.addEventListener("click", (e) => {
   if (e.target === modal) cerrarModalFn();
 });
 
-// ---------- Volver a la página de vehículos ----------
-document.getElementById("btnVolverVehiculos").addEventListener("click", () => {
+// -------------------------
+// 🔵 Volver a vehículos
+// -------------------------
+btnVolverVehiculos.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
-// ---------- Abrir modal para añadir ----------
+// -------------------------
+// 🟢 Botón Añadir Cliente
+// -------------------------
 btnAddCliente.addEventListener("click", () => {
+  limpiarFormulario();
+  form.dataset.modo = "crear";
   formTitle.textContent = "Añadir nuevo cliente";
-
-  // Ocultar campo "Creado" al crear
-  grupoCreado.style.display = "none";
-  inputs.creado_at.value = "";
 
   abrirModalFn();
 });
 
-// ---------- Cancelar ----------
-btnCancelar.addEventListener("click", cerrarModalFn);
-
+// -------------------------
+// 🟡 Cargar clientes
+// -------------------------
 async function cargarClientes() {
   try {
     const res = await fetch(API_CLIENTES);
     if (!res.ok) throw new Error("Error al obtener clientes");
 
     const clientes = await res.json();
-
-    // Limpiar la tabla
     tableBody.textContent = "";
 
     const fragment = document.createDocumentFragment();
@@ -75,7 +93,6 @@ async function cargarClientes() {
         ? new Date(c.creado_at).toLocaleDateString("es-ES")
         : "";
 
-      // Celdas de datos
       [
         c.dni,
         c.nombre,
@@ -83,14 +100,13 @@ async function cargarClientes() {
         c.email,
         c.telefono,
         c.direccion,
-        creadoFmt
+        creadoFmt,
       ].forEach((valor) => {
         const td = document.createElement("td");
         td.textContent = valor;
         row.appendChild(td);
       });
 
-      // Celda de acciones
       const tdAcciones = document.createElement("td");
 
       const btnEditar = document.createElement("button");
@@ -110,11 +126,119 @@ async function cargarClientes() {
     });
 
     tableBody.appendChild(fragment);
-
   } catch (err) {
-    console.error("Error al cargar clienes:", err);
+    console.error("Error al cargar clientes:", err);
   }
 }
 
-// ---------- Inicializar ----------
+// -------------------------
+// 🟡 Editar cliente
+// -------------------------
+tableBody.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("btn-editar")) {
+    const id = e.target.dataset.id;
+
+    limpiarFormulario(); // <- evita arrastrar estados previos
+
+    form.dataset.modo = "editar";
+    formTitle.textContent = "Editar cliente";
+
+    try {
+      const res = await fetch(`${API_CLIENTES}/${id}`);
+      const cliente = await res.json();
+
+      inputs.dni.value = cliente.dni;
+      inputs.nombre.value = cliente.nombre;
+      inputs.apellidos.value = cliente.apellidos;
+      inputs.email.value = cliente.email;
+      inputs.telefono.value = cliente.telefono;
+      inputs.direccion.value = cliente.direccion;
+      inputs.creado_at.value = cliente.creado_at
+        ? cliente.creado_at.split("T")[0]
+        : "";
+
+      // DNI no editable
+      inputs.dni.disabled = true;
+
+      // Mostrar creado_at pero deshabilitado
+      grupoCreado.style.display = "block";
+      inputs.creado_at.disabled = true;
+
+      abrirModalFn();
+    } catch (err) {
+      console.error("Error al cargar cliente para edición:", err);
+    }
+  }
+});
+
+// -------------------------
+// 🟢 Enviar formulario
+// -------------------------
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const datos = {
+    dni: inputs.dni.value,
+    nombre: inputs.nombre.value,
+    apellidos: inputs.apellidos.value,
+    email: inputs.email.value,
+    telefono: inputs.telefono.value,
+    direccion: inputs.direccion.value,
+  };
+
+  const modo = form.dataset.modo;
+  let url = API_CLIENTES;
+  let metodo = "POST";
+
+  if (modo === "editar") {
+    metodo = "PUT";
+    url = `${API_CLIENTES}/${inputs.dni.value}`;
+  }
+
+  try {
+    const res = await fetch(url, {
+      method: metodo,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Error al guardar");
+      return;
+    }
+
+    alert(data.mensaje || "Cliente guardado");
+    cerrarModalFn();
+    cargarClientes();
+  } catch (err) {
+    console.error("Error al guardar cliente:", err);
+  }
+});
+
+// -------------------------
+// 🔴 Eliminar cliente
+// -------------------------
+tableBody.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("btn-eliminar")) {
+    const id = e.target.dataset.id;
+
+    if (confirm("¿Seguro que quieres eliminar este cliente?")) {
+      try {
+        const res = await fetch(`${API_CLIENTES}/${id}`, { method: "DELETE" });
+        const data = await res.json();
+
+        alert(data.mensaje || "Cliente eliminado");
+        cargarClientes();
+      } catch (err) {
+        console.error("Error al eliminar cliente:", err);
+      }
+    }
+  }
+});
+
+// -------------------------
+// Inicializar
+// -------------------------
 window.addEventListener("DOMContentLoaded", cargarClientes);
