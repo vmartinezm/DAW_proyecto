@@ -9,11 +9,15 @@
 </head>
 
 <body>
-    <h1>Gestión de Clientes</h1>
+    <div class="clientes-header">
+        <h1>Concesionario Martínez</h1>
+        <h2>Gestión de Clientes</h2>
+    </div>
 
     <div class="panel-acciones">
         <button id="btnAddCliente">➕ Añadir cliente</button>
-        <button id="btnVolverVehiculos">⬅️ Volver a vehículos</button>
+        <button id="btnVolverVehiculos">⬅️ Ir a vehículos</button>
+        <button id="btnIrDashboard">🏠 Ir a menú principal</button>
     </div>
 
     <div class="tabla-container">
@@ -38,12 +42,12 @@
     <div id="clientesModal" class="modal fade">
         <div class="modal-content">
             <span id="cerrarModal" class="close">&times;</span>
-            <h2 id="formTitle">Añadir nuevo cliente</h2>
+            <h3 id="formTitle">Añadir nuevo cliente</h3>
 
             <form id="clientesForm">
                 <div class="form-row" id="grupoDni">
                     <label for="dni">DNI:</label>
-                    <input type="text" id="dni" required/>
+                    <input type="text" id="dni" required />
                 </div>
 
                 <div class="form-row">
@@ -83,6 +87,11 @@
             </form>
         </div>
     </div>
+
+    <script type="module">
+        import { requireLogin } from "./js/auth.js";
+        requireLogin();
+    </script>
 
     <script src="js/clientes.js"></script>
 </body>

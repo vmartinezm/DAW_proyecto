@@ -9,11 +9,15 @@
 </head>
 
 <body>
-    <h1>Gestión de Ventas</h1>
+    <div class="ventas-header">
+        <h1>Concesionario Martínez</h1>
+        <h2>Gestión de Ventas</h2>
+    </div>
 
     <div class="panel-acciones">
         <button id="btnAddVenta">➕ Añadir venta</button>
-        <button id="btnVolverVehiculos">⬅️ Volver a vehículos</button>
+        <button id="btnVolverVehiculos">⬅️ Ir a vehículos</button>
+        <button id="btnIrDashboard">🏠 Ir a menú principal</button>
     </div>
 
     <div class="tabla-container">
@@ -40,7 +44,7 @@
     <div id="ventaModal" class="modal fade">
         <div class="modal-content">
             <span id="cerrarModal" class="close">&times;</span>
-            <h2 id="formTitle">Añadir nueva venta</h2>
+            <h3 id="formTitle">Añadir nueva venta</h3>
 
             <form id="ventasForm">
                 <input type="hidden" id="venta_id" />
@@ -100,39 +104,44 @@
     </div>
 
     <!-- Mini modal para crear nuevo cliente -->
-<div id="clienteModal" class="modal">
-  <div class="modal-content">
-    <span id="cerrarClienteModal" class="cerrar">&times;</span>
-    <h3>Nuevo Cliente</h3>
-    <form id="clienteForm">
-      <div class="form-group">
-        <label for="cliente_dni_nuevo">DNI:</label>
-        <input type="text" id="cliente_dni_nuevo" required>
-      </div>
-      <div class="form-group">
-        <label for="cliente_nombre_nuevo">Nombre:</label>
-        <input type="text" id="cliente_nombre_nuevo" required>
-      </div>
-      <div class="form-group">
-        <label for="cliente_apellidos_nuevo">Apellidos:</label>
-        <input type="text" id="cliente_apellidos_nuevo" required>
-      </div>
-      <div class="form-group">
-        <label for="cliente_email_nuevo">Email:</label>
-        <input type="email" id="cliente_email_nuevo">
-      </div>
-      <div class="form-group">
-        <label for="cliente_telefono_nuevo">Teléfono:</label>
-        <input type="text" id="cliente_telefono_nuevo">
-      </div>
-      <div class="form-group">
-        <label for="cliente_direccion_nuevo">Dirección:</label>
-        <input type="text" id="cliente_direccion_nuevo">
-      </div>
-      <button type="submit" class="btn-crear-cliente">Crear Cliente</button>
-    </form>
-  </div>
-</div>
+    <div id="clienteModal" class="modal">
+        <div class="modal-content">
+            <span id="cerrarClienteModal" class="cerrar">&times;</span>
+            <h3>Nuevo Cliente</h3>
+            <form id="clienteForm">
+                <div class="form-group">
+                    <label for="cliente_dni_nuevo">DNI:</label>
+                    <input type="text" id="cliente_dni_nuevo" required>
+                </div>
+                <div class="form-group">
+                    <label for="cliente_nombre_nuevo">Nombre:</label>
+                    <input type="text" id="cliente_nombre_nuevo" required>
+                </div>
+                <div class="form-group">
+                    <label for="cliente_apellidos_nuevo">Apellidos:</label>
+                    <input type="text" id="cliente_apellidos_nuevo" required>
+                </div>
+                <div class="form-group">
+                    <label for="cliente_email_nuevo">Email:</label>
+                    <input type="email" id="cliente_email_nuevo">
+                </div>
+                <div class="form-group">
+                    <label for="cliente_telefono_nuevo">Teléfono:</label>
+                    <input type="text" id="cliente_telefono_nuevo">
+                </div>
+                <div class="form-group">
+                    <label for="cliente_direccion_nuevo">Dirección:</label>
+                    <input type="text" id="cliente_direccion_nuevo">
+                </div>
+                <button type="submit" class="btn-crear-cliente">Crear Cliente</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { requireLogin } from "./js/auth.js";
+        requireLogin();
+    </script>
 
     <script src="js/ventas.js"></script>
 </body>

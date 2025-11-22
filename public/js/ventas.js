@@ -8,6 +8,7 @@ const API_USUARIOS = "http://localhost:3000/usuarios";
 const tableBody = document.querySelector("#ventasTable tbody");
 const btnAddVenta = document.getElementById("btnAddVenta");
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
+const btnIrdashboard = document.getElementById("btnIrDashboard");
 const modal = document.getElementById("ventaModal");
 const cerrarModal = document.getElementById("cerrarModal");
 const formTitle = document.getElementById("formTitle");
@@ -44,6 +45,10 @@ window.addEventListener("click", (e) => {
 
 // ====== BOTÓN VOLVER A VEHÍCULOS======
 btnVolverVehiculos.addEventListener("click", () => {
+  window.location.href = "vehiculos.html";
+});
+
+btnIrdashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 

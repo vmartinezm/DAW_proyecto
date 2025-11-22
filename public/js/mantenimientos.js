@@ -7,6 +7,7 @@ const API_USUARIOS = "http://localhost:3000/usuarios";
 const tableBody = document.querySelector("#mantenimientosTable tbody");
 const btnAddMantenimiento = document.getElementById("btnAddMantenimiento");
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
+const btnIrDashboard = document.getElementById("btnIrDashboard");
 const modal = document.getElementById("mantenimientoModal");
 const cerrarModal = document.getElementById("cerrarModal");
 const formTitle = document.getElementById("formTitle");
@@ -42,6 +43,11 @@ window.addEventListener("click", (e) => {
 
 // ====== BOTÓN VOLVER A VEHÍCULOS======
 btnVolverVehiculos.addEventListener("click", () => {
+  window.location.href = "vehiculos.html";
+});
+
+// IR A DASHBOARD
+btnIrDashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 

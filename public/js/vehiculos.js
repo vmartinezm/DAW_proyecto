@@ -215,4 +215,9 @@ btnAddVenta.addEventListener("click", () => {
   window.location.href = "ventas.html";
 });
 
+const btnIrDashboard = document.getElementById("btnIrDashboard");
+btnIrDashboard.addEventListener("click", () => {
+  window.location.href = "index.html";
+});
+
 window.addEventListener("DOMContentLoaded", cargarVehiculos);

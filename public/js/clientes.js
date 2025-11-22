@@ -4,6 +4,7 @@ const API_CLIENTES = "http://localhost:3000/clientes";
 const tableBody = document.querySelector("#clientesTable tbody");
 const btnAddCliente = document.getElementById("btnAddCliente");
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
+const btnIrDashboard = document.getElementById("btnIrDashboard");
 const modal = document.getElementById("clientesModal");
 const cerrarModal = document.getElementById("cerrarModal");
 const form = document.getElementById("clientesForm");
@@ -59,6 +60,13 @@ window.addEventListener("click", (e) => {
 // 🔵 Volver a vehículos
 // -------------------------
 btnVolverVehiculos.addEventListener("click", () => {
+  window.location.href = "vehiculos.html";
+});
+
+// -------------------------
+// 🔵 Ir a dashboard
+// -------------------------
+btnIrDashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 

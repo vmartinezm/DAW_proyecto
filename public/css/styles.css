@@ -2,6 +2,7 @@
 :root {
   --color-primario: #1e3a8a;
   --color-secundario: #2563eb;
+  --color-terciario: #3b82f6;
   --color-fondo: #f4f6fa;
   --color-texto: #1e293b;
   --color-borde: #d1d5db;
@@ -33,6 +34,33 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+h2 {
+  background: linear-gradient(
+    135deg,
+    var(--color-terciario),
+    var(--color-secundario)
+  );
+  color: white;
+  text-align: center;
+  padding: 1.2rem;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+/* ====== Botones generales ====== */
+button {
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: var(--radio);
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
 /* ====== Panel de acciones ====== */
 .panel-acciones {
   display: flex;
@@ -46,11 +74,6 @@ h1 {
   color: white;
   border: none;
   padding: 0.8rem 1.4rem;
-  border-radius: var(--radio);
-  cursor: pointer;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  transition: all 0.25s ease;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
@@ -59,11 +82,70 @@ h1 {
   transform: translateY(-2px);
 }
 
+/* ====== Login ====== */
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 5% auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: var(--radio);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-form .form-row {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.login-form label {
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.login-form input {
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+}
+
+.login-form input:focus {
+  border-color: var(--color-secundario);
+  outline: none;
+}
+
+.form-buttons-container {
+  display: flex;
+  justify-content: center;
+}
+
+.login-form .btn {
+  width: 100%;
+  max-width: 200px;
+  padding: 0.8rem 1.2rem;
+  background-color: var(--color-secundario);
+  color: white;
+  border: none;
+}
+
+.login-form .btn:hover {
+  background-color: #1d4ed8;
+}
+
 /* ====== Tabla ====== */
 .tabla-container {
   width: 90%;
   margin: 0 auto;
-  overflow-x: auto; /* 👉 permite scroll horizontal si no cabe */
+  overflow-x: auto;
   border-radius: var(--radio);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   background-color: white;
@@ -102,32 +184,37 @@ td:last-child {
   gap: 0.4rem;
 }
 
-button.btn-editar,
-button.btn-eliminar {
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-editar {
+button.btn-editar {
   background-color: var(--color-exito);
   color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
 }
 
-.btn-eliminar {
-  background-color: var(--color-error);
-  color: white;
-}
-
-.btn-editar:hover {
+button.btn-editar:hover {
   background-color: #059669;
 }
 
-.btn-eliminar:hover {
+button.btn-eliminar, #btnCancelar {
+  background-color: var(--color-error);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+}
+
+button.btn-eliminar:hover {
   background-color: #dc2626;
+}
+
+#btnGuardar {
+  background-color: var(--color-secundario);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+}
+
+#btnGuardar:hover {
+  background-color: var(--color-terciario);
 }
 
 /* ====== MODAL ====== */
@@ -156,6 +243,8 @@ button.btn-eliminar {
   position: relative;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   animation: aparecer 0.25s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 /* Cabecera del modal */
@@ -177,15 +266,16 @@ button.btn-eliminar {
   cursor: pointer;
   transition: color 0.2s ease;
 }
+
 .close:hover {
   color: var(--color-error);
 }
 
-/* ====== FORMULARIO ====== */
+/* ====== Formulario general ====== */
 form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.2rem 1.5rem; /* menos espacio horizontal */
+  gap: 1.2rem 1.5rem;
   box-sizing: border-box;
   width: 100%;
 }
@@ -193,7 +283,7 @@ form {
 .form-row {
   display: flex;
   flex-direction: column;
-  min-width: 0; /* evita que se desborde la segunda columna */
+  min-width: 0;
 }
 
 input,
@@ -205,7 +295,6 @@ select {
   border-radius: 6px;
   border: 1px solid #cbd5e1;
   font-size: 0.9rem;
-  transition: border-color 0.2s ease;
 }
 
 input:focus,
@@ -222,7 +311,6 @@ label {
   margin-bottom: 0.4rem;
 }
 
-/* Botones del formulario */
 .form-buttons {
   grid-column: 1 / -1;
   display: flex;
@@ -231,55 +319,61 @@ label {
   margin-top: 1.5rem;
 }
 
-.form-buttons button {
-  padding: 0.8rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  border: none;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
 .form-buttons button[type="submit"] {
-  background-color: var(--color-secundario);
+  background-color: var(--color-exito);
+  color: white;
+  border: none;
+
 }
 
-.form-buttons #btnCancelar {
-  background-color: var(--color-error);
+textarea {
+  width: 100%;
+  resize: vertical;
 }
 
-.form-buttons button:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+#mantenimientoForm textarea, #ventasForm textarea {
+  width: auto;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+  resize: vertical;
 }
 
-/* Scroll interno si el formulario es largo */
-.modal-content {
-  max-height: 90vh;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-secundario) #f1f5f9;
+#mantenimientoForm textarea:focus, #ventasForm textarea:focus {
+  border-color: var(--color-secundario);
+  outline: none;
 }
 
-.modal-content::-webkit-scrollbar {
-  width: 6px;
-}
-.modal-content::-webkit-scrollbar-thumb {
-  background: var(--color-secundario);
-  border-radius: 4px;
+.btn-crear-cliente {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  margin-top: 2%;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  margin-right: auto;
 }
 
-/* Responsive */
+.btn-crear-cliente:hover {
+  background-color: #4338ca;
+}
+
+/* ====== Responsive ====== */
 @media (max-width: 768px) {
-  .tabla-container, .panel-acciones {
+  .tabla-container,
+  .panel-acciones {
     width: 90%;
     margin: 5%;
   }
 
   table {
     font-size: 0.85rem;
-    min-width: 700px; /* 👉 evita que las columnas se aplasten demasiado */
+    min-width: 700px;
   }
 
   th,
@@ -291,6 +385,7 @@ label {
     flex-wrap: wrap;
     gap: 0.2rem;
   }
+
   .modal-content {
     width: 85%;
     padding: 1.5rem;
@@ -314,9 +409,9 @@ label {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-
 }
 
+/* Scrollbars */
 .tabla-container::-webkit-scrollbar {
   height: 8px;
 }
@@ -325,51 +420,56 @@ label {
   border-radius: 4px;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem 2rem;
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+  background: var(--color-secundario);
+  border-radius: 4px;
 }
 
-textarea {
-  width: 100%;
-  resize: vertical;
-}
-
-/* ====== Utilidades ====== */
+/* Utilidades */
 .hidden {
   display: none;
 }
 
-/* ====== FORMULARIO DE MÓDULOS ====== */
-#mantenimientoForm textarea, #ventasForm textarea {
-  width: auto;
-  padding: 0.6rem;
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
-  font-size: 0.9rem;
-  transition: border-color 0.2s ease;
-  resize: vertical;
+.alerta {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1000;
 }
 
-#mantenimientoForm textarea:focus, #ventasForm textarea:focus {
-  border-color: var(--color-secundario);
-  outline: none;
+.error-msg {
+  color: red;
+  padding: 12px 20px;
+  border-radius: 5px;
 }
 
-.btn-nuevo-cliente, .btn-crear-cliente {
-  background-color: #4f46e5;
+/* ====== BOTÓN LOGOUT ====== */
+.logout-btn {
+  background-color: #f43f5e; /* rojo base */
   color: white;
   border: none;
-  padding: 8px 14px;
-  margin-top: 2%;
-  border-radius: 6px;
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
-  margin-right: auto;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.25s ease;
+  margin-left: 2%;
 }
 
-.btn-nuevo-cliente:hover, .btn-crear-cliente:hover {
-  background-color: #4338ca;
+.logout-btn:hover {
+  background-color: #e11d48; /* rojo más intenso */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }

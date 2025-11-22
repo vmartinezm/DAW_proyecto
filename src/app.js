@@ -5,6 +5,7 @@ import mantenimientosRoutes from './routes/mantenimientos.routes.js';
 import ventasRoutes from './routes/ventas.routes.js';
 import usuariosRoutes from './routes/usuarios.routes.js';
 import clientesRoutes from './routes/clientes.routes.js';
+import authRoutes from "./routes/auth.routes.js";
 import bodyParser from 'body-parser';
 
 const app = express();
@@ -21,6 +22,8 @@ app.use('/mantenimientos', mantenimientosRoutes);
 app.use('/ventas', ventasRoutes);
 app.use('/usuarios', usuariosRoutes);
 app.use('/clientes', clientesRoutes);
+app.use('/auth', authRoutes);
+
 
 // Arrancar servidor
 app.listen(PORT, () => {

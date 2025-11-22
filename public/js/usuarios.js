@@ -1,9 +1,19 @@
+import { requireAdmin } from "./auth.js";
+
 const API_USUARIOS = "http://localhost:3000/usuarios";
+
+//Control de acceso
+if (!requireAdmin()) {
+  // Si el usuario no es admin, no ejecutamos nada más
+  // La función ya redirige al dashboard/login
+  throw new Error("Acceso denegado");
+}
 
 // Referencias
 const tableBody = document.querySelector("#usuariosTable tbody");
 const btnAddUsuario = document.getElementById("btnAddUsuario");
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
+const btnIrDashboard = document.getElementById("btnIrDashboard");
 const modal = document.getElementById("usuariosModal");
 const cerrarModal = document.getElementById("cerrarModal");
 const form = document.getElementById("usuariosForm");
@@ -42,8 +52,8 @@ window.addEventListener("click", (e) => {
   if (e.target === modal) cerrarModalFn();
 });
 
-// ---------- Volver ----------
-btnVolverVehiculos.addEventListener("click", () => {
+// Ir a dashboard
+btnIrDashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 

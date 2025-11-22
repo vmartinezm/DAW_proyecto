@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Vehículos - Concesionario</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <div class="vehiculos-header">
+            <h1>Concesionario Martínez</h1>
+            <h2>Gestión de Vehículos</h2>
+        </div>
+
+  <div class="panel-acciones">
+    <button id="btnAddVehiculo">➕ Añadir vehículo</button>
+    <button id="btnAddMantenimiento">🔧 Registrar mantenimiento</button>
+    <button id="btnAddVenta">💰 Gestionar venta/reserva</button>
+    <button id="btnIrDashboard">🏠 Ir a menú principal</button>
+  </div>
+
+  <div class="tabla-container">
+    <table id="vehiculosTable">
+      <thead>
+        <tr>
+          <th>Matrícula</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Versión</th>
+          <th>Color</th>
+          <th>Año</th>
+          <th>Kilómetros</th>
+          <th>Combustible</th>
+          <th>Precio (€)</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- 🔹 Modal de formulario -->
+  <div id="vehiculoModal" class="modal fade">
+    <div class="modal-content">
+      <span id="cerrarModal" class="close">&times;</span>
+      <h3 id="form-title">Añadir nuevo vehículo</h3>
+
+      <form id="vehiculoForm">
+        <!-- Matrícula -->
+        <div class="form-row">
+          <label for="matricula">Matrícula:</label>
+          <input type="text" id="matricula" required />
+        </div>
+
+        <div class="form-row">
+          <label for="marca">Marca:</label>
+          <input type="text" id="marca" required />
+        </div>
+
+        <div class="form-row">
+          <label for="modelo">Modelo:</label>
+          <input type="text" id="modelo" required />
+        </div>
+
+        <div class="form-row">
+          <label for="version">Versión:</label>
+          <input type="text" id="version" />
+        </div>
+
+        <div class="form-row">
+          <label for="color">Color:</label>
+          <input type="text" id="color" />
+        </div>
+
+        <div class="form-row">
+          <label for="ano">Año:</label>
+          <input type="number" id="ano" min="1900" max="2099" />
+        </div>
+
+        <div class="form-row">
+          <label for="kilometros">Kilómetros:</label>
+          <input type="number" id="kilometros" />
+        </div>
+
+        <div class="form-row">
+          <label for="combustible">Combustible:</label>
+          <select id="combustible" required>
+            <option value="">Seleccionar...</option>
+            <option value="gasolina">Gasolina</option>
+            <option value="diesel">Diésel</option>
+            <option value="hibrido">Híbrido</option>
+            <option value="electrico">Eléctrico</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="precio">Precio (€):</label>
+          <input type="number" id="precio" step="0.01" />
+        </div>
+
+        <div class="form-row">
+          <label for="estado">Estado:</label>
+          <select id="estado">
+            <option value="disponible">Disponible</option>
+            <option value="reservado">Reservado</option>
+            <option value="vendido">Vendido</option>
+            <option value="mantenimiento">Mantenimiento</option>
+          </select>
+        </div>
+
+        <div class="form-buttons">
+          <button type="submit" id="btnGuardar">Guardar</button>
+          <button type="button" id="btnCancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { requireLogin } from "./js/auth.js";
+    requireLogin();
+  </script>
+
+  <script src="js/vehiculos.js"></script>
+</body>
+
+</html>
