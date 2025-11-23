@@ -2,7 +2,7 @@ import connection from "../config/db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "supersecreto123"; // ⚠️ En producción debe ir en process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET || "desarrollo_super_secreto";
 
 /**
  * Autentica a un usuario mediante usuario + contraseña.

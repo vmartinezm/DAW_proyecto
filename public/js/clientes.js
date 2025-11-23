@@ -1,3 +1,16 @@
+/**
+ * @file clientes.js
+ * @description Gestión frontend del módulo de clientes.
+ */
+
+import { requireLogin, authFetch } from "./auth.js";
+
+// ============================================================================
+//  PROTECCIÓN DE ACCESO
+// ============================================================================
+
+requireLogin();
+
 //API ENDPOINT
 const API_CLIENTES = "http://localhost:3000/clientes";
 
@@ -52,7 +65,7 @@ const inputs = {
  * @throws {Error}
  */
 async function fetchJSON(url, options = {}) {
-  const res = await fetch(url, options);
+  const res = await authFetch(url, options);
   let data;
 
   try {

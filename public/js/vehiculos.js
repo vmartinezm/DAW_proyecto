@@ -1,11 +1,26 @@
-// API ENDPOINT
 /**
- * @constant {string} API_VEHICULOS URL de vehículos
+ * @file vehiculos.js
+ * @description Lógica frontend para gestión de vehículos en la aplicación.
+ * Incluye protección por sesión (JWT), carga dinámica de datos, modal CRUD y
+ * comunicación con el backend usando authFetch().
+ */
+
+import { requireLogin, authFetch } from "./auth.js";
+
+/**
+ * Protege el acceso a la página:
+ * - Si no hay sesión activa → se redirige a login.html automáticamente
+ */
+requireLogin();
+
+/**
+ * @constant {string} API_URL Ruta base del backend para gestión de vehículos
  */
 const API_URL = "http://localhost:3000/vehiculos";
 
 /**
- * Elementos principales de la interfaz
+ * Referencias a elementos DOM principales
+ * @constant
  */
 const tableBody = document.querySelector("#vehiculosTable tbody");
 const btnAddVehiculo = document.getElementById("btnAddVehiculo");
@@ -15,7 +30,20 @@ const vehiculoForm = document.getElementById("vehiculoForm");
 const formTitle = document.getElementById("form-title");
 const btnCancelar = document.getElementById("btnCancelar");
 
-// Inputs en el formulario
+/**
+ * Inputs del formulario agrupados en un objeto
+ * @typedef VehiculoInputs
+ * @property {HTMLInputElement} matricula
+ * @property {HTMLInputElement} marca
+ * @property {HTMLInputElement} modelo
+ * @property {HTMLInputElement} version
+ * @property {HTMLInputElement} color
+ * @property {HTMLInputElement} ano
+ * @property {HTMLInputElement} kilometros
+ * @property {HTMLInputElement} combustible
+ * @property {HTMLInputElement} precio
+ * @property {HTMLInputElement} estado
+ */
 const inputs = {
   matricula: document.getElementById("matricula"),
   marca: document.getElementById("marca"),
@@ -29,44 +57,50 @@ const inputs = {
   estado: document.getElementById("estado"),
 };
 
-// Estado interno
+/**
+ * @type {boolean} Indica si el formulario está en modo edición o en modo creación
+ */
 let modoEdicion = false;
 
-
 /**
- * Abre el modal del formulario.
+ * Muestra el modal de formulario
  */
 function abrirModal() {
   modal.style.display = "block";
 }
 
 /**
- * Cierra el modal y limpia el formulario.
+ * Cierra el modal y resetea el formulario
  */
 function cerrarModalFn() {
   modal.style.display = "none";
   resetFormulario();
 }
 
-// Eventos de cierre modal
+// ============================
+// MODAL — eventos de cierre
+// ============================
+
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
 window.addEventListener("click", (e) => {
   if (e.target === modal) cerrarModalFn();
 });
 
+// ============================
+// CARGAR VEHÍCULOS
+// ============================
 
 /**
- * Obtiene la lista de vehículos del backend y los pinta en la tabla.
+ * Obtiene la lista de vehículos desde el backend (autorizado) y los renderiza en la tabla
  * @async
  */
 async function cargarVehiculos() {
   try {
-    const res = await fetch(API_URL);
+    const res = await authFetch(API_URL);
     const data = await res.json();
 
     tableBody.textContent = "";
-
     const fragment = document.createDocumentFragment();
 
     data.forEach((v) => {
@@ -106,7 +140,6 @@ async function cargarVehiculos() {
         row.appendChild(td);
       });
 
-      // Celda acciones
       const accionesTd = document.createElement("td");
 
       const btnEditar = document.createElement("button");
@@ -123,20 +156,19 @@ async function cargarVehiculos() {
 
       accionesTd.append(btnEditar, btnEliminar);
       row.appendChild(accionesTd);
-
       fragment.appendChild(row);
     });
 
     tableBody.appendChild(fragment);
   } catch (err) {
-    console.error("Error al cargar vehículos:", err);
+    alert("Error cargando vehículos: " + err.message);
   }
 }
 
+// ============================
+// NUEVO VEHÍCULO
+// ============================
 
-/**
- * Abre el formulario para crear un nuevo vehículo.
- */
 btnAddVehiculo.addEventListener("click", () => {
   formTitle.textContent = "Añadir nuevo vehículo";
   abrirModal();
@@ -145,10 +177,13 @@ btnAddVehiculo.addEventListener("click", () => {
   inputs.matricula.disabled = false;
 });
 
+// ============================
+// EDITAR VEHÍCULO
+// ============================
 
 /**
- * Abre el formulario para editar un vehículo existente.
- * @param {Object} v - objeto con los datos del vehículo
+ * Rellena el formulario con los datos de un vehículo para edición
+ * @param {Object} v Objeto vehículo
  */
 function editarVehiculo(v) {
   formTitle.textContent = "Editar vehículo";
@@ -158,9 +193,12 @@ function editarVehiculo(v) {
   inputs.matricula.disabled = true;
 }
 
+// ============================
+// RESET FORMULARIO
+// ============================
 
 /**
- * Resetea el formulario y restablece estado de edición.
+ * Vacía el formulario y restaura estado interno
  */
 function resetFormulario() {
   vehiculoForm.reset();
@@ -168,12 +206,10 @@ function resetFormulario() {
   modoEdicion = false;
 }
 
+// ============================
+// GUARDAR — CREAR / EDITAR
+// ============================
 
-/**
- * Envía los datos del formulario al backend para crear o editar.
- * @async
- * @param {SubmitEvent} e
- */
 vehiculoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -189,73 +225,77 @@ vehiculoForm.addEventListener("submit", async (e) => {
     estado: inputs.estado.value,
   };
 
+  let url = API_URL;
+  let method = "POST";
+
+  if (modoEdicion) {
+    method = "PUT";
+    url = `${API_URL}/${inputs.matricula.value}`;
+  } else {
+    vehiculo.matricula = inputs.matricula.value.trim();
+  }
+
   try {
-    let method, url;
-
-    if (modoEdicion) {
-      method = "PUT";
-      url = `${API_URL}/${inputs.matricula.value}`;
-    } else {
-      method = "POST";
-      url = API_URL;
-      vehiculo.matricula = inputs.matricula.value.trim();
-    }
-
-    const res = await fetch(url, {
+    const res = await authFetch(url, {
       method,
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(vehiculo),
     });
 
+    // importante: leer respuesta
     const data = await res.json();
 
-    if (!res.ok) {
-      alert(data.error || "Error al guardar vehículo");
+    // si backend devolvió error
+    if (data.error) {
+      alert(data.error);
       return;
     }
 
+    alert(data.mensaje || "Vehículo guardado correctamente");
     cerrarModalFn();
     cargarVehiculos();
   } catch (err) {
-    console.error("Error al guardar vehículo:", err);
+    alert("Error guardando vehículo: " + err.message);
   }
 });
 
+// ============================
+// ELIMINAR VEHÍCULO
+// ============================
 
 /**
- * Elimina un vehículo por matrícula.
+ * Solicita confirmación y elimina vehículo en backend
  * @async
  * @param {string} matricula
  */
 async function eliminarVehiculo(matricula) {
   if (!confirm("¿Seguro que quieres eliminar este vehículo?")) return;
+
   try {
-    const res = await fetch(`${API_URL}/${matricula}`, { method: "DELETE" });
-    const data = await res.json();
-    if (!res.ok) alert(data.error || "Error al eliminar vehículo");
+    await authFetch(`${API_URL}/${matricula}`, { method: "DELETE" });
     cargarVehiculos();
   } catch (err) {
-    console.error("Error al eliminar vehículo:", err);
+    alert("Error eliminando vehículo: " + err.message);
   }
 }
 
+// ============================
+// NAVEGACIÓN
+// ============================
 
-// ---- Navegación ----
-const btnAddMantenimiento = document.getElementById("btnAddMantenimiento");
-btnAddMantenimiento.addEventListener("click", () => {
+document.getElementById("btnAddMantenimiento").addEventListener("click", () => {
   window.location.href = "mantenimientos.html";
 });
 
-const btnAddVenta = document.getElementById("btnAddVenta");
-btnAddVenta.addEventListener("click", () => {
+document.getElementById("btnAddVenta").addEventListener("click", () => {
   window.location.href = "ventas.html";
 });
 
-const btnIrDashboard = document.getElementById("btnIrDashboard");
-btnIrDashboard.addEventListener("click", () => {
+document.getElementById("btnIrDashboard").addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
+// ============================
+// EJECUCIÓN INICIAL
+// ============================
 
-// Ejecutar carga inicial en DOM ready
 window.addEventListener("DOMContentLoaded", cargarVehiculos);

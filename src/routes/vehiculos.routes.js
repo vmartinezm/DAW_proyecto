@@ -12,12 +12,17 @@ import {
   eliminarVehiculo,
 } from "../controllers/vehiculos.controller.js";
 
-//import { requireAuth } from "../middlewares/auth.js";
 import {
   validarVehiculoPOST,
   validarVehiculoPUT,
 } from "../middlewares/validators/vehiculos.validator.js";
+
+import { verifyToken } from "../middlewares/auth.middleware.js";
+
 const router = express.Router();
+
+// Todas las rutas de vehículos requieren estar autenticado
+router.use(verifyToken);
 
 /**
  * @route GET /vehiculos

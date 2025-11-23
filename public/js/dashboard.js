@@ -1,75 +1,57 @@
-/* =====================================================
-   dashboard.js — Gestión del menú principal
-   Responsable de:
-   ✔ mostrar saludo al usuario
-   ✔ navegación entre módulos
-   ✔ control visual del botón Usuarios según rol
-   ✔ cierre de sesión
-===================================================== */
+/* -----------------------------------------
+   dashboard.js — Página principal
+------------------------------------------ */
 
 import { requireLogin, getSession, logout } from "./auth.js";
 
-/**
- * Evento principal — se ejecuta cuando el DOM está cargado.
- * Primero se valida que el usuario tenga sesión activa.
- * Si la sesión no es válida → requireLogin() redirige a login.
- */
 document.addEventListener("DOMContentLoaded", () => {
-  if (!requireLogin()) return; // Seguridad frontend
-
+  if (!requireLogin()) return;
   inicializarDashboard();
 });
 
 /**
- * Inicializa el panel del dashboard:
- * - Obtiene datos del usuario actual
- * - Muestra mensaje de bienvenida
- * - Configura navegación entre módulos
- * - Muestra u oculta opciones según rol
+ * Inicializa la página de dashboard, mostrando un mensaje de bienvenida con el usuario actual y configurando los botones de navegación según el rol del usuario.
+ * Si el usuario no es administrador, se elimina el botón correspondiente a la gestión de usuarios del DOM.
  */
 function inicializarDashboard() {
   const session = getSession();
   mostrarAlerta(`Has iniciado sesión como ${session.usuario}`);
 
-  // Botones de navegación
-  const dashboardBtnVehiculos = document.getElementById("dashBtnVehiculos");
-  const dashboardBtnUsuarios = document.getElementById("dashBtnUsuarios");
-  const dashboardBtnClientes = document.getElementById("dashBtnClientes");
-  const dashboardBtnMantenimientos = document.getElementById("dashBtnMantenimientos");
-  const dashboardBtnVentas = document.getElementById("dashBtnVentas");
-  const dashboardBtnLogout = document.getElementById("dashBtnLogout");
+  const isAdmin = session.rol === "admin";
 
-  /**
-   * Si el usuario no es admin:
-   * - Ocultamos visualmente el botón Usuarios
-   * Esta es protección VISUAL — no REAL
-   */
-  if (session.rol !== "admin") {
-    document.querySelector(".admin-only").style.display = "none";
+  const btnVehiculos = document.getElementById("dashBtnVehiculos");
+  const btnMantenimientos = document.getElementById("dashBtnMantenimientos");
+  const btnVentas = document.getElementById("dashBtnVentas");
+  const btnClientes = document.getElementById("dashBtnClientes");
+  const btnUsuarios = document.getElementById("dashBtnUsuarios");
+  const btnLogout = document.getElementById("dashBtnLogout");
+
+  // 🔥 Seguridad visual → si NO es admin, ELIMINAR el botón del DOM
+  if (!isAdmin && btnUsuarios) {
+    btnUsuarios.remove();
   }
 
-  // Navegación entre páginas
-  dashboardBtnVehiculos.addEventListener("click", () => window.location.href = "vehiculos.html");
-  dashboardBtnMantenimientos.addEventListener("click", () => window.location.href = "mantenimientos.html");
-  dashboardBtnVentas.addEventListener("click", () => window.location.href = "ventas.html");
-  dashboardBtnClientes.addEventListener("click", () => window.location.href = "clientes.html");
-  dashboardBtnUsuarios.addEventListener("click", () => window.location.href = "usuarios.html");
+  // Navegación
+  btnVehiculos.addEventListener("click", () => window.location.href = "vehiculos.html");
+  btnMantenimientos.addEventListener("click", () => window.location.href = "mantenimientos.html");
+  btnVentas.addEventListener("click", () => window.location.href = "ventas.html");
+  btnClientes.addEventListener("click", () => window.location.href = "clientes.html");
 
-  // Logout
-  dashboardBtnLogout.addEventListener("click", () => logout());
+  if (isAdmin) {
+    btnUsuarios.addEventListener("click", () => window.location.href = "usuarios.html");
+  }
+
+  btnLogout.addEventListener("click", () => logout());
 }
 
 /**
- * Muestra un mensaje temporal en la parte superior de la pantalla.
- * @param {string} mensaje - texto a mostrar
- * @param {number} duracion - milisegundos hasta que desaparece
+ * Muestra un mensaje de alerta en la pantalla durante un tiempo determinado.
+ * @param {string} mensaje - El mensaje a mostrar.
+ * @param {number} [duracion=3000] - El tiempo en milisegundos para mostrar el mensaje.
  */
 function mostrarAlerta(mensaje, duracion = 3000) {
   const alerta = document.getElementById("alertaBienvenida");
   alerta.textContent = mensaje;
   alerta.style.opacity = "1";
-
-  setTimeout(() => {
-    alerta.style.opacity = "0";
-  }, duracion);
+  setTimeout(() => alerta.style.opacity = "0", duracion);
 }

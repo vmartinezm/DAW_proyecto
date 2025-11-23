@@ -17,9 +17,13 @@ import {
   validarMantenimientoEdicion
 } from "../middlewares/validators/mantenimientos.validator.js";
 
-//import { requireAuth } from "../middlewares/auth.middleware.js";
+// Importar middleware de autenticación
+import { verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
+
+// Todas las rutas requieren login
+router.use(verifyToken);
 
 /**
  * GET /mantenimientos

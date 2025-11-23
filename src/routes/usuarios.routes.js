@@ -1,15 +1,19 @@
 /**
+ * @file usuarios.routes.js
  * Rutas relacionadas con la gestión de usuarios del sistema
  * @module routes/usuarios
+ * Incluye dos niveles de permisos: acceso general para administradores y acceso restringido para usuarios específicos.
  */
 
 import express from "express";
+
 import {
   obtenerUsuarios,
   obtenerUsuarioPorId,
   anadirUsuario,
   actualizarUsuario,
   eliminarUsuario,
+  obtenerUsuariosBasic,
 } from "../controllers/usuarios.controller.js";
 
 import {
@@ -17,42 +21,51 @@ import {
   validarUsuarioEdicion,
 } from "../middlewares/validators/usuarios.validator.js";
 
-// import { requireAuth, requireAdmin } from "../middlewares/auth.middleware.js";  // se activará después
+// Importar middleware de autenticación y autorización
+import { verifyToken, requireAdmin } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
 /**
- * GET /usuarios
- * Obtener todos los usuarios del sistema
- * (SOLO admin debería poder hacer esto — se aplicará con middleware)
+ * @route GET /usuarios/basic
+ * @description Devuelve lista limitada y segura de usuarios
+ * @access Cualquier usuario autenticado (token válido)
  */
-router.get("/", obtenerUsuarios);
+router.get("/basic", verifyToken, obtenerUsuariosBasic);
+
+/**
+ * @route GET /usuarios
+ * @description Devuelve lista completa de usuarios
+ * @access Solo admin
+ */
+router.get("/", verifyToken, requireAdmin, obtenerUsuarios);
 
 /**
  * GET /usuarios/:user_id
  * Obtener un usuario específico por ID
+ * @access Solo admin
  */
-router.get("/:user_id", obtenerUsuarioPorId);
+router.get("/:user_id", verifyToken, requireAdmin, obtenerUsuarioPorId);
 
 /**
  * POST /usuarios
  * Crear un nuevo usuario
- * (SOLO admin — se aplicará luego con requireAdmin)
+ * @access Solo admin
  */
-router.post("/", validarUsuarioCreacion, anadirUsuario);
+router.post("/", verifyToken, requireAdmin, validarUsuarioCreacion, anadirUsuario);
 
 /**
  * PUT /usuarios/:user_id
  * Actualizar un usuario existente
- * (admin puede actualizar a cualquiera — usuarios normales solo podrán editar su propio perfil)
+ * @access Solo admin
  */
-router.put("/:user_id", validarUsuarioEdicion, actualizarUsuario);
+router.put("/:user_id", verifyToken, requireAdmin, validarUsuarioEdicion, actualizarUsuario);
 
 /**
  * DELETE /usuarios/:user_id
  * Eliminar un usuario
- * (SOLO admin)
+ * @access Solo admin
  */
-router.delete("/:user_id", eliminarUsuario);
+router.delete("/:user_id", verifyToken, requireAdmin, eliminarUsuario);
 
 export default router;

@@ -17,10 +17,13 @@ import {
   validarVentaEdicion,
  } from "../middlewares/validators/ventas.validator.js";
 
-
-//import { requireAuth } from "../middlewares/auth.middleware.js";
+// Importar middleware de autenticación
+import { verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
+
+// Todas las rutas de ventas requieren estar logueado
+router.use(verifyToken);
 
 /**
  * GET /ventas

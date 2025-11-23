@@ -409,6 +409,11 @@ textarea {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+
+  .dash-btn {
+    flex-direction: column;
+  }
+
 }
 
 /* Scrollbars */

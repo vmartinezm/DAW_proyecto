@@ -1,9 +1,17 @@
-import { requireAdmin } from "./auth.js";
+/**
+ * @file clientes.js
+ * @description Gestión frontend del módulo de clientes.
+ */
 
-/** @constant {string} URL API backend para CRUD de usuarios */
+import { requireAdmin, authFetch } from "./auth.js";
+
+// API ENDPOINT
 const API_USUARIOS = "http://localhost:3000/usuarios";
 
-/** Validación de permisos — solo admin */
+// ============================================================================
+//  PROTECCIÓN DE ACCESO
+// ============================================================================
+
 if (!requireAdmin()) {
   throw new Error("Acceso denegado");
 }
@@ -22,7 +30,7 @@ if (!requireAdmin()) {
  * @throws {Error} Si la respuesta backend indica error
  */
 async function fetchJSON(url, options = {}) {
-  const res = await fetch(url, options);
+  const res = await authFetch(url, options);
 
   let data;
   try {

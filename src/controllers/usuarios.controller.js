@@ -42,6 +42,26 @@ export const obtenerUsuarioPorId = (req, res) => {
     });
 };
 
+
+
+/**
+ * Obtiene una lista básica de usuarios, con menos datos porque será usada por usuarios no administradores.
+ * La lista se ordena alfabéticamente por nombre.
+ * @route GET /usuarios/basic
+ * @returns {Object[]} Lista de usuarios con nombre, apellidos e ID
+ */
+export const obtenerUsuariosBasic = (req, res) => {
+    const sql = 'SELECT user_id, nombre, apellidos FROM usuarios ORDER BY nombre ASC';
+
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error al obtener usuarios:', err);
+            return res.status(500).json({ error: 'Error al obtener usuarios' });
+        }
+        res.status(200).json(results);
+    });
+}
+
 /**
  * Crea un nuevo usuario en el sistema.
  * Aplica hash seguro bcrypt a la contraseña.

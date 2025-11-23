@@ -1,3 +1,16 @@
+/**
+ * @file ventas.js
+ * @description Gestión frontend del módulo de ventas.
+ */
+
+import { requireLogin, authFetch } from "./auth.js";
+
+// ============================================================================
+//  PROTECCIÓN DE ACCESO
+// ============================================================================
+
+requireLogin();
+
 // ============================================================================
 //  API ENDPOINTS
 // ============================================================================
@@ -5,7 +18,7 @@
 const API_VENTAS = "http://localhost:3000/ventas";
 const API_VEHICULOS = "http://localhost:3000/vehiculos";
 const API_CLIENTES = "http://localhost:3000/clientes";
-const API_USUARIOS = "http://localhost:3000/usuarios";
+const API_USUARIOS_BASIC = "http://localhost:3000/usuarios/basic";
 
 
 // ============================================================================
@@ -83,7 +96,7 @@ const clienteForm = document.getElementById("clienteForm");
  * @throws {Error} - Si el servidor devuelve un status 4xx/5xx
  */
 async function fetchJSON(url, options = {}) {
-  const res = await fetch(url, options);
+  const res = await authFetch(url, options);
   let data;
 
   try {
@@ -269,7 +282,7 @@ async function cargarClientesSelect(disabled = false, clienteActual = null) {
  */
 async function cargarUsuariosSelect(disabled = false, vendedorActual = null) {
   try {
-    const usuarios = await fetchJSON(API_USUARIOS);
+    const usuarios = await fetchJSON(API_USUARIOS_BASIC);
 
     const usuarioSelect = inputs.vendedor_id;
     usuarioSelect.textContent = "";

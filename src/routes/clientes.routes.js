@@ -18,9 +18,13 @@ import {
   validarClienteEdicion
 } from "../middlewares/validators/clientes.validator.js";
 
-// import { requireAuth, requireAdminOrSelf } from "../middlewares/auth.middleware.js";
+// Importar middleware de autenticación
+import { verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
+
+// Todas las operaciones con clientes requieren login
+router.use(verifyToken);
 
 /**
  * GET /clientes

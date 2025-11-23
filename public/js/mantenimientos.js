@@ -1,11 +1,23 @@
+/**
+ * @file mantenimientos.js
+ * @description Gestión frontend del módulo de mantenimientos.
+ * Incluye protección de acceso, carga dinámica, renderizado de datos y CRUD.
+ */
+
+import { requireLogin, authFetch } from "./auth.js";
+
+// ============================================================================
+//  PROTECCIÓN DE ACCESO
+// ============================================================================
+requireLogin();
+
 // ============================================================================
 //  API ENDPOINTS
 // ============================================================================
 
 const API_MANTENIMIENTOS = "http://localhost:3000/mantenimientos";
 const API_VEHICULOS = "http://localhost:3000/vehiculos";
-const API_USUARIOS = "http://localhost:3000/usuarios";
-
+const API_USUARIOS_BASIC = "http://localhost:3000/usuarios/basic";
 
 // ============================================================================
 //  SELECTORES DOM
@@ -37,30 +49,32 @@ const inputs = {
   creado_at: document.getElementById("creado_at"),
 };
 
-
 // ============================================================================
 //  UTILIDAD GLOBAL FETCH → JSON CON CONTROL DE ERRORES
 // ============================================================================
 
 /**
- * Hace fetch y parsea JSON con manejo seguro de errores backend
+ * Hace fetch autenticado + parsea JSON con manejo seguro de errores backend
  * @param {string} url
  * @param {RequestInit} options
  * @returns {Promise<any>}
- * @throws {Error} si el servidor devuelve error HTTP
  */
 async function fetchJSON(url, options = {}) {
-  const res = await fetch(url, options);
+  const res = await authFetch(url, options);
   let data;
-  try { data = await res.json(); }
-  catch { data = {}; }
+
+  try {
+    data = await res.json();
+  } catch {
+    data = {};
+  }
 
   if (!res.ok) {
     throw new Error(data.error || `Error ${res.status}`);
   }
+
   return data;
 }
-
 
 // ============================================================================
 //  MODAL
@@ -78,8 +92,9 @@ const cerrarModalFn = () => {
 
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
-window.addEventListener("click", (e) => { if (e.target === modal) cerrarModalFn(); });
-
+window.addEventListener("click", (e) => {
+  if (e.target === modal) cerrarModalFn();
+});
 
 // ============================================================================
 //  NAVEGACIÓN
@@ -93,7 +108,6 @@ btnIrDashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
-
 // ============================================================================
 //  ABRIR MODAL PARA CREAR MANTENIMIENTO
 // ============================================================================
@@ -102,7 +116,7 @@ btnAddMantenimiento.addEventListener("click", async () => {
   form.dataset.modo = "crear";
   formTitle.textContent = "Añadir nuevo mantenimiento";
 
-  Object.values(inputs).forEach(i => i.value = "");
+  Object.values(inputs).forEach((i) => (i.value = ""));
 
   await cargarVehiculosSelect(false);
   await cargarUsuariosSelect(false);
@@ -111,7 +125,6 @@ btnAddMantenimiento.addEventListener("click", async () => {
 
   abrirModalFn();
 });
-
 
 // ============================================================================
 //  SELECT VEHÍCULOS
@@ -147,12 +160,10 @@ async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
     });
 
     vehiculoSelect.disabled = disabled;
-
   } catch (err) {
     alert("Error cargando vehículos: " + err.message);
   }
 }
-
 
 // ============================================================================
 //  SELECT USUARIOS
@@ -165,24 +176,24 @@ async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
  */
 async function cargarUsuariosSelect(disabled = false, usuarioActual = null) {
   try {
-    const usuarios = await fetchJSON(API_USUARIOS);
+    const usuarios = await fetchJSON(API_USUARIOS_BASIC);
     const usuarioSelect = inputs.realizado_por;
     usuarioSelect.textContent = "";
 
     usuarioSelect.append(new Option("Seleccionar empleado...", ""));
 
     usuarios.forEach((u) => {
-      usuarioSelect.append(new Option(`${u.user_id} - ${u.nombre} ${u.apellidos}`, u.user_id));
+      usuarioSelect.append(
+        new Option(`${u.user_id} - ${u.nombre} ${u.apellidos}`, u.user_id)
+      );
     });
 
     usuarioSelect.disabled = disabled;
     if (usuarioActual) usuarioSelect.value = usuarioActual;
-
   } catch (err) {
     alert("Error cargando usuarios: " + err.message);
   }
 }
-
 
 // ============================================================================
 //  PINTAR MANTENIMIENTOS EN TABLA
@@ -201,10 +212,22 @@ async function cargarMantenimientos() {
     mantenimientos.forEach((m) => {
       const row = document.createElement("tr");
 
-      const fechaInicioFmt = m.fecha_inicio ? new Date(m.fecha_inicio).toLocaleDateString("es-ES") : "";
-      const fechaFinFmt = m.fecha_fin ? new Date(m.fecha_fin).toLocaleDateString("es-ES") : "";
-      const creadoFmt = m.creado_at ? new Date(m.creado_at).toLocaleDateString("es-ES") : "";
-      const costeFmt = m.coste != null ? new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(m.coste) : "";
+      const fechaInicioFmt = m.fecha_inicio
+        ? new Date(m.fecha_inicio).toLocaleDateString("es-ES")
+        : "";
+      const fechaFinFmt = m.fecha_fin
+        ? new Date(m.fecha_fin).toLocaleDateString("es-ES")
+        : "";
+      const creadoFmt = m.creado_at
+        ? new Date(m.creado_at).toLocaleDateString("es-ES")
+        : "";
+      const costeFmt =
+        m.coste != null
+          ? new Intl.NumberFormat("es-ES", {
+              style: "currency",
+              currency: "EUR",
+            }).format(m.coste)
+          : "";
 
       [
         m.mantenimiento_id,
@@ -214,9 +237,11 @@ async function cargarMantenimientos() {
         m.descripcion,
         m.realizado_por,
         costeFmt,
-        creadoFmt
+        creadoFmt,
       ].forEach((valor) => {
-        row.appendChild(Object.assign(document.createElement("td"), { textContent: valor }));
+        row.appendChild(
+          Object.assign(document.createElement("td"), { textContent: valor })
+        );
       });
 
       const accionesTd = document.createElement("td");
@@ -230,12 +255,10 @@ async function cargarMantenimientos() {
     });
 
     tableBody.appendChild(fragment);
-
   } catch (err) {
     alert("Error cargando mantenimientos: " + err.message);
   }
 }
-
 
 // ============================================================================
 //  EDITAR MANTENIMIENTO
@@ -255,7 +278,9 @@ tableBody.addEventListener("click", async (e) => {
 
       inputs.id.value = m.mantenimiento_id;
       inputs.vehiculo_id.value = m.vehiculo_id;
-      inputs.fecha_inicio.value = m.fecha_inicio ? m.fecha_inicio.split("T")[0] : "";
+      inputs.fecha_inicio.value = m.fecha_inicio
+        ? m.fecha_inicio.split("T")[0]
+        : "";
       inputs.fecha_fin.value = m.fecha_fin ? m.fecha_fin.split("T")[0] : "";
       inputs.descripcion.value = m.descripcion;
       inputs.realizado_por.value = m.realizado_por;
@@ -266,13 +291,11 @@ tableBody.addEventListener("click", async (e) => {
       inputs.creado_at.disabled = true;
 
       abrirModalFn();
-
     } catch (err) {
       alert("Error cargando mantenimiento: " + err.message);
     }
   }
 });
-
 
 // ============================================================================
 //  ELIMINAR MANTENIMIENTO
@@ -284,28 +307,28 @@ tableBody.addEventListener("click", async (e) => {
     if (!confirm("¿Seguro que deseas eliminar este mantenimiento?")) return;
 
     try {
-      const data = await fetchJSON(`${API_MANTENIMIENTOS}/${id}`, { method: "DELETE" });
-      alert(data.mensaje || "Mantenimiento eliminado");
+      await fetchJSON(`${API_MANTENIMIENTOS}/${id}`, { method: "DELETE" });
+      alert("Mantenimiento eliminado correctamente");
       cargarMantenimientos();
-
     } catch (err) {
       alert(err.message);
     }
   }
 });
 
-
 // ============================================================================
 //  SUBMIT — CREAR / EDITAR
 // ============================================================================
 
 /**
- * Envía formulario al backend
+ * Envía formulario al backend para crear o editar mantenimiento
+ * @async
+ * @param {SubmitEvent} e
  */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const datos = {
+  const mantenimiento = {
     vehiculo_id: inputs.vehiculo_id.value,
     fecha_inicio: inputs.fecha_inicio.value,
     fecha_fin: inputs.fecha_fin.value || null,
@@ -320,24 +343,24 @@ form.addEventListener("submit", async (e) => {
   if (form.dataset.modo === "editar") {
     metodo = "PUT";
     url = `${API_MANTENIMIENTOS}/${inputs.id.value}`;
+  } else {
+    mantenimiento.mantenimiento_id = inputs.id.value;
   }
 
   try {
-    const data = await fetchJSON(url, {
-      method: metodo,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
-    });
+  const data = await fetchJSON(url, {
+    method: metodo,
+    body: JSON.stringify(mantenimiento),
+  });
 
-    alert(data.mensaje || "Mantenimiento guardado correctamente");
-    cerrarModalFn();
-    cargarMantenimientos();
+  alert(data.mensaje || "Mantenimiento guardado correctamente");
+  cerrarModalFn();
+  cargarMantenimientos();
 
-  } catch (err) {
-    alert(err.message);
-  }
+} catch (err) {
+  alert(err.message);
+}
 });
-
 
 // ============================================================================
 //  INICIALIZACIÓN
