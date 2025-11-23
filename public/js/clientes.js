@@ -1,37 +1,30 @@
-/**
- * Endpoint base para operaciones CRUD de clientes
- * @constant {string}
- */
+//API ENDPOINT
 const API_CLIENTES = "http://localhost:3000/clientes";
 
-// ====== REFERENCIAS ======
-/**
- * Referencias a elementos clave del DOM usados en esta vista
- */
+
+// ============================================================================
+//  ELEMENTOS DOM
+// ============================================================================
+
 const tableBody = document.querySelector("#clientesTable tbody");
 const btnAddCliente = document.getElementById("btnAddCliente");
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
 const btnIrDashboard = document.getElementById("btnIrDashboard");
 const modal = document.getElementById("clientesModal");
 const cerrarModal = document.getElementById("cerrarModal");
-const form = document.getElementById("clientesForm");
 const formTitle = document.getElementById("formTitle");
+const form = document.getElementById("clientesForm");
 const grupoCreado = document.getElementById("grupoCreado");
 const btnCancelar = document.getElementById("btnCancelar");
 
-// =====================================================
-// INPUTS DEL FORMULARIO
-// =====================================================
+
+// ============================================================================
+//  INPUTS
+// ============================================================================
+
 /**
- * Mapa de referencias a los inputs del formulario de cliente
+ * Referencias a inputs del formulario de clientes
  * @typedef {Object} ClienteInputs
- * @property {HTMLInputElement} dni
- * @property {HTMLInputElement} nombre
- * @property {HTMLInputElement} apellidos
- * @property {HTMLInputElement} email
- * @property {HTMLInputElement} telefono
- * @property {HTMLInputElement} direccion
- * @property {HTMLInputElement} creado_at
  */
 
 /** @type {ClienteInputs} */
@@ -45,13 +38,43 @@ const inputs = {
   creado_at: document.getElementById("creado_at"),
 };
 
-// =====================================================
-// LIMPIAR FORMULARIO
-// =====================================================
+
+// ============================================================================
+//  UTILIDAD GLOBAL FETCH JSON
+// ============================================================================
 
 /**
- * Restablece el formulario y prepara para modo CREAR
- * Elimina valores previos y desbloquea campos
+ * Wrapper general para fetch+JSON con control de errores de backend
+ *
+ * @param {string} url
+ * @param {RequestInit} options
+ * @returns {Promise<any>}
+ * @throws {Error}
+ */
+async function fetchJSON(url, options = {}) {
+  const res = await fetch(url, options);
+  let data;
+
+  try {
+    data = await res.json();
+  } catch {
+    data = {};
+  }
+
+  if (!res.ok) {
+    throw new Error(data.error || `Error ${res.status}`);
+  }
+
+  return data;
+}
+
+
+// ============================================================================
+//  LIMPIAR FORMULARIO
+// ============================================================================
+
+/**
+ * Restablece el formulario a modo "crear"
  */
 function limpiarFormulario() {
   form.reset();
@@ -62,16 +85,17 @@ function limpiarFormulario() {
   grupoCreado.style.display = "none";
 }
 
-// =====================================================
-// ABRIR / CERRAR MODAL
-// =====================================================
+
+// ============================================================================
+//  MODAL
+// ============================================================================
 
 /** Muestra modal */
 const abrirModalFn = () => {
   modal.style.display = "block";
 };
 
-/** Oculta modal y resetea formulario */
+/** Cierra modal */
 const cerrarModalFn = () => {
   modal.style.display = "none";
   limpiarFormulario();
@@ -79,13 +103,15 @@ const cerrarModalFn = () => {
 
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
+
 window.addEventListener("click", (e) => {
   if (e.target === modal) cerrarModalFn();
 });
 
-// =====================================================
-// NAVEGACION
-// =====================================================
+
+// ============================================================================
+//  NAVEGACIÓN
+// ============================================================================
 
 btnVolverVehiculos.addEventListener("click", () => {
   window.location.href = "vehiculos.html";
@@ -95,10 +121,12 @@ btnIrDashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
-// =====================================================
-// AÑADIR NUEVO CLIENTE
-// =====================================================
 
+// ============================================================================
+//  NUEVO CLIENTE
+// ============================================================================
+
+/** Abre modal en modo crear */
 btnAddCliente.addEventListener("click", () => {
   limpiarFormulario();
   form.dataset.modo = "crear";
@@ -106,19 +134,18 @@ btnAddCliente.addEventListener("click", () => {
   abrirModalFn();
 });
 
-// =====================================================
-// CARGAR CLIENTES EN TABLA
-// =====================================================
+
+// ============================================================================
+//  CARGAR CLIENTES EN TABLA
+// ============================================================================
 
 /**
- * Obtiene todos los clientes y los renderiza en la tabla HTML
+ * Obtiene clientes y los renderiza en la tabla
  */
 async function cargarClientes() {
   try {
-    const res = await fetch(API_CLIENTES);
-    if (!res.ok) throw new Error("Error al obtener clientes");
+    const clientes = await fetchJSON(API_CLIENTES);
 
-    const clientes = await res.json();
     tableBody.textContent = "";
     const fragment = document.createDocumentFragment();
 
@@ -143,21 +170,12 @@ async function cargarClientes() {
         row.appendChild(td);
       });
 
-      // acciones
-      const tdAcciones = document.createElement("td");
-
-      const btnEditar = document.createElement("button");
-      btnEditar.className = "btn-editar";
-      btnEditar.textContent = "Editar";
-      btnEditar.dataset.id = c.dni;
-
-      const btnEliminar = document.createElement("button");
-      btnEliminar.className = "btn-eliminar";
-      btnEliminar.textContent = "Eliminar";
-      btnEliminar.dataset.id = c.dni;
-
-      tdAcciones.append(btnEditar, btnEliminar);
-      row.appendChild(tdAcciones);
+      const accionesTd = document.createElement("td");
+      accionesTd.innerHTML = `
+        <button class="btn-editar" data-id="${c.dni}">Editar</button>
+        <button class="btn-eliminar" data-id="${c.dni}">Eliminar</button>
+      `;
+      row.appendChild(accionesTd);
 
       fragment.appendChild(row);
     });
@@ -165,28 +183,28 @@ async function cargarClientes() {
     tableBody.appendChild(fragment);
   } catch (err) {
     console.error("Error al cargar clientes:", err);
+    alert(err.message);
   }
 }
 
-// =====================================================
-// EDITAR CLIENTE
-// =====================================================
+
+// ============================================================================
+//  EDITAR CLIENTE
+// ============================================================================
 
 /**
- * Listener para eventos del botón editar en la tabla
+ * Escucha clicks en botones editar
  */
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-editar")) {
     const id = e.target.dataset.id;
 
-    limpiarFormulario();
-
-    form.dataset.modo = "editar";
-    formTitle.textContent = "Editar cliente";
-
     try {
-      const res = await fetch(`${API_CLIENTES}/${id}`);
-      const cliente = await res.json();
+      const cliente = await fetchJSON(`${API_CLIENTES}/${id}`);
+
+      limpiarFormulario();
+      form.dataset.modo = "editar";
+      formTitle.textContent = "Editar cliente";
 
       inputs.dni.value = cliente.dni;
       inputs.nombre.value = cliente.nombre;
@@ -202,19 +220,21 @@ tableBody.addEventListener("click", async (e) => {
       grupoCreado.style.display = "block";
 
       abrirModalFn();
+
     } catch (err) {
-      console.error("Error al cargar cliente para edición:", err);
+      console.error("Error al cargar cliente:", err);
+      alert(err.message);
     }
   }
 });
 
-// =====================================================
-// GUARDAR CLIENTE (CREATE / UPDATE)
-// =====================================================
+
+// ============================================================================
+//  GUARDAR CLIENTE (crear o editar)
+// ============================================================================
 
 /**
- * Maneja el submit del formulario de cliente
- * Decide si crea nuevo o actualiza existente
+ * Handle submit formulario cliente
  */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -238,57 +258,53 @@ form.addEventListener("submit", async (e) => {
   }
 
   try {
-    const res = await fetch(url, {
+    const data = await fetchJSON(url, {
       method: metodo,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert(data.error || "Error al guardar");
-      return;
-    }
-
-    alert(data.mensaje || "Cliente guardado");
+    alert(data.mensaje || "Cliente guardado correctamente");
     cerrarModalFn();
     cargarClientes();
+
   } catch (err) {
     console.error("Error al guardar cliente:", err);
+    alert(err.message);
   }
 });
 
-// =====================================================
-// ELIMINAR CLIENTE
-// =====================================================
+
+// ============================================================================
+//  ELIMINAR CLIENTE
+// ============================================================================
 
 /**
- * Listener del botón eliminar dentro de la tabla de clientes
+ * Escucha clicks en botones eliminar
  */
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-eliminar")) {
     const id = e.target.dataset.id;
+    if (!confirm("¿Seguro que deseas eliminar este cliente?")) return;
 
-    if (confirm("¿Seguro que quieres eliminar este cliente?")) {
-      try {
-        const res = await fetch(`${API_CLIENTES}/${id}`, { method: "DELETE" });
-        const data = await res.json();
+    try {
+      const data = await fetchJSON(`${API_CLIENTES}/${id}`, { method: "DELETE" });
+      alert(data.mensaje || "Cliente eliminado correctamente");
+      cargarClientes();
 
-        alert(data.mensaje || "Cliente eliminado");
-        cargarClientes();
-      } catch (err) {
-        console.error("Error al eliminar cliente:", err);
-      }
+    } catch (err) {
+      console.error("Error al eliminar cliente:", err);
+      alert(err.message);
     }
   }
 });
 
-// =====================================================
-// INICIALIZACIÓN
-// =====================================================
+
+// ============================================================================
+//  INICIALIZACIÓN
+// ============================================================================
 
 /**
- * Carga inicial al entrar en la vista
+ * Carga inicial de clientes al entrar en página
  */
 window.addEventListener("DOMContentLoaded", cargarClientes);

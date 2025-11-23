@@ -5,15 +5,19 @@
 
 import express from "express";
 import {
-    obtenerUsuarios,
-    obtenerUsuarioPorId,
-    anadirUsuario,
-    actualizarUsuario,
-    eliminarUsuario,
+  obtenerUsuarios,
+  obtenerUsuarioPorId,
+  anadirUsuario,
+  actualizarUsuario,
+  eliminarUsuario,
 } from "../controllers/usuarios.controller.js";
 
+import {
+  validarUsuarioCreacion,
+  validarUsuarioEdicion,
+} from "../middlewares/validators/usuarios.validator.js";
+
 // import { requireAuth, requireAdmin } from "../middlewares/auth.middleware.js";  // se activará después
-// import { validarUsuario } from "../validators/usuarios.validator.js";            // se activará después
 
 const router = express.Router();
 
@@ -35,14 +39,14 @@ router.get("/:user_id", obtenerUsuarioPorId);
  * Crear un nuevo usuario
  * (SOLO admin — se aplicará luego con requireAdmin)
  */
-router.post("/", anadirUsuario);
+router.post("/", validarUsuarioCreacion, anadirUsuario);
 
 /**
  * PUT /usuarios/:user_id
  * Actualizar un usuario existente
  * (admin puede actualizar a cualquiera — usuarios normales solo podrán editar su propio perfil)
  */
-router.put("/:user_id", actualizarUsuario);
+router.put("/:user_id", validarUsuarioEdicion, actualizarUsuario);
 
 /**
  * DELETE /usuarios/:user_id

@@ -16,7 +16,7 @@ import {
 import {
   validarVehiculoPOST,
   validarVehiculoPUT,
-} from "../validators/vehiculos.validator.js";
+} from "../middlewares/validators/vehiculos.validator.js";
 const router = express.Router();
 
 /**

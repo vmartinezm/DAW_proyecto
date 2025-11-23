@@ -4,7 +4,6 @@
  * @module vehiculos.validator
  */
 
-
 export function validarVehiculoPOST(req, res, next) {
   const { matricula, marca, modelo, ano, kilometros, precio } = req.body;
 

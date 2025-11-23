@@ -4,6 +4,7 @@
  */
 
 import express from "express";
+
 import {
     obtenerClientes,
     obtenerClientePorDni,
@@ -12,35 +13,42 @@ import {
     eliminarCliente
 } from "../controllers/clientes.controller.js";
 
+import {
+  validarCliente,
+  validarClienteEdicion
+} from "../middlewares/validators/clientes.validator.js";
+
 // import { requireAuth, requireAdminOrSelf } from "../middlewares/auth.middleware.js";
-// import { validarCliente } from "../validators/clientes.validator.js";
 
 const router = express.Router();
 
 /**
  * GET /clientes
  * Obtener listado completo de clientes
- * (Visible para empleados y admin)
+ * Visible para cualquier usuario autenticado
  */
 router.get("/", obtenerClientes);
 
 /**
  * GET /clientes/:dni
  * Obtener un cliente por DNI
+ * Visible para cualquier usuario autenticado
  */
 router.get("/:dni", obtenerClientePorDni);
 
 /**
  * POST /clientes
  * Registrar un nuevo cliente
+ * Valida los datos del cliente antes de crear
  */
-router.post("/", anadirCliente);
+router.post("/", validarCliente, anadirCliente);
 
 /**
  * PUT /clientes/:dni
  * Editar datos de un cliente existente
+ * Valida los datos del cliente antes de actualizar
  */
-router.put("/:dni", actualizarCliente);
+router.put("/:dni", validarClienteEdicion, actualizarCliente);
 
 /**
  * DELETE /clientes/:dni

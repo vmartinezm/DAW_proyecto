@@ -124,10 +124,10 @@
         </div>
     </div>
 
-    <!-- 🔐 Protección de acceso -->
+    <!-- 🔐 Protección de acceso. Redirige a login si no hay una sesión activa -->
     <script type="module">
         import { requireLogin } from "./js/auth.js";
-        requireLogin();   <!-- Redirige a login si no hay sesión válida -->
+        requireLogin();
     </script>
 
     <!-- 🧠 Lógica de funcionamiento del módulo -->

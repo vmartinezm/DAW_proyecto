@@ -12,8 +12,13 @@ import {
   eliminarVenta,
 } from "../controllers/ventas.controller.js";
 
+import { 
+  validarVenta,
+  validarVentaEdicion,
+ } from "../middlewares/validators/ventas.validator.js";
+
+
 //import { requireAuth } from "../middlewares/auth.middleware.js";
-// import { validarVenta } from "../validators/ventas.validator.js"; // se activará luego
 
 const router = express.Router();
 
@@ -32,14 +37,16 @@ router.get("/:venta_id", obtenerVentaPorId);
 /**
  * POST /ventas
  * Crear una nueva venta o reserva
+ * Valida los datos antes de crearla
  */
-router.post("/", anadirVenta);
+router.post("/", validarVenta, anadirVenta);
 
 /**
  * PUT /ventas/:venta_id
  * Editar una venta existente
+ * Valida los datos antes de actualizarla
  */
-router.put("/:venta_id", actualizarVenta);
+router.put("/:venta_id", validarVentaEdicion, actualizarVenta);
 
 /**
  * DELETE /ventas/:venta_id
