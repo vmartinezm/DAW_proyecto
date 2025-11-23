@@ -1,9 +1,22 @@
 // ====== API ENDPOINTS ======
+/**
+ * @constant {string} API_MANTENIMIENTOS URL para operaciones CRUD de mantenimientos
+ */
 const API_MANTENIMIENTOS = "http://localhost:3000/mantenimientos";
+/**
+ * @constant {string} API_VEHICULOS URL de consulta de vehículos
+ */
 const API_VEHICULOS = "http://localhost:3000/vehiculos";
+/**
+ * @constant {string} API_USUARIOS URL de consulta de usuarios (empleados)
+ */
 const API_USUARIOS = "http://localhost:3000/usuarios";
 
+
 // ====== REFERENCIAS ======
+/**
+ * Elementos principales de la interfaz
+ */
 const tableBody = document.querySelector("#mantenimientosTable tbody");
 const btnAddMantenimiento = document.getElementById("btnAddMantenimiento");
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
@@ -27,34 +40,47 @@ const inputs = {
     creado_at: document.getElementById("creado_at"),
 };
 
+
 // ====== FUNCIONES DE MODAL ======
+
+/**
+ * Abre el modal del formulario
+ */
 const abrirModalFn = () => {
   modal.style.display = "block";
 };
+
+/**
+ * Cierra el modal
+ */
 const cerrarModalFn = () => {
   modal.style.display = "none";
 };
 
+// Eventos modal
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
 window.addEventListener("click", (e) => {
   if (e.target === modal) cerrarModalFn();
 });
 
-// ====== BOTÓN VOLVER A VEHÍCULOS======
+
+// ====== NAVEGACIÓN ======
 btnVolverVehiculos.addEventListener("click", () => {
   window.location.href = "vehiculos.html";
 });
 
-// IR A DASHBOARD
 btnIrDashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
+
 
 // ====== ABRIR MODAL PARA AÑADIR ======
 btnAddMantenimiento.addEventListener("click", async () => {
   formTitle.textContent = "Añadir nuevo mantenimiento";
   form.dataset.modo = "crear";
+
+  // Limpiar datos previos del formulario
   inputs.id.value = "";
   inputs.vehiculo_id.value = "";
   inputs.fecha_inicio.value = "";
@@ -64,15 +90,25 @@ btnAddMantenimiento.addEventListener("click", async () => {
   inputs.coste.value = "";
   inputs.creado_at.value = "";
 
+  // Cargar desplegables
   await cargarVehiculosSelect(false);
   await cargarUsuariosSelect(false);
 
   grupoCreado.style.display = "none";
+
   abrirModalFn();
 });
 
 
-// ====== CARGAR VEHÍCULOS ======
+// ====== CARGAR VEHÍCULOS EN SELECT ======
+
+/**
+ * Rellena el select de vehículos permitiendo escoger
+ * solo vehículos disponibles (excepto en edición).
+ *
+ * @param {boolean} disabled si true el select queda bloqueado (modo edición)
+ * @param {string|null} vehiculoActual matrícula permitida aunque no esté disponible
+ */
 async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
   try {
     const res = await fetch(API_VEHICULOS);
@@ -81,6 +117,7 @@ async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
     const vehiculoSelect = inputs.vehiculo_id;
     vehiculoSelect.textContent = "";
 
+    // Opción por defecto
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.textContent = "Seleccionar vehículo...";
@@ -91,7 +128,7 @@ async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
       option.value = v.matricula;
       option.textContent = `${v.matricula} - ${v.marca} ${v.modelo} (${v.estado})`;
 
-      // Vehículos no disponibles: grisados e inactivos (excepto si es el actual en edición)
+      // Bloquear vehículos vendidos / reservados / mantenimiento
       if (v.estado !== "disponible" && v.matricula !== vehiculoActual) {
         option.disabled = true;
         option.style.color = "#9ca3af";
@@ -108,13 +145,20 @@ async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
 }
 
 
-// ====== CARGAR USUARIOS ======
+// ====== CARGAR USUARIOS EN SELECT ======
+
+/**
+ * Rellena el select de empleados
+ *
+ * @param {boolean} disabled si true el campo queda bloqueado
+ * @param {string|null} vendedorActual id del usuario actual (en edición)
+ */
 async function cargarUsuariosSelect(disabled = false, vendedorActual = null) {
   try {
     const res = await fetch(API_USUARIOS);
     const usuarios = await res.json();
 
-    const usuarioSelect = inputs.realizado_por; // ← FIX
+    const usuarioSelect = inputs.realizado_por;
     usuarioSelect.textContent = "";
 
     const defaultOption = document.createElement("option");
@@ -136,7 +180,12 @@ async function cargarUsuariosSelect(disabled = false, vendedorActual = null) {
   }
 }
 
+
 // ====== CARGAR MANTENIMIENTOS EN TABLA ======
+
+/**
+ * Obtiene la lista de mantenimientos del backend y los pinta en la tabla.
+ */
 async function cargarMantenimientos() {
   try {
     const res = await fetch(API_MANTENIMIENTOS);
@@ -151,24 +200,26 @@ async function cargarMantenimientos() {
       const fechaInicioFmt = m.fecha_inicio
         ? new Date(m.fecha_inicio).toLocaleDateString("es-ES")
         : "";
+
       const fechaFinFmt = m.fecha_fin
         ? new Date(m.fecha_fin).toLocaleDateString("es-ES")
         : "";
+
       const creadoFmt = m.creado_at
         ? new Date(m.creado_at).toLocaleDateString("es-ES")
         : "";
-      const costeFmt = 
-        m.coste != null
-          ? new Intl.NumberFormat("es-ES", {
-              style: "currency",
-              currency: "EUR",
-            }).format(m.coste)
-          : "";
+
+      const costeFmt = m.coste != null
+        ? new Intl.NumberFormat("es-ES", {
+            style: "currency",
+            currency: "EUR",
+          }).format(m.coste)
+        : "";
 
       [
         m.mantenimiento_id,
         m.vehiculo_id,
-       fechaInicioFmt,
+        fechaInicioFmt,
         fechaFinFmt,
         m.descripcion,
         m.realizado_por,
@@ -180,12 +231,13 @@ async function cargarMantenimientos() {
         row.appendChild(td);
       });
 
-const accionesTd = document.createElement("td");
+      // Acciones
+      const accionesTd = document.createElement("td");
 
       const btnEditar = document.createElement("button");
       btnEditar.className = "btn-editar";
       btnEditar.textContent = "Editar";
-        btnEditar.dataset.id = m.mantenimiento_id;
+      btnEditar.dataset.id = m.mantenimiento_id;
 
       const btnEliminar = document.createElement("button");
       btnEliminar.className = "btn-eliminar";
@@ -193,21 +245,23 @@ const accionesTd = document.createElement("td");
       btnEliminar.dataset.id = m.mantenimiento_id;
 
       accionesTd.append(btnEditar, btnEliminar);
-      row.appendChild(accionesTd); 
+      row.appendChild(accionesTd);
 
       fragment.appendChild(row);
     });
 
-    tableBody.appendChild(fragment);    
+    tableBody.appendChild(fragment);
   } catch (err) {
     console.error("Error al cargar mantenimientos:", err);
   }
 }
 
-// ====== EDITAR ======
+
+// ====== EDITAR REGISTRO ======
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-editar")) {
     const id = e.target.dataset.id;
+
     form.dataset.modo = "editar";
     formTitle.textContent = "Editar mantenimiento";
 
@@ -217,41 +271,48 @@ tableBody.addEventListener("click", async (e) => {
 
       await cargarVehiculosSelect(true, mantenimiento.vehiculo_id);
       await cargarUsuariosSelect(false, mantenimiento.realizado_por);
+      console.log("realizado_por:", mantenimiento.realizado_por);
 
       inputs.id.value = mantenimiento.mantenimiento_id;
       inputs.vehiculo_id.value = mantenimiento.vehiculo_id;
+
       inputs.fecha_inicio.value = mantenimiento.fecha_inicio
         ? mantenimiento.fecha_inicio.split("T")[0]
         : "";
+
       inputs.fecha_fin.value = mantenimiento.fecha_fin
         ? mantenimiento.fecha_fin.split("T")[0]
         : "";
+
       inputs.descripcion.value = mantenimiento.descripcion;
       inputs.realizado_por.value = mantenimiento.realizado_por;
       inputs.coste.value = mantenimiento.coste;
+
       inputs.creado_at.value = mantenimiento.creado_at
         ? mantenimiento.creado_at.split("T")[0]
         : "";
 
-        // Mostrar y deshabilitar el campo creado
       grupoCreado.style.display = "block";
       inputs.creado_at.disabled = true;
 
       abrirModalFn();
     } catch (err) {
-      console.error("Error al cargar mantenimientos:", err);
+      console.error("Error al cargar mantenimiento:", err);
     }
   }
-  });
+});
 
-  // ====== ELIMINAR ======
+
+// ====== ELIMINAR REGISTRO ======
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-eliminar")) {
     const id = e.target.dataset.id;
+
     if (confirm("¿Seguro que deseas eliminar este mantenimiento?")) {
       try {
         const res = await fetch(`${API_MANTENIMIENTOS}/${id}`, { method: "DELETE" });
         const data = await res.json();
+
         alert(data.mensaje || "Mantenimiento eliminado");
         cargarMantenimientos();
       } catch (err) {
@@ -261,7 +322,12 @@ tableBody.addEventListener("click", async (e) => {
   }
 });
 
+
 // ====== SUBMIT FORM ======
+
+/**
+ * Envía cambios al backend tanto para crear como editar.
+ */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -298,6 +364,7 @@ form.addEventListener("submit", async (e) => {
     console.error("Error al guardar mantenimiento:", err);
   }
 });
+
 
 // ====== INICIALIZAR ======
 window.addEventListener("DOMContentLoaded", cargarMantenimientos);

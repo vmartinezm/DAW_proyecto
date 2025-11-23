@@ -5,21 +5,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestión de Clientes - Concesionario</title>
+
+    <!--
+      📌 CSS global
+      Incluye estilos compartidos en toda la aplicación.
+    -->
     <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
+
+    <!-- 🟦 Cabecera visual de la sección -->
     <div class="clientes-header">
         <h1>Concesionario Martínez</h1>
         <h2>Gestión de Clientes</h2>
     </div>
 
+    <!-- 🟧 Barra superior acciones globales -->
     <div class="panel-acciones">
         <button id="btnAddCliente">➕ Añadir cliente</button>
         <button id="btnVolverVehiculos">⬅️ Ir a vehículos</button>
         <button id="btnIrDashboard">🏠 Ir a menú principal</button>
     </div>
 
+    <!-- 🟩 Tabla con los clientes registrados -->
     <div class="tabla-container">
         <table id="clientesTable">
             <thead>
@@ -30,21 +39,29 @@
                     <th>Email</th>
                     <th>Teléfono</th>
                     <th>Dirección</th>
-                    <th>Creado</th>
-                    <th>Acciones</th>
+                    <th>Creado</th> <!-- timestamp DB -->
+                    <th>Acciones</th> <!-- editar / eliminar -->
                 </tr>
             </thead>
+            <!-- Se completa dinámicamente en clientes.js -->
             <tbody></tbody>
         </table>
     </div>
 
-    <!-- 🔹 Modal de formulario -->
+    <!-- 🟥 Modal para crear o editar cliente -->
     <div id="clientesModal" class="modal fade">
         <div class="modal-content">
+
+            <!-- botón pequeño X -->
             <span id="cerrarModal" class="close">&times;</span>
+
+            <!-- Título cambia dinámicamente según modo -->
+            <!-- Ejemplo: “Editar cliente” -->
             <h3 id="formTitle">Añadir nuevo cliente</h3>
 
             <form id="clientesForm">
+
+                <!-- DNI solo editable en alta -->
                 <div class="form-row" id="grupoDni">
                     <label for="dni">DNI:</label>
                     <input type="text" id="dni" required />
@@ -75,6 +92,7 @@
                     <input type="text" id="direccion" />
                 </div>
 
+                <!-- Solo visible en edición -->
                 <div class="form-row" id="grupoCreado">
                     <label for="creado_at">Creado:</label>
                     <input type="text" id="creado_at" />
@@ -84,15 +102,18 @@
                     <button type="submit" id="btnGuardar">Guardar</button>
                     <button type="button" id="btnCancelar">Cancelar</button>
                 </div>
+
             </form>
         </div>
     </div>
 
+    <!-- 🔐 Protección universal frontend -->
     <script type="module">
         import { requireLogin } from "./js/auth.js";
-        requireLogin();
+        requireLogin();  <!-- si no hay sesión → login -->
     </script>
 
+    <!-- 🧠 Controlador frontend de clientes -->
     <script src="js/clientes.js"></script>
 </body>
 

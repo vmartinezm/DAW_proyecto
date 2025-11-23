@@ -1,6 +1,12 @@
+// API ENDPOINT
+/**
+ * @constant {string} API_VEHICULOS URL de vehículos
+ */
 const API_URL = "http://localhost:3000/vehiculos";
 
-// Elementos principales
+/**
+ * Elementos principales de la interfaz
+ */
 const tableBody = document.querySelector("#vehiculosTable tbody");
 const btnAddVehiculo = document.getElementById("btnAddVehiculo");
 const modal = document.getElementById("vehiculoModal");
@@ -9,7 +15,7 @@ const vehiculoForm = document.getElementById("vehiculoForm");
 const formTitle = document.getElementById("form-title");
 const btnCancelar = document.getElementById("btnCancelar");
 
-// Inputs
+// Inputs en el formulario
 const inputs = {
   matricula: document.getElementById("matricula"),
   marca: document.getElementById("marca"),
@@ -23,30 +29,43 @@ const inputs = {
   estado: document.getElementById("estado"),
 };
 
-// Variable para diferenciar añadir / editar
+// Estado interno
 let modoEdicion = false;
 
-// ---------- Modal helpers ----------
+
+/**
+ * Abre el modal del formulario.
+ */
 function abrirModal() {
   modal.style.display = "block";
 }
+
+/**
+ * Cierra el modal y limpia el formulario.
+ */
 function cerrarModalFn() {
   modal.style.display = "none";
   resetFormulario();
 }
+
+// Eventos de cierre modal
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
 window.addEventListener("click", (e) => {
   if (e.target === modal) cerrarModalFn();
 });
 
-// ---------- Cargar vehículos ----------
+
+/**
+ * Obtiene la lista de vehículos del backend y los pinta en la tabla.
+ * @async
+ */
 async function cargarVehiculos() {
   try {
     const res = await fetch(API_URL);
     const data = await res.json();
 
-    tableBody.textContent = ""; // Limpiar la tabla
+    tableBody.textContent = "";
 
     const fragment = document.createDocumentFragment();
 
@@ -70,7 +89,6 @@ async function cargarVehiculos() {
             }).format(v.kilometros)
           : "";
 
-      // Crear celdas de datos
       [
         v.matricula,
         v.marca,
@@ -88,7 +106,7 @@ async function cargarVehiculos() {
         row.appendChild(td);
       });
 
-      // Crear celda de acciones
+      // Celda acciones
       const accionesTd = document.createElement("td");
 
       const btnEditar = document.createElement("button");
@@ -115,32 +133,47 @@ async function cargarVehiculos() {
   }
 }
 
-// ---------- Abrir modal para añadir ----------
+
+/**
+ * Abre el formulario para crear un nuevo vehículo.
+ */
 btnAddVehiculo.addEventListener("click", () => {
   formTitle.textContent = "Añadir nuevo vehículo";
   abrirModal();
   resetFormulario();
   modoEdicion = false;
-  inputs.matricula.disabled = false; // La matrícula se puede introducir
+  inputs.matricula.disabled = false;
 });
 
-// ---------- Abrir modal para editar ----------
+
+/**
+ * Abre el formulario para editar un vehículo existente.
+ * @param {Object} v - objeto con los datos del vehículo
+ */
 function editarVehiculo(v) {
   formTitle.textContent = "Editar vehículo";
   Object.keys(inputs).forEach((k) => (inputs[k].value = v[k] ?? ""));
   abrirModal();
   modoEdicion = true;
-  inputs.matricula.disabled = true; // La matrícula no se puede cambiar
+  inputs.matricula.disabled = true;
 }
 
-// ---------- Reset formulario ----------
+
+/**
+ * Resetea el formulario y restablece estado de edición.
+ */
 function resetFormulario() {
   vehiculoForm.reset();
   inputs.matricula.disabled = false;
   modoEdicion = false;
 }
 
-// ---------- Guardar vehículo ----------
+
+/**
+ * Envía los datos del formulario al backend para crear o editar.
+ * @async
+ * @param {SubmitEvent} e
+ */
 vehiculoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -160,11 +193,9 @@ vehiculoForm.addEventListener("submit", async (e) => {
     let method, url;
 
     if (modoEdicion) {
-      // Editar vehículo existente
       method = "PUT";
       url = `${API_URL}/${inputs.matricula.value}`;
     } else {
-      // Añadir vehículo nuevo
       method = "POST";
       url = API_URL;
       vehiculo.matricula = inputs.matricula.value.trim();
@@ -190,7 +221,12 @@ vehiculoForm.addEventListener("submit", async (e) => {
   }
 });
 
-// ---------- Eliminar vehículo ----------
+
+/**
+ * Elimina un vehículo por matrícula.
+ * @async
+ * @param {string} matricula
+ */
 async function eliminarVehiculo(matricula) {
   if (!confirm("¿Seguro que quieres eliminar este vehículo?")) return;
   try {
@@ -203,13 +239,13 @@ async function eliminarVehiculo(matricula) {
   }
 }
 
-// ---------- Ir a la página de mantenimientos ----------
+
+// ---- Navegación ----
 const btnAddMantenimiento = document.getElementById("btnAddMantenimiento");
 btnAddMantenimiento.addEventListener("click", () => {
   window.location.href = "mantenimientos.html";
 });
 
-// ---------- Ir a la página de ventas ----------
 const btnAddVenta = document.getElementById("btnAddVenta");
 btnAddVenta.addEventListener("click", () => {
   window.location.href = "ventas.html";
@@ -220,4 +256,6 @@ btnIrDashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
+
+// Ejecutar carga inicial en DOM ready
 window.addEventListener("DOMContentLoaded", cargarVehiculos);

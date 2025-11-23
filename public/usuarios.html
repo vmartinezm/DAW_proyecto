@@ -5,21 +5,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestión de Usuarios - Concesionario</title>
+
+    <!--
+      📌 Hoja de estilos global de la aplicación
+    -->
     <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
+
+    <!-- 🟦 Cabecera visual -->
     <div class="clientes-header">
         <h1>Concesionario Martínez</h1>
         <h2>Gestión de Usuarios de la BD</h2>
     </div>
 
+    <!-- 🟧 Acciones superiores -->
     <div class="panel-acciones">
-        <button id="btnAddUsuario">➕ Añadir usuario</button>
-        <button id="btnIrDashboard">🏠 Ir a menú principal</button>
 
+        <!-- Solo visible si usuario actual es admin
+             (se controla desde usuarios.js) -->
+        <button id="btnAddUsuario">➕ Añadir usuario</button>
+
+        <!-- Volver al menú principal -->
+        <button id="btnIrDashboard">🏠 Ir a menú principal</button>
     </div>
 
+    <!-- 🟩 Tabla que se rellena via JS con api /usuarios -->
     <div class="tabla-container">
         <table id="usuariosTable">
             <thead>
@@ -31,20 +43,29 @@
                     <th>Rol</th>
                     <th>Email</th>
                     <th>Creado</th>
-                    <th>Acciones</th>
+                    <th>Acciones</th> <!-- editar / eliminar -->
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
     </div>
 
-    <!-- 🔹 Modal de formulario -->
+    <!-- 🟥 Modal: añadir / editar usuario -->
     <div id="usuariosModal" class="modal fade">
         <div class="modal-content">
+
+            <!-- cerrar modal (X) -->
             <span id="cerrarModal" class="close">&times;</span>
+
+            <!-- cambia dinámicamente en JS:
+                 “Añadir nuevo usuario”
+                 “Editar usuario”
+             -->
             <h3 id="formTitle">Añadir nuevo usuario</h3>
 
             <form id="usuariosForm">
+
+                <!-- Campo oculto: ID interno -->
                 <input type="hidden" id="user_id" />
 
                 <div class="form-row">
@@ -75,13 +96,16 @@
                     <input type="email" id="email" required />
                 </div>
 
-                <!-- 🔹 Campo de contraseña (crear / editar) -->
+                <!-- Campo de contraseña -->
+                <!-- Si es alta → obligatorio
+                     Si edición → opcional ("dejar vacío para mantener")
+                 -->
                 <div class="form-row" id="grupoPassword">
                     <label for="password">Contraseña:</label>
                     <input type="password" id="password" />
                 </div>
 
-                <!-- 🔹 Campo solo visible al editar -->
+                <!-- Solo visible en modo edición -->
                 <div class="form-row" id="grupoCreado" style="display: none;">
                     <label for="creado_at">Creado:</label>
                     <input type="text" id="creado_at" disabled />
@@ -91,10 +115,12 @@
                     <button type="submit" id="btnGuardar">Guardar</button>
                     <button type="button" id="btnCancelar">Cancelar</button>
                 </div>
+
             </form>
         </div>
     </div>
 
+    <!-- 🧠 Lógica frontend del módulo usuarios -->
     <script src="js/usuarios.js" type="module"></script>
 </body>
 

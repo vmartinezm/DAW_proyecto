@@ -1,22 +1,37 @@
-/* -----------------------------------------
-   dashboard.js — Página principal
------------------------------------------- */
+/* =====================================================
+   dashboard.js — Gestión del menú principal
+   Responsable de:
+   ✔ mostrar saludo al usuario
+   ✔ navegación entre módulos
+   ✔ control visual del botón Usuarios según rol
+   ✔ cierre de sesión
+===================================================== */
 
 import { requireLogin, getSession, logout } from "./auth.js";
 
-// 1) Se ejecuta al cargar el DOM
+/**
+ * Evento principal — se ejecuta cuando el DOM está cargado.
+ * Primero se valida que el usuario tenga sesión activa.
+ * Si la sesión no es válida → requireLogin() redirige a login.
+ */
 document.addEventListener("DOMContentLoaded", () => {
-  if (!requireLogin()) return; // Si falla, ya redirige
+  if (!requireLogin()) return; // Seguridad frontend
 
   inicializarDashboard();
 });
 
-// 2) Inicialización del panel
+/**
+ * Inicializa el panel del dashboard:
+ * - Obtiene datos del usuario actual
+ * - Muestra mensaje de bienvenida
+ * - Configura navegación entre módulos
+ * - Muestra u oculta opciones según rol
+ */
 function inicializarDashboard() {
   const session = getSession();
   mostrarAlerta(`Has iniciado sesión como ${session.usuario}`);
 
-  //Botones
+  // Botones de navegación
   const dashboardBtnVehiculos = document.getElementById("dashBtnVehiculos");
   const dashboardBtnUsuarios = document.getElementById("dashBtnUsuarios");
   const dashboardBtnClientes = document.getElementById("dashBtnClientes");
@@ -24,38 +39,31 @@ function inicializarDashboard() {
   const dashboardBtnVentas = document.getElementById("dashBtnVentas");
   const dashboardBtnLogout = document.getElementById("dashBtnLogout");
 
-  // Mostrar/ocultar botón de usuarios según rol
+  /**
+   * Si el usuario no es admin:
+   * - Ocultamos visualmente el botón Usuarios
+   * Esta es protección VISUAL — no REAL
+   */
   if (session.rol !== "admin") {
     document.querySelector(".admin-only").style.display = "none";
   }
 
-  // Navegación
-  dashboardBtnVehiculos.addEventListener("click", () => {
-    window.location.href = "vehiculos.html";
-  });
+  // Navegación entre páginas
+  dashboardBtnVehiculos.addEventListener("click", () => window.location.href = "vehiculos.html");
+  dashboardBtnMantenimientos.addEventListener("click", () => window.location.href = "mantenimientos.html");
+  dashboardBtnVentas.addEventListener("click", () => window.location.href = "ventas.html");
+  dashboardBtnClientes.addEventListener("click", () => window.location.href = "clientes.html");
+  dashboardBtnUsuarios.addEventListener("click", () => window.location.href = "usuarios.html");
 
-  dashboardBtnMantenimientos.addEventListener("click", () => {
-    window.location.href = "mantenimientos.html";
-  });
-
-  dashboardBtnVentas.addEventListener("click", () => {
-    window.location.href = "ventas.html";
-  });
-
-  dashboardBtnClientes.addEventListener("click", () => {
-    window.location.href = "clientes.html";
-  });
-
-  dashboardBtnUsuarios.addEventListener("click", () => {
-    window.location.href = "usuarios.html";
-  });
-
-  // Botón cerrar sesión
-  dashboardBtnLogout.addEventListener("click", () => {
-    logout();
-  });
+  // Logout
+  dashboardBtnLogout.addEventListener("click", () => logout());
 }
 
+/**
+ * Muestra un mensaje temporal en la parte superior de la pantalla.
+ * @param {string} mensaje - texto a mostrar
+ * @param {number} duracion - milisegundos hasta que desaparece
+ */
 function mostrarAlerta(mensaje, duracion = 3000) {
   const alerta = document.getElementById("alertaBienvenida");
   alerta.textContent = mensaje;
@@ -65,4 +73,3 @@ function mostrarAlerta(mensaje, duracion = 3000) {
     alerta.style.opacity = "0";
   }, duracion);
 }
-

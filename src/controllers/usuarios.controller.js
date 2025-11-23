@@ -1,10 +1,15 @@
 import connection from "../config/db.js";
 import bcrypt from "bcryptjs";
 
-// Obtener usuarios
+/**
+ * Obtiene la lista de usuarios del sistema.
+ * ⚠️ No devuelve password_hash por seguridad.
+ * @route GET /usuarios
+ * @returns {Object[]} Lista de usuarios sin contraseña
+ */
 export const obtenerUsuarios = (req, res) => {
     const sql = 'SELECT user_id, nombre, apellidos, usuario, rol, email, creado_at, actualizado_at FROM usuarios';
-    // ❗ No devolvemos password_hash nunca
+
     connection.query(sql, (err, results) => {
         if (err) {
             console.error('Error al obtener usuarios:', err);
@@ -14,7 +19,13 @@ export const obtenerUsuarios = (req, res) => {
     });
 };
 
-// Obtener usuario por ID
+/**
+ * Obtiene un usuario por su ID.
+ * ⚠️ No devuelve contraseña.
+ * @route GET /usuarios/:user_id
+ * @param {number} user_id
+ * @returns {Object} información pública del usuario
+ */
 export const obtenerUsuarioPorId = (req, res) => {
     const { user_id } = req.params;
     const sql = 'SELECT user_id, nombre, apellidos, usuario, rol, email, creado_at, actualizado_at FROM usuarios WHERE user_id = ?';
@@ -31,12 +42,22 @@ export const obtenerUsuarioPorId = (req, res) => {
     });
 };
 
-// Añadir usuario
+/**
+ * Crea un nuevo usuario en el sistema.
+ * Aplica hash seguro bcrypt a la contraseña.
+ * @route POST /usuarios
+ * @param {string} nombre
+ * @param {string} apellidos
+ * @param {string} usuario (único)
+ * @param {string} password
+ * @param {string="admin"|"empleado"} rol
+ * @param {string} email (único)
+ */
 export const anadirUsuario = async (req, res) => {
     const { nombre, apellidos, usuario, password, rol, email } = req.body;
 
     try {
-        // Hash seguro
+        // Hash seguro de contraseña
         const password_hash = await bcrypt.hash(password, 10);
 
         const sql = `
@@ -51,7 +72,6 @@ export const anadirUsuario = async (req, res) => {
                 if (err.code === "ER_DUP_ENTRY") {
                     return res.status(400).json({ error: "El usuario o mail ya existe" });
                 }
-
                 return res.status(500).json({ error: 'Error al añadir usuario' });
             }
 
@@ -64,7 +84,14 @@ export const anadirUsuario = async (req, res) => {
     }
 };
 
-// Actualizar usuario
+/**
+ * Actualiza un usuario existente.
+ * Si se recibe un campo `password` válido, se vuelve a hashear.
+ * Si no, se mantiene la contraseña existente.
+ * @route PUT /usuarios/:user_id
+ * @param {string} password — opcional
+ * @returns {JSON}
+ */
 export const actualizarUsuario = async (req, res) => {
     const { user_id } = req.params;
     const { nombre, apellidos, usuario, password, rol, email } = req.body;
@@ -74,7 +101,7 @@ export const actualizarUsuario = async (req, res) => {
         let params;
 
         if (password && password.trim() !== "") {
-            // Si el usuario cambia la contraseña → se re-hashea
+            // Nueva contraseña — rehash
             const password_hash = await bcrypt.hash(password, 10);
 
             sql = `
@@ -85,7 +112,7 @@ export const actualizarUsuario = async (req, res) => {
             params = [nombre, apellidos, usuario, password_hash, rol, email, user_id];
 
         } else {
-            // Si NO cambia la contraseña → mantenemos la anterior
+            // Mantener contraseña anterior
             sql = `
                 UPDATE usuarios
                 SET nombre = ?, apellidos = ?, usuario = ?, rol = ?, email = ?
@@ -116,7 +143,10 @@ export const actualizarUsuario = async (req, res) => {
     }
 };
 
-// Eliminar usuario
+/**
+ * Elimina un usuario según su ID.
+ * @route DELETE /usuarios/:user_id
+ */
 export const eliminarUsuario = (req, res) => {
     const { user_id } = req.params;
 

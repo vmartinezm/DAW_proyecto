@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel principal - Concesionario</title>
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- 
+        ✔ Este index.html es el menú principal (dashboard).
+        ✔ Solo debe mostrarse si el usuario ha iniciado sesión.
+        ✔ La protección real se hace en dashboard.js usando requireLogin().
+    -->
 </head>
 
 <body>
@@ -16,21 +22,37 @@
             <h2>Panel principal</h2>
         </div>
 
+        <!-- 
+            Mostrar mensaje de bienvenida
+            Ejemplo: "Bienvenido, Victor (admin)"
+        -->
         <div id="alertaBienvenida" class="alerta"></div>
 
+        <!-- Botones de navegación principales -->
         <div class="panel-acciones">
             <button class="dash-btn" id="dashBtnVehiculos">🚗 Vehículos</button>
             <button class="dash-btn" id="dashBtnMantenimientos">🛠 Mantenimientos</button>
             <button class="dash-btn" id="dashBtnVentas">💰 Ventas</button>
             <button class="dash-btn" id="dashBtnClientes">👥 Clientes</button>
 
-            <!-- Solo se mostrará si el usuario es admin -->
+            <!-- 
+                🔐 Botón visible SOLO si el rol es admin
+                Controlado desde dashboard.js
+            -->
             <button class="dash-btn admin-only" id="dashBtnUsuarios">🔐 Usuarios</button>
         </div>
 
+        <!-- Botón para cerrar sesión -->
         <button id="dashBtnLogout" class="logout-btn">Cerrar sesión</button>
     </div>
 
+    <!-- 
+        Importante: este script se carga como módulo ES6.
+        dashboard.js debe:
+        ✔ validar sesión
+        ✔ manejar los botones
+        ✔ mostrar/ocultar admin-only
+    -->
     <script src="js/dashboard.js" type="module"></script>
 </body>
 

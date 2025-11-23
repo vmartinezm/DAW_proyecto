@@ -1,10 +1,26 @@
 // ====== API ENDPOINTS ======
+/**
+ * @constant {string} API_VENTAS URL de API para CRUD de ventas
+ */
 const API_VENTAS = "http://localhost:3000/ventas";
+/**
+ * @constant {string} API_VEHICULOS URL de API para consulta de vehículos
+ */
 const API_VEHICULOS = "http://localhost:3000/vehiculos";
+/**
+ * @constant {string} API_CLIENTES URL de API para consulta de clientes
+ */
 const API_CLIENTES = "http://localhost:3000/clientes";
+/**
+ * @constant {string} API_USUARIOS URL de API para consulta de usuarios (vendedores)
+ */
 const API_USUARIOS = "http://localhost:3000/usuarios";
 
+
 // ====== REFERENCIAS ======
+/**
+ * Referencias a elementos clave del DOM usados en esta vista
+ */
 const tableBody = document.querySelector("#ventasTable tbody");
 const btnAddVenta = document.getElementById("btnAddVenta");
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
@@ -17,6 +33,9 @@ const grupoCreado = document.getElementById("grupoCreado");
 const form = document.getElementById("ventasForm");
 
 // Inputs del formulario
+/**
+ * Objeto que almacena las referencias de cada input del formulario de venta
+ */
 const inputs = {
   id: document.getElementById("venta_id"),
   vehiculo_id: document.getElementById("vehiculo_id"),
@@ -29,21 +48,33 @@ const inputs = {
   creado_at: document.getElementById("creado_at"),
 };
 
+
 // ====== FUNCIONES DE MODAL ======
+
+/**
+ * Abre el modal de formulario
+ */
 const abrirModalFn = () => {
   modal.style.display = "block";
 };
+
+/**
+ * Cierra el modal de formulario
+ */
 const cerrarModalFn = () => {
   modal.style.display = "none";
 };
 
+// Eventos de modal
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
 window.addEventListener("click", (e) => {
   if (e.target === modal) cerrarModalFn();
 });
 
-// ====== BOTÓN VOLVER A VEHÍCULOS======
+
+// ====== NAVEGACIÓN ======
+
 btnVolverVehiculos.addEventListener("click", () => {
   window.location.href = "vehiculos.html";
 });
@@ -52,10 +83,17 @@ btnIrdashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
-// ====== ABRIR MODAL PARA AÑADIR ======
+
+// ====== ABRIR FORMULARIO PARA NUEVA VENTA ======
+
+/**
+ * Prepara el formulario en modo CREAR
+ */
 btnAddVenta.addEventListener("click", async () => {
   formTitle.textContent = "Añadir nueva venta";
   form.dataset.modo = "crear";
+
+  // Reset campos
   inputs.id.value = "";
   inputs.fecha.value = "";
   inputs.tipo.value = "";
@@ -63,16 +101,27 @@ btnAddVenta.addEventListener("click", async () => {
   inputs.notas.value = "";
   inputs.creado_at.value = "";
 
+  // cargar selects
   await cargarVehiculosSelect(false);
   await cargarClientesSelect(false);
   await cargarUsuariosSelect(false);
 
+  // campo creado_at visible solo en edición
   grupoCreado.style.display = "none";
+
+  // mostrar botón de "nuevo cliente"
   btnAddCliente.style.display = "block";
+
   abrirModalFn();
 });
 
-// ====== CARGAR VEHÍCULOS ======
+
+// ====== SELECT: VEHÍCULOS ======
+
+/**
+ * Llena el <select> con la lista de matrículas disponibles
+ * bloquea vehículos no disponibles excepto en edición
+ */
 async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
   try {
     const res = await fetch(API_VEHICULOS);
@@ -81,6 +130,7 @@ async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
     const vehiculoSelect = inputs.vehiculo_id;
     vehiculoSelect.textContent = "";
 
+    // opción por defecto
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.textContent = "Seleccionar vehículo...";
@@ -91,7 +141,7 @@ async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
       option.value = v.matricula;
       option.textContent = `${v.matricula} - ${v.marca} ${v.modelo} (${v.estado})`;
 
-      // Vehículos no disponibles: grisados e inactivos (excepto si es el actual en edición)
+      // si es un vehículo NO disponible, se bloquea
       if (v.estado !== "disponible" && v.matricula !== vehiculoActual) {
         option.disabled = true;
         option.style.color = "#9ca3af";
@@ -107,7 +157,12 @@ async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
   }
 }
 
-// ====== CARGAR CLIENTES ======
+
+// ====== SELECT: CLIENTES ======
+
+/**
+ * Llena el <select> con clientes (DNI - nombre)
+ */
 async function cargarClientesSelect(disabled = false, clienteActual = null) {
   try {
     const res = await fetch(API_CLIENTES);
@@ -136,7 +191,12 @@ async function cargarClientesSelect(disabled = false, clienteActual = null) {
   }
 }
 
-// ====== CARGAR USUARIOS ======
+
+// ====== SELECT: USUARIOS ======
+
+/**
+ * Llena el <select> con usuarios empleados/vendedores
+ */
 async function cargarUsuariosSelect(disabled = false, vendedorActual = null) {
   try {
     const res = await fetch(API_USUARIOS);
@@ -164,7 +224,12 @@ async function cargarUsuariosSelect(disabled = false, vendedorActual = null) {
   }
 }
 
-// ====== CARGAR VENTAS EN TABLA ======
+
+// ====== CARGAR LISTA DE VENTAS EN TABLA ======
+
+/**
+ * Obtiene todas las ventas y renderiza tabla HTML
+ */
 async function cargarVentas() {
   try {
     const res = await fetch(API_VENTAS);
@@ -179,9 +244,11 @@ async function cargarVentas() {
       const fechaFmt = v.fecha
         ? new Date(v.fecha).toLocaleDateString("es-ES")
         : "";
+
       const creadoFmt = v.creado_at
         ? new Date(v.creado_at).toLocaleDateString("es-ES")
         : "";
+
       const precioFmt =
         v.precio_venta != null
           ? new Intl.NumberFormat("es-ES", {
@@ -206,6 +273,7 @@ async function cargarVentas() {
         row.appendChild(td);
       });
 
+      // acciones
       const accionesTd = document.createElement("td");
 
       const btnEditar = document.createElement("button");
@@ -230,10 +298,16 @@ async function cargarVentas() {
   }
 }
 
-// ====== EDITAR ======
+
+// ====== EDITAR VENTA ======
+
+/**
+ * Maneja el click de botón editar — carga datos en formulario
+ */
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-editar")) {
     const id = e.target.dataset.id;
+
     form.dataset.modo = "editar";
     formTitle.textContent = "Editar venta";
 
@@ -241,10 +315,12 @@ tableBody.addEventListener("click", async (e) => {
       const res = await fetch(`${API_VENTAS}/${id}`);
       const venta = await res.json();
 
+      // carga selects en modo edición
       await cargarVehiculosSelect(true, venta.vehiculo_id);
       await cargarClientesSelect(true, venta.cliente_dni);
       await cargarUsuariosSelect(false, venta.vendedor_id);
 
+      // volcado de valores
       inputs.id.value = venta.venta_id;
       inputs.vehiculo_id.value = venta.vehiculo_id;
       inputs.cliente_dni.value = venta.cliente_dni;
@@ -257,11 +333,9 @@ tableBody.addEventListener("click", async (e) => {
         ? venta.creado_at.split("T")[0]
         : "";
 
-      // Mostrar y deshabilitar el campo creado
       grupoCreado.style.display = "block";
       inputs.creado_at.disabled = true;
 
-      // Ocultar botón de crear cliente
       btnAddCliente.style.display = "none";
 
       abrirModalFn();
@@ -271,10 +345,16 @@ tableBody.addEventListener("click", async (e) => {
   }
 });
 
-// ====== ENVIAR FORMULARIO AL CREAR NUEVO O EDITAR ======
+
+// ====== GUARDAR VENTA ======
+
+/**
+ * Envía los datos del formulario al backend para crear o editar
+ */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  // objeto que se envía
   const datos = {
     vehiculo_id: inputs.vehiculo_id.value,
     cliente_dni: inputs.cliente_dni.value,
@@ -310,7 +390,12 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// ====== ELIMINAR ======
+
+// ====== ELIMINAR VENTA ======
+
+/**
+ * Envía petición DELETE al backend।
+ */
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-eliminar")) {
     const id = e.target.dataset.id;
@@ -327,24 +412,37 @@ tableBody.addEventListener("click", async (e) => {
   }
 });
 
-// Modal para añadir nuevo cliente desde formulario de nueva venta
+
+// ====== MODAL NUEVO CLIENTE ======
+
+/**
+ * Manejo del mini-modal para crear clientes directamente desde ventas
+ */
 const clienteModal = document.getElementById("clienteModal");
 const btnAddCliente = document.getElementById("btnAddCliente");
 const cerrarClienteModal = document.getElementById("cerrarClienteModal");
 
+// abrir mini modal
 btnAddCliente.addEventListener("click", () => {
   clienteModal.style.display = "block";
 });
 
+// cerrar mini modal
 cerrarClienteModal.addEventListener("click", () => {
   clienteModal.style.display = "none";
 });
 
+// cerrar modal si clic fuera
 window.addEventListener("click", (e) => {
   if (e.target === clienteModal) clienteModal.style.display = "none";
 });
 
-// Crear nuevo cliente desde el modal que se puede abrir desde crear nueva venta
+
+// ====== SUBMIT NUEVO CLIENTE ======
+
+/**
+ * Crea un nuevo cliente directamente desde el modal
+ */
 const clienteForm = document.getElementById("clienteForm");
 
 clienteForm.addEventListener("submit", async (e) => {
@@ -352,16 +450,13 @@ clienteForm.addEventListener("submit", async (e) => {
 
   const dni = document.getElementById("cliente_dni_nuevo").value.trim();
   const nombre = document.getElementById("cliente_nombre_nuevo").value.trim();
-  const apellidos = document
-    .getElementById("cliente_apellidos_nuevo")
-    .value.trim();
+  const apellidos =
+    document.getElementById("cliente_apellidos_nuevo").value.trim();
   const email = document.getElementById("cliente_email_nuevo").value.trim();
-  const telefono = document
-    .getElementById("cliente_telefono_nuevo")
-    .value.trim();
-  const direccion = document
-    .getElementById("cliente_direccion_nuevo")
-    .value.trim();
+  const telefono =
+    document.getElementById("cliente_telefono_nuevo").value.trim();
+  const direccion =
+    document.getElementById("cliente_direccion_nuevo").value.trim();
 
   try {
     const res = await fetch("http://localhost:3000/clientes", {
@@ -392,5 +487,10 @@ clienteForm.addEventListener("submit", async (e) => {
   }
 });
 
-// ====== INICIALIZAR ======
+
+// ====== INICIALIZACIÓN ======
+
+/**
+ * Al cargar la página se ejecuta cargarVentas()
+ */
 window.addEventListener("DOMContentLoaded", cargarVentas);

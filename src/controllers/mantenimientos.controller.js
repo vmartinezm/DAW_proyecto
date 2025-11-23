@@ -1,9 +1,11 @@
 import connection from "../config/db.js";
 
-
-// ======================================================
-//  Obtener todos los mantenimientos
-// ======================================================
+/**
+ * @function obtenerMantenimientos
+ * @description Obtiene todos los mantenimientos con los datos del vehículo y del empleado relacionados.
+ * @route GET /mantenimientos
+ * @returns {JSON} Lista de mantenimientos
+ */
 export const obtenerMantenimientos = (req, res) => {
   const sql = `
     SELECT 
@@ -26,9 +28,12 @@ export const obtenerMantenimientos = (req, res) => {
 };
 
 
-// ======================================================
-//  Obtener un mantenimiento por ID
-// ======================================================
+/**
+ * @function obtenerMantenimientoPorId
+ * @description Obtiene un mantenimiento concreto según su ID.
+ * @route GET /mantenimientos/:mantenimiento_id
+ * @returns {JSON} Mantenimiento encontrado o error 404
+ */
 export const obtenerMantenimientoPorId = (req, res) => {
   const { mantenimiento_id } = req.params;
 
@@ -58,10 +63,13 @@ export const obtenerMantenimientoPorId = (req, res) => {
 };
 
 
-
-// ======================================================
-//  FUNCIÓN: determina el estado del vehículo según fecha_fin
-// ======================================================
+/**
+ * @function determinarEstadoVehiculo
+ * @private
+ * @description Determina el estado correcto del vehículo según la fecha de finalización.
+ * @param {string|null} fecha_fin Fecha final del mantenimiento
+ * @returns {"disponible" | "mantenimiento"}
+ */
 function determinarEstadoVehiculo(fecha_fin) {
   const hoy = new Date();
   hoy.setHours(0, 0, 0, 0);
@@ -75,10 +83,11 @@ function determinarEstadoVehiculo(fecha_fin) {
 }
 
 
-
-// ======================================================
-//  Añadir mantenimiento
-// ======================================================
+/**
+ * @function anadirMantenimiento
+ * @description Agrega un mantenimiento a un vehículo y actualiza inmediatamente su estado.
+ * @route POST /mantenimientos
+ */
 export const anadirMantenimiento = (req, res) => {
   const { vehiculo_id, fecha_inicio, fecha_fin, descripcion, coste, realizado_por } = req.body;
 
@@ -101,7 +110,6 @@ export const anadirMantenimiento = (req, res) => {
         return res.status(500).json({ error: "Error al agregar mantenimiento" });
       }
 
-      // Igual que ventas → actualización inmediata del estado
       const nuevoEstado = determinarEstadoVehiculo(fecha_fin);
 
       const sqlUpdateVehiculo = `
@@ -124,10 +132,11 @@ export const anadirMantenimiento = (req, res) => {
 };
 
 
-
-// ======================================================
-//  Actualizar mantenimiento
-// ======================================================
+/**
+ * @function actualizarMantenimiento
+ * @description Actualiza un mantenimiento existente y actualiza el estado del vehículo asociado.
+ * @route PUT /mantenimientos/:mantenimiento_id
+ */
 export const actualizarMantenimiento = (req, res) => {
   const { mantenimiento_id } = req.params;
   const { vehiculo_id, fecha_inicio, fecha_fin, descripcion, coste, realizado_por } = req.body;
@@ -151,7 +160,6 @@ export const actualizarMantenimiento = (req, res) => {
         return res.status(404).json({ error: "Mantenimiento no encontrado" });
       }
 
-      // Igual que ventas → actualizar estado inmediato
       const nuevoEstado = determinarEstadoVehiculo(fecha_fin);
 
       const sqlVehiculo = `UPDATE vehiculos SET estado = ? WHERE matricula = ?`;
@@ -173,10 +181,11 @@ export const actualizarMantenimiento = (req, res) => {
 };
 
 
-
-// ======================================================
-//  Eliminar mantenimiento
-// ======================================================
+/**
+ * @function eliminarMantenimiento
+ * @description Elimina un mantenimiento y marca el vehículo como disponible.
+ * @route DELETE /mantenimientos/:mantenimiento_id
+ */
 export const eliminarMantenimiento = (req, res) => {
   const { mantenimiento_id } = req.params;
 
@@ -197,7 +206,6 @@ export const eliminarMantenimiento = (req, res) => {
         return res.status(500).json({ error: "Error al eliminar mantenimiento" });
       }
 
-      // Al eliminar un mantenimiento → el vehículo vuelve a disponible
       const sqlUpdateVehiculo = `
         UPDATE vehiculos SET estado = 'disponible' WHERE matricula = ?
       `;

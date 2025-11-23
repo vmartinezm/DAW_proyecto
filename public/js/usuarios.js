@@ -1,28 +1,64 @@
 import { requireAdmin } from "./auth.js";
 
+/**
+ * Endpoint del API para la gestión de usuarios
+ * @constant {string}
+ */
 const API_USUARIOS = "http://localhost:3000/usuarios";
 
-//Control de acceso
+/**
+ * Control de acceso: solo administradores pueden acceder a la página
+ * requireAdmin() ya redirige a login o dashboard si no es admin
+ */
 if (!requireAdmin()) {
-  // Si el usuario no es admin, no ejecutamos nada más
-  // La función ya redirige al dashboard/login
   throw new Error("Acceso denegado");
 }
 
-// Referencias
+// =========================================================
+//                 REFERENCIAS A ELEMENTOS DOM
+// =========================================================
+
+/** @type {HTMLElement} */
 const tableBody = document.querySelector("#usuariosTable tbody");
+/** @type {HTMLButtonElement} */
 const btnAddUsuario = document.getElementById("btnAddUsuario");
+/** @type {HTMLButtonElement} */
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
+/** @type {HTMLButtonElement} */
 const btnIrDashboard = document.getElementById("btnIrDashboard");
+/** @type {HTMLElement} */
 const modal = document.getElementById("usuariosModal");
+/** @type {HTMLElement} */
 const cerrarModal = document.getElementById("cerrarModal");
+/** @type {HTMLFormElement} */
 const form = document.getElementById("usuariosForm");
+/** @type {HTMLElement} */
 const formTitle = document.getElementById("formTitle");
+/** @type {HTMLElement} */
 const grupoCreado = document.getElementById("grupoCreado");
+/** @type {HTMLElement} */
 const grupoPassword = document.getElementById("grupoPassword");
+/** @type {HTMLButtonElement} */
 const btnCancelar = document.getElementById("btnCancelar");
 
-// Inputs del formulario
+// =========================================================
+//                 INPUTS DEL FORMULARIO
+// =========================================================
+
+/**
+ * Referencias a los campos del formulario de usuario
+ * @typedef {Object} UsuarioInputs
+ * @property {HTMLInputElement} id
+ * @property {HTMLInputElement} nombre
+ * @property {HTMLInputElement} apellidos
+ * @property {HTMLInputElement} usuario
+ * @property {HTMLInputElement} rol
+ * @property {HTMLInputElement} email
+ * @property {HTMLInputElement} password
+ * @property {HTMLInputElement} creado_at
+ */
+
+/** @type {UsuarioInputs} */
 const inputs = {
   id: document.getElementById("user_id"),
   nombre: document.getElementById("nombre"),
@@ -34,12 +70,16 @@ const inputs = {
   creado_at: document.getElementById("creado_at"),
 };
 
-// Abrir modal
+// =========================================================
+//                  MODAL FUNCTIONS
+// =========================================================
+
+/** Abre modal */
 const abrirModalFn = () => {
   modal.style.display = "block";
 };
 
-// Cerrar modal
+/** Cierra modal */
 const cerrarModalFn = () => {
   modal.style.display = "none";
 };
@@ -47,22 +87,26 @@ const cerrarModalFn = () => {
 // Eventos de cierre
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
-
 window.addEventListener("click", (e) => {
   if (e.target === modal) cerrarModalFn();
 });
 
-// Ir a dashboard
+// =========================================================
+//                  NAVEGACIÓN
+// =========================================================
+
 btnIrDashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
-// ---------- Añadir usuario ----------
+// =========================================================
+//               NUEVO USUARIO (modo CREAR)
+// =========================================================
+
 btnAddUsuario.addEventListener("click", () => {
   form.dataset.modo = "crear";
   formTitle.textContent = "Añadir nuevo usuario";
 
-  // limpiar campos
   inputs.id.value = "";
   inputs.nombre.value = "";
   inputs.apellidos.value = "";
@@ -73,10 +117,7 @@ btnAddUsuario.addEventListener("click", () => {
   inputs.password.value = "";
   inputs.password.placeholder = "Obligatorio crear contraseña al crear nuevo usuario";
 
-  // mostrar campo contraseña
   grupoPassword.style.display = "block";
-
-  // ocultar campo creado
   grupoCreado.style.display = "none";
   inputs.creado_at.value = "";
 
@@ -84,8 +125,12 @@ btnAddUsuario.addEventListener("click", () => {
 });
 
 // =========================================================
-//                  CARGAR USUARIOS EN TABLA
+//                CARGAR USUARIOS EN TABLA
 // =========================================================
+
+/**
+ * Obtiene lista de usuarios del backend y los muestra en tabla HTML
+ */
 async function cargarUsuarios() {
   try {
     const res = await fetch(API_USUARIOS);
@@ -103,7 +148,7 @@ async function cargarUsuarios() {
         ? new Date(u.creado_at).toLocaleDateString("es-ES")
         : "";
 
-      [
+      const columnas = [
         u.user_id,
         u.nombre,
         u.apellidos,
@@ -111,12 +156,15 @@ async function cargarUsuarios() {
         u.rol,
         u.email,
         creadoFmt,
-      ].forEach((valor) => {
+      ];
+
+      columnas.forEach((valor) => {
         const td = document.createElement("td");
         td.textContent = valor;
         row.appendChild(td);
       });
 
+      // Celda acciones
       const accionesTd = document.createElement("td");
 
       const btnEditar = document.createElement("button");
@@ -142,10 +190,12 @@ async function cargarUsuarios() {
 }
 
 // =========================================================
-//                        EDITAR
+//                        EDITAR USUARIO
 // =========================================================
+
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-editar")) {
+
     const id = e.target.dataset.id;
     form.dataset.modo = "editar";
     formTitle.textContent = "Editar usuario";
@@ -154,10 +204,8 @@ tableBody.addEventListener("click", async (e) => {
       const res = await fetch(`${API_USUARIOS}/${id}`);
       const usuario = await res.json();
 
-      // Reset del formulario
       form.reset();
 
-      // Rellenar campos
       inputs.id.value = usuario.user_id;
       inputs.nombre.value = usuario.nombre;
       inputs.apellidos.value = usuario.apellidos;
@@ -168,13 +216,10 @@ tableBody.addEventListener("click", async (e) => {
         ? usuario.creado_at.split("T")[0]
         : "";
 
-      // Mostrar bloque de fecha de creación
       grupoCreado.style.display = "block";
-
-      // Hacer que el campo creado_at sea solo lectura
       inputs.creado_at.disabled = true;
 
-      // En edición → contraseña opcional
+      // Contraseña opcional en modo edición
       grupoPassword.style.display = "block";
       inputs.password.value = "";
       inputs.password.placeholder = "Dejar vacío para mantener contraseña actual";
@@ -187,10 +232,12 @@ tableBody.addEventListener("click", async (e) => {
 });
 
 // =========================================================
-//                      ELIMINAR
+//                      ELIMINAR USUARIO
 // =========================================================
+
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-eliminar")) {
+
     const id = e.target.dataset.id;
 
     if (confirm("¿Seguro que deseas eliminar este usuario?")) {
@@ -207,8 +254,12 @@ tableBody.addEventListener("click", async (e) => {
 });
 
 // =========================================================
-//                       GUARDAR
+//                        GUARDAR USUARIO
 // =========================================================
+
+/**
+ * Maneja envío del formulario creando o actualizando usuario según modo
+ */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -220,7 +271,7 @@ form.addEventListener("submit", async (e) => {
     email: inputs.email.value,
   };
 
-  // Solo enviamos contraseña si se proporciona
+  // Contraseña solo si se escribe algo
   if (inputs.password.value.trim() !== "") {
     datos.password = inputs.password.value.trim();
   }
@@ -248,14 +299,17 @@ form.addEventListener("submit", async (e) => {
     }
 
     alert(data.mensaje || "Usuario guardado");
+
     cerrarModalFn();
     cargarUsuarios();
+
   } catch (err) {
     console.error("Error al guardar usuario:", err);
   }
 });
 
 // =========================================================
-//                      INICIALIZAR
+//                  INICIALIZACIÓN
 // =========================================================
+
 window.addEventListener("DOMContentLoaded", cargarUsuarios);

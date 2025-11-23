@@ -1,5 +1,11 @@
 import connection from "../config/db.js";
 
+/**
+ * @function obtenerClientes
+ * @description Obtiene todos los clientes registrados.
+ * @route GET /clientes
+ * @returns {JSON} Lista de clientes
+ */
 export const obtenerClientes = (req, res) => {
   const sql = "SELECT * FROM clientes";
   connection.query(sql, (err, results) => {
@@ -11,6 +17,13 @@ export const obtenerClientes = (req, res) => {
   });
 };
 
+/**
+ * @function obtenerClientePorDni
+ * @description Obtiene un cliente según su DNI.
+ * @route GET /clientes/:dni
+ * @param {string} dni DNI del cliente
+ * @returns {JSON} Datos del cliente o error 404
+ */
 export const obtenerClientePorDni = (req, res) => {
   const { dni } = req.params;
   const sql = "SELECT * FROM clientes WHERE dni = ?";
@@ -26,6 +39,17 @@ export const obtenerClientePorDni = (req, res) => {
   });
 };
 
+/**
+ * @function anadirCliente
+ * @description Inserta un nuevo cliente en la base de datos. Valida que el DNI y email no estén duplicados.
+ * @route POST /clientes
+ * @param {string} dni DNI único del cliente
+ * @param {string} nombre
+ * @param {string} apellidos
+ * @param {string} email (único)
+ * @param {string} telefono
+ * @param {string} direccion
+ */
 export const anadirCliente = (req, res) => {
   const { dni, nombre, apellidos, email, telefono, direccion } = req.body;
   const sql =
@@ -38,7 +62,7 @@ export const anadirCliente = (req, res) => {
       if (err) {
         console.error("Error al añadir cliente:", err);
 
-        // --- detectar clave duplicada ---
+        /** Detección de clave duplicada en MySQL (dni/email) */
         if (err.code === "ER_DUP_ENTRY") {
           return res.status(400).json({
             error: "El DNI o el email ya están registrados",
@@ -53,6 +77,12 @@ export const anadirCliente = (req, res) => {
   );
 };
 
+/**
+ * @function actualizarCliente
+ * @description Actualiza los datos de un cliente existente.
+ * @route PUT /clientes/:dni
+ * @param {string} dni DNI del cliente a modificar
+ */
 export const actualizarCliente = (req, res) => {
   const { dni } = req.params;
   const { nombre, apellidos, email, telefono, direccion } = req.body;
@@ -81,6 +111,11 @@ export const actualizarCliente = (req, res) => {
   );
 };
 
+/**
+ * @function eliminarCliente
+ * @description Elimina un cliente existente.
+ * @route DELETE /clientes/:dni
+ */
 export const eliminarCliente = (req, res) => {
   const { dni } = req.params;
   const sql = "DELETE FROM clientes WHERE dni = ?";

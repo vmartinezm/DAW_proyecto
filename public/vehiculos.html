@@ -5,15 +5,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestión de Vehículos - Concesionario</title>
+
+  <!--
+    📌 Hoja de estilos principal
+    Mantiene coherencia visual en toda la app
+  -->
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
-  <div class="vehiculos-header">
-            <h1>Concesionario Martínez</h1>
-            <h2>Gestión de Vehículos</h2>
-        </div>
 
+  <!-- 🟦 Encabezado de página -->
+  <!-- Muestra identidad del sistema y el módulo actual -->
+  <div class="vehiculos-header">
+    <h1>Concesionario Martínez</h1>
+    <h2>Gestión de Vehículos</h2>
+  </div>
+
+  <!-- 🟧 Panel de acciones principales -->
+  <!-- Navegación entre módulos + accesos rápidos -->
   <div class="panel-acciones">
     <button id="btnAddVehiculo">➕ Añadir vehículo</button>
     <button id="btnAddMantenimiento">🔧 Registrar mantenimiento</button>
@@ -21,6 +31,8 @@
     <button id="btnIrDashboard">🏠 Ir a menú principal</button>
   </div>
 
+  <!-- 🟩 Tabla de datos -->
+  <!-- Se cargará dinámicamente desde vehiculos.js -->
   <div class="tabla-container">
     <table id="vehiculosTable">
       <thead>
@@ -42,14 +54,25 @@
     </table>
   </div>
 
-  <!-- 🔹 Modal de formulario -->
+  <!-- 🟥 Modal de formulario
+       usado tanto para:
+       ✔ añadir 🚘 nuevo vehículo
+       ✔ editar ✏️ existente
+  -->
   <div id="vehiculoModal" class="modal fade">
     <div class="modal-content">
+
+      <!-- Botón cerrar modal -->
       <span id="cerrarModal" class="close">&times;</span>
+
+      <!-- Se cambia dinámicamente:
+         "Añadir vehículo" / "Editar vehículo"
+      -->
       <h3 id="form-title">Añadir nuevo vehículo</h3>
 
       <form id="vehiculoForm">
-        <!-- Matrícula -->
+
+        <!-- Campo: Matrícula (único) -->
         <div class="form-row">
           <label for="matricula">Matrícula:</label>
           <input type="text" id="matricula" required />
@@ -116,16 +139,28 @@
           <button type="submit" id="btnGuardar">Guardar</button>
           <button type="button" id="btnCancelar">Cancelar</button>
         </div>
+
       </form>
     </div>
   </div>
 
+  <!--
+    🔐 Protección de acceso:
+    Verifica sesión local (sessionStorage)
+    En caso contrario → redirige a login
+  -->
   <script type="module">
     import { requireLogin } from "./js/auth.js";
     requireLogin();
   </script>
 
+  <!--
+    🧠 Lógica del módulo Vehículos
+    Maneja:
+     ✔ carga de datos
+     ✔ eventos del modal
+     ✔ fetch API GET/POST/PUT/DELETE
+  -->
   <script src="js/vehiculos.js"></script>
 </body>
-
 </html>

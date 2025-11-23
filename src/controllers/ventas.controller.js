@@ -1,6 +1,11 @@
 import connection from "../config/db.js";
 
-// ✅ Obtener todas las ventas (con info del vehículo, cliente y vendedor)
+/**
+ * @function obtenerVentas
+ * @description Obtiene todas las ventas incluyendo información del vehículo, cliente y vendedor.
+ * @route GET /ventas
+ * @returns {JSON} Lista de ventas
+ */
 export const obtenerVentas = (req, res) => {
   const sql = `
     SELECT 
@@ -22,7 +27,13 @@ export const obtenerVentas = (req, res) => {
   });
 };
 
-// ✅ Obtener una venta por ID
+/**
+ * @function obtenerVentaPorId
+ * @description Obtiene una venta específica por su ID.
+ * @route GET /ventas/:venta_id
+ * @param {number} venta_id ID de la venta
+ * @returns {JSON} Venta encontrada o error 404
+ */
 export const obtenerVentaPorId = (req, res) => {
   const { venta_id } = req.params;
   const sql = `
@@ -49,7 +60,18 @@ export const obtenerVentaPorId = (req, res) => {
   });
 };
 
-// ✅ Agregar una nueva venta (con actualización automática del vehículo)
+/**
+ * @function anadirVenta
+ * @description Inserta una nueva venta y actualiza el estado del vehículo (reservado o vendido).
+ * @route POST /ventas
+ * @param {string} vehiculo_id Matrícula del vehículo
+ * @param {string} cliente_dni DNI del cliente
+ * @param {string} fecha Fecha de la venta
+ * @param {number} precio_venta Precio final
+ * @param {number} vendedor_id ID del usuario vendedor
+ * @param {string} notas Observaciones (opcional)
+ * @param {"venta"|"reserva"} tipo Tipo de transacción
+ */
 export const anadirVenta = (req, res) => {
   const { vehiculo_id, cliente_dni, fecha, precio_venta, vendedor_id, notas, tipo } = req.body;
 
@@ -63,7 +85,6 @@ export const anadirVenta = (req, res) => {
       return res.status(500).json({ error: "Error al agregar venta" });
     }
 
-    // Determinar estado según tipo
     const estadoVehiculo = tipo === 'reserva' ? 'reservado' : 'vendido';
 
     const updateSql = 'UPDATE vehiculos SET estado = ? WHERE matricula = ?';
@@ -77,12 +98,17 @@ export const anadirVenta = (req, res) => {
   });
 };
 
-// ✅ Actualizar venta
+
+/**
+ * @function actualizarVenta
+ * @description Actualiza los datos de una venta existente, y si cambia el tipo, actualiza el estado del vehículo.
+ * @route PUT /ventas/:venta_id
+ * @param {number} venta_id ID de la venta
+ */
 export const actualizarVenta = (req, res) => {
   const { venta_id } = req.params;
   const { vehiculo_id, cliente_dni, fecha, precio_venta, vendedor_id, notas, tipo } = req.body;
 
-  // 1️⃣ Obtener tipo actual de la venta
   const sqlSelect = "SELECT tipo FROM ventas WHERE venta_id = ?";
   connection.query(sqlSelect, [venta_id], (err, results) => {
     if (err || results.length === 0) {
@@ -92,7 +118,6 @@ export const actualizarVenta = (req, res) => {
 
     const tipoAnterior = results[0].tipo;
 
-    // 2️⃣ Actualizar datos de la venta
     const sqlUpdate = `
       UPDATE ventas 
       SET vehiculo_id = ?, cliente_dni = ?, fecha = ?, precio_venta = ?, vendedor_id = ?, notas = ?, tipo = ?
@@ -104,7 +129,6 @@ export const actualizarVenta = (req, res) => {
         return res.status(500).json({ error: "Error al actualizar venta" });
       }
 
-      // 3️⃣ Determinar nuevo estado del vehículo si cambió el tipo
       let estadoVehiculo;
       if (tipoAnterior !== tipo) {
         estadoVehiculo = tipo === 'reserva' ? 'reservado' : 'vendido';
@@ -123,7 +147,13 @@ export const actualizarVenta = (req, res) => {
   });
 };
 
-// ✅ Eliminar venta (y marcar el vehículo como disponible)
+
+/**
+ * @function eliminarVenta
+ * @description Elimina una venta y marca el vehículo relacionado como disponible.
+ * @route DELETE /ventas/:venta_id
+ * @param {number} venta_id ID de la venta
+ */
 export const eliminarVenta = (req, res) => {
   const { venta_id } = req.params;
 
