@@ -51,6 +51,7 @@ Importar el script SQL incluido en /src/database.sql
 npm start
 
 6️⃣ Abrir frontend
+
 Abrir public/index.html en navegador o servir con Live Server de VSCode
 
 🔐 Sistema de autenticación
