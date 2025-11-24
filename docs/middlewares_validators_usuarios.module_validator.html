@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> middlewares/validators/usuarios.validator</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="controllers_auth.module_controller.html">controllers/auth.controller</a></li><li><a href="controllers_ventas.module_controller.html">controllers/ventas.controller</a></li><li><a href="middlewares_auth.module_middleware.html">middlewares/auth.middleware</a></li><li><a href="middlewares_validators_mantenimientos.module_validator.html">middlewares/validators/mantenimientos.validator</a></li><li><a href="middlewares_validators_usuarios.module_validator.html">middlewares/validators/usuarios.validator</a></li><li><a href="middlewares_validators_ventas.module_validator.html">middlewares/validators/ventas.validator</a></li><li><a href="module-controllers_clientes.html">controllers/clientes</a></li><li><a href="module-middlewares_validators_clientes.html">middlewares/validators/clientes</a></li><li><a href="module-routes_auth.html">routes/auth</a></li><li><a href="module-routes_clientes.html">routes/clientes</a></li><li><a href="module-routes_mantenimientos.html">routes/mantenimientos</a></li><li><a href="module-routes_usuarios.html">routes/usuarios</a></li><li><a href="module-routes_ventas.html">routes/ventas</a></li><li><a href="vehiculos.module_validator.html">vehiculos.validator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#actualizarMantenimiento">actualizarMantenimiento</a></li><li><a href="global.html#actualizarUsuario">actualizarUsuario</a></li><li><a href="global.html#actualizarVehiculo">actualizarVehiculo</a></li><li><a href="global.html#anadirMantenimiento">anadirMantenimiento</a></li><li><a href="global.html#anadirUsuario">anadirUsuario</a></li><li><a href="global.html#anadirVehiculo">anadirVehiculo</a></li><li><a href="global.html#eliminarMantenimiento">eliminarMantenimiento</a></li><li><a href="global.html#eliminarUsuario">eliminarUsuario</a></li><li><a href="global.html#eliminarVehiculo">eliminarVehiculo</a></li><li><a href="global.html#obtenerMantenimientoPorId">obtenerMantenimientoPorId</a></li><li><a href="global.html#obtenerMantenimientos">obtenerMantenimientos</a></li><li><a href="global.html#obtenerUsuarioPorId">obtenerUsuarioPorId</a></li><li><a href="global.html#obtenerUsuarios">obtenerUsuarios</a></li><li><a href="global.html#obtenerUsuariosBasic">obtenerUsuariosBasic</a></li><li><a href="global.html#obtenerVehiculoPorMatricula">obtenerVehiculoPorMatricula</a></li><li><a href="global.html#obtenerVehiculos">obtenerVehiculos</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Module</p>
+                    <h1>middlewares/validators/usuarios.validator</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">Middleware de validación para creación y edición de usuarios.
+Verifica que los datos enviados en las solicitudes sean correctos y completos.</div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="middlewares_validators_usuarios.validator.js.html" class="button">View Source</a>
+            <span>
+                <a href="middlewares_validators_usuarios.validator.js.html">middlewares/validators/usuarios.validator.js</a>, <a href="middlewares_validators_usuarios.validator.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~validarEmail">
+        <a class="href-link" href="#~validarEmail">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                validarEmail<span class="signature">(correo)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Comprueba si un email tiene formato válido.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>correo</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">email a validar</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="middlewares_validators_usuarios.validator.js.html" class="button">View Source</a>
+            <span>
+                <a href="middlewares_validators_usuarios.validator.js.html">middlewares/validators/usuarios.validator.js</a>, <a href="middlewares_validators_usuarios.validator.js.html#line15">line 15</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>true si el email es válido, false en caso contrario</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~validarUsuarioCreacion">
+        <a class="href-link" href="#~validarUsuarioCreacion">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                validarUsuarioCreacion<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Middleware de validación para creación de usuarios.
+Verifica que se envíen todos los campos necesarios y que tengan un formato válido.
+Revisa que el usuario y email no estén ya en uso.
+Si se encuentra un error, se devuelve un objeto JSON con el error correspondiente.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>req</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">objeto Request de Express</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>res</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">objeto Response de Express</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>next</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">function</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">función middleware siguiente a ejecutar</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="middlewares_validators_usuarios.validator.js.html" class="button">View Source</a>
+            <span>
+                <a href="middlewares_validators_usuarios.validator.js.html">middlewares/validators/usuarios.validator.js</a>, <a href="middlewares_validators_usuarios.validator.js.html#line25">line 25</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error de validación de datos</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">400</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error interno del servidor</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">void</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~validarUsuarioEdicion">
+        <a class="href-link" href="#~validarUsuarioEdicion">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                validarUsuarioEdicion<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Middleware de validación para edición de usuarios.
+Verifica que se envíen todos los campos necesarios y que tengan un formato válido.
+Revisa que el usuario y email no estén ya en uso por otro usuario.
+Si se encuentra un error, se devuelve un objeto JSON con el error correspondiente.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>req</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">objeto Request de Express</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>res</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">objeto Response de Express</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>next</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">function</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">función middleware siguiente a ejecutar</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="middlewares_validators_usuarios.validator.js.html" class="button">View Source</a>
+            <span>
+                <a href="middlewares_validators_usuarios.validator.js.html">middlewares/validators/usuarios.validator.js</a>, <a href="middlewares_validators_usuarios.validator.js.html#line96">line 96</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error de validación de datos</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">400</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error interno del servidor</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">void</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

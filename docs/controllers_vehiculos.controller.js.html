@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> controllers/vehiculos.controller.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="controllers_auth.module_controller.html">controllers/auth.controller</a></li><li><a href="controllers_ventas.module_controller.html">controllers/ventas.controller</a></li><li><a href="middlewares_auth.module_middleware.html">middlewares/auth.middleware</a></li><li><a href="middlewares_validators_mantenimientos.module_validator.html">middlewares/validators/mantenimientos.validator</a></li><li><a href="middlewares_validators_usuarios.module_validator.html">middlewares/validators/usuarios.validator</a></li><li><a href="middlewares_validators_ventas.module_validator.html">middlewares/validators/ventas.validator</a></li><li><a href="module-controllers_clientes.html">controllers/clientes</a></li><li><a href="module-middlewares_validators_clientes.html">middlewares/validators/clientes</a></li><li><a href="module-routes_auth.html">routes/auth</a></li><li><a href="module-routes_clientes.html">routes/clientes</a></li><li><a href="module-routes_mantenimientos.html">routes/mantenimientos</a></li><li><a href="module-routes_usuarios.html">routes/usuarios</a></li><li><a href="module-routes_ventas.html">routes/ventas</a></li><li><a href="vehiculos.module_validator.html">vehiculos.validator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#actualizarMantenimiento">actualizarMantenimiento</a></li><li><a href="global.html#actualizarUsuario">actualizarUsuario</a></li><li><a href="global.html#actualizarVehiculo">actualizarVehiculo</a></li><li><a href="global.html#anadirMantenimiento">anadirMantenimiento</a></li><li><a href="global.html#anadirUsuario">anadirUsuario</a></li><li><a href="global.html#anadirVehiculo">anadirVehiculo</a></li><li><a href="global.html#eliminarMantenimiento">eliminarMantenimiento</a></li><li><a href="global.html#eliminarUsuario">eliminarUsuario</a></li><li><a href="global.html#eliminarVehiculo">eliminarVehiculo</a></li><li><a href="global.html#obtenerMantenimientoPorId">obtenerMantenimientoPorId</a></li><li><a href="global.html#obtenerMantenimientos">obtenerMantenimientos</a></li><li><a href="global.html#obtenerUsuarioPorId">obtenerUsuarioPorId</a></li><li><a href="global.html#obtenerUsuarios">obtenerUsuarios</a></li><li><a href="global.html#obtenerUsuariosBasic">obtenerUsuariosBasic</a></li><li><a href="global.html#obtenerVehiculoPorMatricula">obtenerVehiculoPorMatricula</a></li><li><a href="global.html#obtenerVehiculos">obtenerVehiculos</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>controllers/vehiculos.controller.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** 
+ * @file vehiculos.controller.js
+ * @description Controlador para la gestión de vehículos.
+*/
+
+// Importar la conexión a la base de datos
+import connection from "../config/db.js";
+
+/**
+ * @function obtenerVehiculos
+ * @description Obtiene todos los vehículos de la base de datos.
+ * @route GET /vehiculos
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @returns {JSON} Lista de vehículos
+ * @throws {500} Error al obtener vehículos
+ */
+export const obtenerVehiculos = (req, res) => {
+  const sql = "SELECT * FROM vehiculos";
+
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error al obtener vehículos:", err);
+      return res.status(500).json({ error: "Error al obtener vehículos" });
+    }
+    return res.status(200).json(results);
+  });
+};
+
+/**
+ * @function obtenerVehiculoPorMatricula
+ * @description Obtiene un vehículo según su matrícula.
+ * @route GET /vehiculos/:matricula
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @returns {JSON} Vehículo encontrado
+ * @throws {404} Vehículo no encontrado
+ * @throws {500} Error al obtener vehículo
+ */
+export const obtenerVehiculoPorMatricula = (req, res) => {
+  const { matricula } = req.params;
+
+  const sql = "SELECT * FROM vehiculos WHERE matricula = ?";
+  connection.query(sql, [matricula], (err, results) => {
+    if (err) {
+      console.error("Error al obtener vehículo:", err);
+      return res.status(500).json({ error: "Error al obtener vehículo" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Vehículo no encontrado" });
+    }
+
+    return res.json(results[0]);
+  });
+};
+
+/**
+ * @function anadirVehiculo
+ * @description Crea un nuevo vehículo en la base de datos.
+ * @route POST /vehiculos
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {400} Faltan campos obligatorios
+ * @throws {400} Ya existe un vehículo con esa matrícula
+ * @throws {500} Error al insertar vehículo
+ */
+export const anadirVehiculo = (req, res) => {
+  const {
+    matricula,
+    marca,
+    modelo,
+    version,
+    color,
+    ano,
+    kilometros,
+    combustible,
+    precio,
+    estado,
+  } = req.body;
+
+  if (!matricula || !marca || !modelo) {
+    return res.status(400).json({ error: "Faltan campos obligatorios: matricula, marca o modelo" });
+  }
+
+  const sql = `
+    INSERT INTO vehiculos (matricula, marca, modelo, version, color, ano, kilometros, combustible, precio, estado)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+  const values = [
+    matricula,
+    marca,
+    modelo,
+    version,
+    color,
+    ano,
+    kilometros,
+    combustible,
+    precio,
+    estado,
+  ];
+
+  connection.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error al insertar vehículo:", err.sqlMessage || err.message);
+      if (err.code === "ER_DUP_ENTRY") {
+        return res.status(400).json({ error: "Ya existe un vehículo con esa matrícula" });
+      }
+      return res.status(500).json({ error: "Error al insertar vehículo" });
+    }
+
+    return res.status(201).json({
+      mensaje: "Vehículo añadido correctamente",
+      matricula: matricula,
+    });
+  });
+};
+
+/**
+ * @function actualizarVehiculo
+ * @description Actualiza la información de un vehículo según matrícula.
+ * @route PUT /vehiculos/:matricula
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {404} Vehículo no encontrado
+ * @throws {500} Error al actualizar vehículo
+ * @throws {400} Ya existe un vehículo con esa matrícula
+ */
+export const actualizarVehiculo = (req, res) => {
+  const { matricula } = req.params;
+  const { marca, modelo, version, color, ano, kilometros, combustible, precio, estado } = req.body;
+
+  const sql = `
+    UPDATE vehiculos
+    SET marca = ?, modelo = ?, version = ?, color = ?, ano = ?, kilometros = ?, combustible = ?, precio = ?, estado = ?
+    WHERE matricula = ?
+  `;
+  const values = [marca, modelo, version, color, ano, kilometros, combustible, precio, estado, matricula];
+
+  connection.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error al actualizar vehículo:", err.sqlMessage || err.message);
+      if (err.code === "ER_DUP_ENTRY") {
+        return res.status(400).json({ error: "Ya existe un vehículo con esa matrícula" });
+      }
+      return res.status(500).json({ error: "Error al actualizar vehículo" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Vehículo no encontrado" });
+    }
+
+    return res.json({ mensaje: "Vehículo actualizado correctamente" });
+  });
+};
+
+/**
+ * @function eliminarVehiculo
+ * @description Elimina un vehículo de la base de datos.
+ * @route DELETE /vehiculos/:matricula
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {404} Vehículo no encontrado
+ * @throws {500} Error al eliminar vehículo
+ */
+export const eliminarVehiculo = (req, res) => {
+  const { matricula } = req.params;
+
+  const sql = "DELETE FROM vehiculos WHERE matricula = ?";
+  connection.query(sql, [matricula], (err, result) => {
+    if (err) {
+      console.error("Error al eliminar vehículo:", err);
+      return res.status(500).json({ error: "Error al eliminar vehículo" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Vehículo no encontrado" });
+    }
+
+    return res.json({ mensaje: "Vehículo eliminado correctamente" });
+  });
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>
