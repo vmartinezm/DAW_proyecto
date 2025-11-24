@@ -1,5 +1,5 @@
 /**
- * @file app.js
+ * @file src/app.js
  * @description Archivo principal del servidor Express. Configura middlewares globales, rutas y arranque del servidor.
  */
 

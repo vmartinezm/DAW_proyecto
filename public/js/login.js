@@ -4,6 +4,7 @@
  * - Verificación de sesión previa
  * - Envío de credenciales al backend
  * - Almacenamiento de sesión en sessionStorage
+ * @module login
  */
 
 // URL de la API de login

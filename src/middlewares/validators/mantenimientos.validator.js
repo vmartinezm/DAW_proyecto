@@ -1,5 +1,5 @@
 /**
- * @file mantenimientos.validator.js
+ * @file src/middlewares/validators/mantenimientos.validator.js
  * @description Middlewares para validar los datos de mantenimientos antes de crear o editar.
  * @module middlewares/validators/mantenimientos.validator
  */

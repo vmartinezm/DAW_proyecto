@@ -1,6 +1,8 @@
 /**
  * @file public/js/dashboard.js
- * @description Maneja la lógica de la página de dashboard, incluyendo la inicialización de la interfaz y la navegación basada en el rol del usuario.
+ * @description Maneja la lógica de la página de dashboard, 
+ * incluyendo la inicialización de la interfaz y la navegación basada en el rol del usuario.
+ * @module dashboard
  */
 
 // Importar funciones de autenticación

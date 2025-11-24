@@ -1,6 +1,7 @@
 /**
  * @file public/js/clientes.js
  * @description Gestión frontend del módulo de clientes.
+ * @module clientes
  */
 
 // Importar utilidades de autenticación

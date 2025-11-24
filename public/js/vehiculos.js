@@ -3,6 +3,7 @@
  * @description Lógica frontend para gestión de vehículos en la aplicación.
  * Incluye protección por sesión (JWT), carga dinámica de datos, modal CRUD y
  * comunicación con el backend usando authFetch().
+ * @module vehiculos
  */
 
 // Módulo de autenticación

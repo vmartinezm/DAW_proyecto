@@ -1,6 +1,7 @@
 /**
- * @file vehiculos.routes.js
+ * @file src/routes/vehiculos.routes.js
  * @description Rutas de gestión de vehículos. Permiten realizar operaciones CRUD sobre la tabla "vehiculos".
+ * @module routes/vehiculos
  */
 
 //Importar dependencia Express

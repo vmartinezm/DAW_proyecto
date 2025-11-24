@@ -1,5 +1,5 @@
 /**
- * @file mantenimientos.routes.js
+ * @file src/routes/mantenimientos.routes.js
  * @description Rutas relacionadas con la gestión de mantenimientos
  * @module routes/mantenimientos
  */

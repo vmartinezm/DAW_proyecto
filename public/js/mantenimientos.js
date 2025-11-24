@@ -2,6 +2,7 @@
  * @file public/js/mantenimientos.js
  * @description Gestión frontend del módulo de mantenimientos.
  * Incluye protección de acceso, carga dinámica, renderizado de datos y CRUD.
+ * @module mantenimientos
  */
 
 // Importar utilidades de autenticación

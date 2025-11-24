@@ -2,6 +2,7 @@
  * @file public/js/auth.js
  * @description Módulo de autenticación y gestión de sesión.
  * Proporciona funciones para manejar la sesión del usuario, verificar roles y proteger rutas.
+ * @module auth
  */
 
 /**

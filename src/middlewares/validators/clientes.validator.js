@@ -1,7 +1,7 @@
 /**
- * @file clientes.validator.js
+ * @file src/middlewares/validators/clientes.validator.js
  * @description Middleware de validación para creación y edición de clientes
- * @module middlewares/validators/clientes
+ * @module middlewares/validators/clientes.validator
  */
 
 // Importar la conexión a la base de datos

@@ -1,7 +1,7 @@
 /** 
- * @file clientes.controller.js
+ * @file src/controllers/clientes.controller.js
  * @description Controlador para gestionar las operaciones CRUD de clientes.
- * @module controllers/clientes
+ * @module controllers/clientes.controller
  */
 
 // Importar la conexión a la base de datos

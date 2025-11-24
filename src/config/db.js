@@ -1,5 +1,5 @@
 /**
- * @file db.js
+ * @file config/db.js
  * @description Configuración y conexión a MySQL. Este módulo exporta una única conexión reutilizable en toda la aplicación.
  */
 

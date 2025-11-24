@@ -1,7 +1,7 @@
 /**
- * @file vehiculos.validator.js
+ * @file src/middlewares/validators/vehiculos.validator.js
  * @description Middleware de validación para vehículos. Contiene validadores especializados para altas y modificaciones de vehículos.
- * @module vehiculos.validator
+ * @module middlewares/validators/vehiculos.validator
  */
 
 

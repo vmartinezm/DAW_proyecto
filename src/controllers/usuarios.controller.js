@@ -1,7 +1,8 @@
 /**
- * @file usuarios.controller.js
+ * @file src/controllers/usuarios.controller.js
  * @description Controlador para la gestión de usuarios en el sistema.
  * Proporciona funciones para crear, leer, actualizar y eliminar usuarios.
+ * @module controllers/usuarios.controller
  */
 
 // Importar dependencias necesarias

@@ -1,5 +1,5 @@
 /**
- * @file usuarios.validator.js
+ * @file src/middlewares/validators/usuarios.validator.js
  * @description Middleware de validación para creación y edición de usuarios.
  * Verifica que los datos enviados en las solicitudes sean correctos y completos.
  * @module middlewares/validators/usuarios.validator

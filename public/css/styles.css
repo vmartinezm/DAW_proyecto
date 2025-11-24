@@ -128,21 +128,6 @@ button:hover {
   justify-content: center;
 }
 
-/*
-.login-form .btn {
-  width: 100%;
-  max-width: 200px;
-  padding: 0.8rem 1.2rem;
-  background-color: var(--color-secundario);
-  color: white;
-  border: none;
-}
-
-.login-form .btn:hover {
-  background-color: #1d4ed8;
-}
-  /*
-
 /* ====== Tabla ====== */
 .tabla-container {
   width: 90%;

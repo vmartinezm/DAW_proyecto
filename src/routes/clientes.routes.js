@@ -1,5 +1,5 @@
 /**
- * @file clientes.routes.js
+ * @file src/routes/clientes.routes.js
  * @description Rutas relacionadas con la gestión de clientes
  * @module routes/clientes
  */

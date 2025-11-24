@@ -1,5 +1,5 @@
 /**
- * @file usuarios.routes.js
+ * @file src/routes/usuarios.routes.js
  * @description Rutas relacionadas con la gestión de usuarios del sistema
  * Incluye dos niveles de permisos: acceso general para administradores y acceso restringido para usuarios específicos.
  * @module routes/usuarios

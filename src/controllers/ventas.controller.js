@@ -1,5 +1,5 @@
 /**
- * @file ventas.controller.js
+ * @file src/controllers/ventas.controller.js
  * @description Controlador para gestionar las operaciones relacionadas con las ventas de vehículos.
  * @module controllers/ventas.controller
  */

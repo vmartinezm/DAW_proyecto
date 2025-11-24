@@ -1,6 +1,7 @@
 /**
- * @file mantenimientos.controller.js
+ * @file src/controllers/mantenimientos.controller.js
  * @description Controlador para gestionar los mantenimientos de vehículos.
+ * @module controllers/mantenimientos.controller
  */
 
 // Importar la conexión a la base de datos

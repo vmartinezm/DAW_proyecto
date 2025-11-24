@@ -1,5 +1,5 @@
 /**
- * @file ventas.validator.js
+ * @file src/middlewares/validators/ventas.validator.js
  * @description Middlewares de validación para las rutas de ventas y reservas
  * @module middlewares/validators/ventas.validator
  */

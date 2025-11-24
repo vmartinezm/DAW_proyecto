@@ -1,6 +1,7 @@
 /** 
- * @file vehiculos.controller.js
+ * @file src/controllers/vehiculos.controller.js
  * @description Controlador para la gestión de vehículos.
+ * @module controllers/vehiculos.controller
 */
 
 // Importar la conexión a la base de datos

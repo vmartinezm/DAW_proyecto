@@ -1,6 +1,8 @@
 /**
  * @file public/js/usuarios.js
  * @description Gestión frontend del módulo de usuarios.
+ * Incluye protección de acceso, carga dinámica, renderizado de datos y CRUD.
+ * @module usuarios
  */
 
 // Importar utilidades de autenticación

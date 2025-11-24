@@ -1,5 +1,5 @@
 /**
- * @file ventas.routes.js
+ * @file src/routes/ventas.routes.js
  * @description Rutas relacionadas con la gestión de ventas y reservas
  * @module routes/ventas
  */

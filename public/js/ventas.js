@@ -1,6 +1,8 @@
 /**
  * @file public/js/ventas.js
  * @description Gestión frontend del módulo de ventas.
+ * Incluye protección de acceso, carga dinámica, renderizado de datos y CRUD.
+ * @module ventas
  */
 
 // Importar utilidades de autenticación
