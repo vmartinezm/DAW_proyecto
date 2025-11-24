@@ -1,27 +1,20 @@
 /**
- * @file vehiculos.js
+ * @file public/js/vehiculos.js
  * @description Lógica frontend para gestión de vehículos en la aplicación.
  * Incluye protección por sesión (JWT), carga dinámica de datos, modal CRUD y
  * comunicación con el backend usando authFetch().
  */
 
+// Módulo de autenticación
 import { requireLogin, authFetch } from "./auth.js";
 
-/**
- * Protege el acceso a la página:
- * - Si no hay sesión activa → se redirige a login.html automáticamente
- */
+// Asegura que el usuario esté autenticado
 requireLogin();
 
-/**
- * @constant {string} API_URL Ruta base del backend para gestión de vehículos
- */
+// API base URL para vehículos
 const API_URL = "http://localhost:3000/vehiculos";
 
-/**
- * Referencias a elementos DOM principales
- * @constant
- */
+// Refencias DOM
 const tableBody = document.querySelector("#vehiculosTable tbody");
 const btnAddVehiculo = document.getElementById("btnAddVehiculo");
 const modal = document.getElementById("vehiculoModal");
@@ -30,20 +23,7 @@ const vehiculoForm = document.getElementById("vehiculoForm");
 const formTitle = document.getElementById("form-title");
 const btnCancelar = document.getElementById("btnCancelar");
 
-/**
- * Inputs del formulario agrupados en un objeto
- * @typedef VehiculoInputs
- * @property {HTMLInputElement} matricula
- * @property {HTMLInputElement} marca
- * @property {HTMLInputElement} modelo
- * @property {HTMLInputElement} version
- * @property {HTMLInputElement} color
- * @property {HTMLInputElement} ano
- * @property {HTMLInputElement} kilometros
- * @property {HTMLInputElement} combustible
- * @property {HTMLInputElement} precio
- * @property {HTMLInputElement} estado
- */
+// Inputs del formulario agrupados en un objeto
 const inputs = {
   matricula: document.getElementById("matricula"),
   marca: document.getElementById("marca"),
@@ -57,30 +37,27 @@ const inputs = {
   estado: document.getElementById("estado"),
 };
 
-/**
- * @type {boolean} Indica si el formulario está en modo edición o en modo creación
- */
+// Estado interno para distinguir entre creación y edición
 let modoEdicion = false;
 
 /**
- * Muestra el modal de formulario
+ * @function abrirModal
+ * @description Abre el modal de formulario
  */
 function abrirModal() {
   modal.style.display = "block";
 }
 
 /**
- * Cierra el modal y resetea el formulario
+ * @function cerrarModalFn
+ * @description Cierra el modal y resetea el formulario
  */
 function cerrarModalFn() {
   modal.style.display = "none";
   resetFormulario();
 }
 
-// ============================
-// MODAL — eventos de cierre
-// ============================
-
+// Eventos para abrir/cerrar modal
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
 window.addEventListener("click", (e) => {
@@ -88,12 +65,15 @@ window.addEventListener("click", (e) => {
 });
 
 // ============================
-// CARGAR VEHÍCULOS
+// CARGA DE VEHÍCULOS
 // ============================
 
 /**
- * Obtiene la lista de vehículos desde el backend (autorizado) y los renderiza en la tabla
+ * @function cargarVehiculos
+ * @description Carga la lista de vehículos desde el backend y los muestra en la tabla
  * @async
+ * @return {Promise<void>}
+ * @throws {Error} Si ocurre un error al obtener los vehículos
  */
 async function cargarVehiculos() {
   try {
@@ -169,6 +149,7 @@ async function cargarVehiculos() {
 // NUEVO VEHÍCULO
 // ============================
 
+// Evento para abrir modal en modo creación
 btnAddVehiculo.addEventListener("click", () => {
   formTitle.textContent = "Añadir nuevo vehículo";
   abrirModal();
@@ -182,7 +163,8 @@ btnAddVehiculo.addEventListener("click", () => {
 // ============================
 
 /**
- * Rellena el formulario con los datos de un vehículo para edición
+ * @function editarVehiculo
+ * @description Rellena el formulario con los datos de un vehículo para edición
  * @param {Object} v Objeto vehículo
  */
 function editarVehiculo(v) {
@@ -198,7 +180,8 @@ function editarVehiculo(v) {
 // ============================
 
 /**
- * Vacía el formulario y restaura estado interno
+ * @function resetFormulario
+ * @description Vacía el formulario y restaura estado interno
  */
 function resetFormulario() {
   vehiculoForm.reset();
@@ -210,9 +193,11 @@ function resetFormulario() {
 // GUARDAR — CREAR / EDITAR
 // ============================
 
+// Evento submit del formulario (crear o editar)
 vehiculoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  // Construir objeto vehículo desde inputs
   const vehiculo = {
     marca: inputs.marca.value.trim(),
     modelo: inputs.modelo.value.trim(),
@@ -241,10 +226,10 @@ vehiculoForm.addEventListener("submit", async (e) => {
       body: JSON.stringify(vehiculo),
     });
 
-    // importante: leer respuesta
+    // Obtener respuesta JSON
     const data = await res.json();
 
-    // si backend devolvió error
+    // Manejar errores
     if (data.error) {
       alert(data.error);
       return;
@@ -263,9 +248,12 @@ vehiculoForm.addEventListener("submit", async (e) => {
 // ============================
 
 /**
- * Solicita confirmación y elimina vehículo en backend
+ * @function eliminarVehiculo
+ * @description Solicita confirmación y elimina vehículo en backend
  * @async
  * @param {string} matricula
+ * @return {Promise<void>}
+ * @throws {Error} Si ocurre un error al eliminar el vehículo
  */
 async function eliminarVehiculo(matricula) {
   if (!confirm("¿Seguro que quieres eliminar este vehículo?")) return;

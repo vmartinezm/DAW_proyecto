@@ -1,3 +1,10 @@
+/** 
+ * @file clientes.controller.js
+ * @description Controlador para gestionar las operaciones CRUD de clientes.
+ * @module controllers/clientes
+ */
+
+// Importar la conexión a la base de datos
 import connection from "../config/db.js";
 
 /**
@@ -5,6 +12,7 @@ import connection from "../config/db.js";
  * @description Obtiene todos los clientes registrados.
  * @route GET /clientes
  * @returns {JSON} Lista de clientes
+ * @throws {500} Error al obtener clientes
  */
 export const obtenerClientes = (req, res) => {
   const sql = "SELECT * FROM clientes";
@@ -23,6 +31,7 @@ export const obtenerClientes = (req, res) => {
  * @route GET /clientes/:dni
  * @param {string} dni DNI del cliente
  * @returns {JSON} Datos del cliente o error 404
+ * @throws {500} Error al obtener cliente
  */
 export const obtenerClientePorDni = (req, res) => {
   const { dni } = req.params;
@@ -49,6 +58,9 @@ export const obtenerClientePorDni = (req, res) => {
  * @param {string} email (único)
  * @param {string} telefono
  * @param {string} direccion
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {400} DNI o email duplicado
+ * @throws {500} Error al añadir cliente
  */
 export const anadirCliente = (req, res) => {
   const { dni, nombre, apellidos, email, telefono, direccion } = req.body;
@@ -82,6 +94,15 @@ export const anadirCliente = (req, res) => {
  * @description Actualiza los datos de un cliente existente.
  * @route PUT /clientes/:dni
  * @param {string} dni DNI del cliente a modificar
+ * @param {string} nombre
+ * @param {string} apellidos
+ * @param {string} email
+ * @param {string} telefono
+ * @param {string} direccion
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {400} Email duplicado
+ * @throws {404} Cliente no encontrado
+ * @throws {500} Error al actualizar cliente
  */
 export const actualizarCliente = (req, res) => {
   const { dni } = req.params;
@@ -115,6 +136,10 @@ export const actualizarCliente = (req, res) => {
  * @function eliminarCliente
  * @description Elimina un cliente existente.
  * @route DELETE /clientes/:dni
+ * @param {string} dni DNI del cliente a eliminar
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {404} Cliente no encontrado
+ * @throws {500} Error al eliminar cliente
  */
 export const eliminarCliente = (req, res) => {
   const { dni } = req.params;

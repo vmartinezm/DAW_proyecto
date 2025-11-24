@@ -1,28 +1,21 @@
 /**
- * @file mantenimientos.js
+ * @file public/js/mantenimientos.js
  * @description Gestión frontend del módulo de mantenimientos.
  * Incluye protección de acceso, carga dinámica, renderizado de datos y CRUD.
  */
 
+// Importar utilidades de autenticación
 import { requireLogin, authFetch } from "./auth.js";
 
-// ============================================================================
-//  PROTECCIÓN DE ACCESO
-// ============================================================================
+// Protección de acceso: requiere login
 requireLogin();
 
-// ============================================================================
-//  API ENDPOINTS
-// ============================================================================
-
+// API endpoints
 const API_MANTENIMIENTOS = "http://localhost:3000/mantenimientos";
 const API_VEHICULOS = "http://localhost:3000/vehiculos";
 const API_USUARIOS_BASIC = "http://localhost:3000/usuarios/basic";
 
-// ============================================================================
-//  SELECTORES DOM
-// ============================================================================
-
+// Selección de elementos del DOM
 const tableBody = document.querySelector("#mantenimientosTable tbody");
 const btnAddMantenimiento = document.getElementById("btnAddMantenimiento");
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
@@ -34,10 +27,7 @@ const btnCancelar = document.getElementById("btnCancelar");
 const grupoCreado = document.getElementById("grupoCreado");
 const form = document.getElementById("mantenimientoForm");
 
-/**
- * Inputs del formulario
- * @typedef {Object} MantenimientoInputs
- */
+// Inputs del formulario agrupados en un objeto
 const inputs = {
   id: document.getElementById("mantenimiento_id"),
   vehiculo_id: document.getElementById("vehiculo_id"),
@@ -54,7 +44,8 @@ const inputs = {
 // ============================================================================
 
 /**
- * Hace fetch autenticado + parsea JSON con manejo seguro de errores backend
+ * @function fetchJSON
+ * @description Hace fetch autenticado + parsea JSON con manejo seguro de errores backend
  * @param {string} url
  * @param {RequestInit} options
  * @returns {Promise<any>}
@@ -80,16 +71,17 @@ async function fetchJSON(url, options = {}) {
 //  MODAL
 // ============================================================================
 
-/** Abre modal */
+//  Abre modal
 const abrirModalFn = () => {
   modal.style.display = "block";
 };
 
-/** Cierra modal */
+// Cierra modal
 const cerrarModalFn = () => {
   modal.style.display = "none";
 };
 
+// Eventos de apertura/cierre modal
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
 window.addEventListener("click", (e) => {
@@ -131,7 +123,9 @@ btnAddMantenimiento.addEventListener("click", async () => {
 // ============================================================================
 
 /**
- * Carga lista de vehículos en el selector
+ * @function cargarVehiculosSelect
+ * @async
+ * @description Carga lista de vehículos en el selector
  * @param {boolean} disabled
  * @param {string|null} vehiculoActual
  */
@@ -170,7 +164,9 @@ async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
 // ============================================================================
 
 /**
- * Carga lista de usuarios en el selector
+ * @function cargarUsuariosSelect
+ * @async
+ * @description Carga lista de usuarios en el selector
  * @param {boolean} disabled
  * @param {string|null} usuarioActual
  */
@@ -200,7 +196,9 @@ async function cargarUsuariosSelect(disabled = false, usuarioActual = null) {
 // ============================================================================
 
 /**
- * Carga mantenimientos desde backend y los muestra en tabla
+ * @function cargarMantenimientos
+ * @async
+ * @description Carga mantenimientos desde backend y los muestra en tabla
  */
 async function cargarMantenimientos() {
   try {
@@ -320,11 +318,6 @@ tableBody.addEventListener("click", async (e) => {
 //  SUBMIT — CREAR / EDITAR
 // ============================================================================
 
-/**
- * Envía formulario al backend para crear o editar mantenimiento
- * @async
- * @param {SubmitEvent} e
- */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -348,18 +341,17 @@ form.addEventListener("submit", async (e) => {
   }
 
   try {
-  const data = await fetchJSON(url, {
-    method: metodo,
-    body: JSON.stringify(mantenimiento),
-  });
+    const data = await fetchJSON(url, {
+      method: metodo,
+      body: JSON.stringify(mantenimiento),
+    });
 
-  alert(data.mensaje || "Mantenimiento guardado correctamente");
-  cerrarModalFn();
-  cargarMantenimientos();
-
-} catch (err) {
-  alert(err.message);
-}
+    alert(data.mensaje || "Mantenimiento guardado correctamente");
+    cerrarModalFn();
+    cargarMantenimientos();
+  } catch (err) {
+    alert(err.message);
+  }
 });
 
 // ============================================================================

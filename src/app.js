@@ -1,17 +1,18 @@
 /**
- * Archivo principal del servidor Express.
- * Configura middlewares globales, rutas y arranque del servidor.
+ * @file app.js
+ * @description Archivo principal del servidor Express. Configura middlewares globales, rutas y arranque del servidor.
  */
 
+// ====== Importar dependencias ======
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 
-// Cargar variables de entorno
+// ====== Cargar variables de entorno ======
 dotenv.config();
 
-// Rutas
+// ====== Rutas ======
 import vehiculosRoutes from "./routes/vehiculos.routes.js";
 import mantenimientosRoutes from "./routes/mantenimientos.routes.js";
 import ventasRoutes from "./routes/ventas.routes.js";
@@ -19,7 +20,7 @@ import usuariosRoutes from "./routes/usuarios.routes.js";
 import clientesRoutes from "./routes/clientes.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 
-// Inicializar Express
+// ====== Inicializar Express ======
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -42,4 +43,5 @@ app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
+// ====== Exportar la aplicación ======
 export default app;

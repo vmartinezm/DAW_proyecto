@@ -1,14 +1,15 @@
 /**
- * URL de la API para realizar login
- * @constant {string}
+ * @file public/js/login.js
+ * @description Lógica de la página de login:
+ * - Verificación de sesión previa
+ * - Envío de credenciales al backend
+ * - Almacenamiento de sesión en sessionStorage
  */
+
+// URL de la API de login
 const API_login = "http://localhost:3000/auth/login";
 
-/**
- * Se ejecuta cuando carga la página de login:
- * - verifica si ya existe una sesión previa
- * - si hay sesión → redirige al dashboard
- */
+// Esperar a que el DOM esté cargado
 document.addEventListener("DOMContentLoaded", () => {
 
   // ================================
@@ -38,9 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ================================
   // 💡 Referencias a elementos DOM
   // ================================
-  /** @type {HTMLFormElement} */
   const form = document.getElementById("loginForm");
-  /** @type {HTMLElement} */
   const errorMsg = document.getElementById("loginError");
 
   // ================================
@@ -49,17 +48,12 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    /**
-     * Usuario y contraseña tomados desde el formulario
-     * @type {string}
-     */
+    // Usurio y contraseña procedentes del formulario, sin espacios al inicio/final
     const usuario = document.getElementById("usuario").value.trim();
     const password = document.getElementById("password").value.trim();
 
     try {
-      /**
-       * Enviar credenciales a backend
-       */
+      // Enviar credenciales a la API
       const resp = await fetch(API_login, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -75,20 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // ================================
-      // 🟢 Login correcto → crear sesión
-      // ================================
-      /**
-       * Estructura de sesión almacenada en sessionStorage
-       * @typedef {Object} Session
-       * @property {string} token
-       * @property {string} usuario
-       * @property {string} rol
-       * @property {number} user_id
-       * @property {string} nombre
-       */
-
-      /** @type {Session} */
+     // ✅ Login correcto → crear objeto sesión
       const session = {
         token: data.token,
         usuario: data.usuario.usuario,

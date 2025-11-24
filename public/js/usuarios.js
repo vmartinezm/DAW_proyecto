@@ -1,29 +1,26 @@
 /**
- * @file clientes.js
- * @description Gestión frontend del módulo de clientes.
+ * @file public/js/usuarios.js
+ * @description Gestión frontend del módulo de usuarios.
  */
 
+// Importar utilidades de autenticación
 import { requireAdmin, authFetch } from "./auth.js";
 
 // API ENDPOINT
 const API_USUARIOS = "http://localhost:3000/usuarios";
 
-// ============================================================================
-//  PROTECCIÓN DE ACCESO
-// ============================================================================
-
+// Protección de acceso: solo administradores
 if (!requireAdmin()) {
   throw new Error("Acceso denegado");
 }
-
 
 // ============================================================================
 //  UTILIDAD FETCHJSON — UNIFICACIÓN MANEJO RESPUESTAS
 // ============================================================================
 
 /**
- * Wrapper general para fetch + JSON con control de errores
- *
+ * @function fetchJSON
+ * @description Wrapper general para fetch + JSON con control de errores
  * @param {string} url
  * @param {RequestInit} options
  * @returns {Promise<any>}
@@ -46,7 +43,6 @@ async function fetchJSON(url, options = {}) {
   return data;
 }
 
-
 // ============================================================================
 //  REFERENCIAS DOM
 // ============================================================================
@@ -64,10 +60,7 @@ const formTitle = document.getElementById("formTitle");
 const grupoCreado = document.getElementById("grupoCreado");
 const grupoPassword = document.getElementById("grupoPassword");
 
-
-// ============================================================================
-//  INPUTS
-// ============================================================================
+// Inputs del formulario agrupados en un objeto
 const inputs = {
   id: document.getElementById("user_id"),
   nombre: document.getElementById("nombre"),
@@ -79,34 +72,33 @@ const inputs = {
   creado_at: document.getElementById("creado_at"),
 };
 
-
 // ============================================================================
 //  MODAL
 // ============================================================================
 
-/** Abre modal usuario */
-const abrirModalFn = () => modal.style.display = "block";
+// Abre el modal usuario
+const abrirModalFn = () => (modal.style.display = "block");
 
-/** Cierra modal usuario */
+// Cierra el modal usuario y resetea el formulario
 const cerrarModalFn = () => {
   modal.style.display = "none";
   form.reset();
 };
 
+// Eventos cierre modal
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
 window.addEventListener("click", (e) => {
   if (e.target === modal) cerrarModalFn();
 });
 
-
 // ============================================================================
 //  NAVEGACIÓN
 // ============================================================================
+
 btnIrDashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
-
 
 // ============================================================================
 //  NUEVO USUARIO
@@ -132,13 +124,15 @@ btnAddUsuario.addEventListener("click", () => {
   abrirModalFn();
 });
 
-
 // ============================================================================
 //  CARGAR USUARIOS
 // ============================================================================
 
 /**
- * Obtiene la lista de usuarios y la muestra en tabla
+ * @function cargarUsuarios
+ * @description Obtiene la lista de usuarios y la muestra en tabla
+ * @returns {Promise<void>}
+ * @throws {Error} Si hay error en la obtención de datos
  */
 async function cargarUsuarios() {
   try {
@@ -161,7 +155,7 @@ async function cargarUsuarios() {
         u.usuario,
         u.rol,
         u.email,
-        creadoFmt
+        creadoFmt,
       ].forEach((valor) => {
         const td = document.createElement("td");
         td.textContent = valor;
@@ -179,13 +173,11 @@ async function cargarUsuarios() {
     });
 
     tableBody.appendChild(frag);
-
   } catch (err) {
     console.error("Error al cargar usuarios:", err);
     alert(err.message);
   }
 }
-
 
 // ============================================================================
 //  EDITAR
@@ -208,7 +200,9 @@ tableBody.addEventListener("click", async (e) => {
     inputs.usuario.value = usuario.usuario;
     inputs.rol.value = usuario.rol;
     inputs.email.value = usuario.email;
-    inputs.creado_at.value = usuario.creado_at ? usuario.creado_at.split("T")[0] : "";
+    inputs.creado_at.value = usuario.creado_at
+      ? usuario.creado_at.split("T")[0]
+      : "";
 
     inputs.creado_at.disabled = true;
     grupoCreado.style.display = "block";
@@ -217,13 +211,11 @@ tableBody.addEventListener("click", async (e) => {
     inputs.password.placeholder = "Vacío → mantener contraseña actual";
 
     abrirModalFn();
-
   } catch (err) {
     console.error("Error al cargar usuario para edición:", err);
     alert(err.message);
   }
 });
-
 
 // ============================================================================
 //  ELIMINAR
@@ -240,21 +232,16 @@ tableBody.addEventListener("click", async (e) => {
 
     alert(data.mensaje || "Usuario eliminado correctamente");
     cargarUsuarios();
-
   } catch (err) {
     console.error("Error eliminando usuario:", err);
     alert(err.message);
   }
 });
 
-
 // ============================================================================
 //  GUARDAR
 // ============================================================================
 
-/**
- * Envía datos al backend para crear o actualizar usuario
- */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -289,15 +276,14 @@ form.addEventListener("submit", async (e) => {
     alert(data.mensaje || "Usuario guardado correctamente");
     cerrarModalFn();
     cargarUsuarios();
-
   } catch (err) {
     console.error("Error al guardar usuario:", err);
     alert(err.message);
   }
 });
 
-
 // ============================================================================
 //  INICIO
 // ============================================================================
+
 window.addEventListener("DOMContentLoaded", cargarUsuarios);

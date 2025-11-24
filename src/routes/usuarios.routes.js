@@ -1,12 +1,14 @@
 /**
  * @file usuarios.routes.js
- * Rutas relacionadas con la gestión de usuarios del sistema
- * @module routes/usuarios
+ * @description Rutas relacionadas con la gestión de usuarios del sistema
  * Incluye dos niveles de permisos: acceso general para administradores y acceso restringido para usuarios específicos.
+ * @module routes/usuarios
  */
 
+// Importar dependencias necesarias
 import express from "express";
 
+// Importar controladores de usuarios
 import {
   obtenerUsuarios,
   obtenerUsuarioPorId,
@@ -16,6 +18,7 @@ import {
   obtenerUsuariosBasic,
 } from "../controllers/usuarios.controller.js";
 
+// Importar validadores de usuarios
 import {
   validarUsuarioCreacion,
   validarUsuarioEdicion,
@@ -24,6 +27,7 @@ import {
 // Importar middleware de autenticación y autorización
 import { verifyToken, requireAdmin } from "../middlewares/auth.middleware.js";
 
+// Crear router de Express
 const router = express.Router();
 
 /**
@@ -41,31 +45,44 @@ router.get("/basic", verifyToken, obtenerUsuariosBasic);
 router.get("/", verifyToken, requireAdmin, obtenerUsuarios);
 
 /**
- * GET /usuarios/:user_id
- * Obtener un usuario específico por ID
+ * @route GET /usuarios/:user_id
+ * @description Obtener un usuario específico por ID
  * @access Solo admin
  */
 router.get("/:user_id", verifyToken, requireAdmin, obtenerUsuarioPorId);
 
 /**
- * POST /usuarios
- * Crear un nuevo usuario
+ * @route POST /usuarios
+ * @description Crear un nuevo usuario
  * @access Solo admin
  */
-router.post("/", verifyToken, requireAdmin, validarUsuarioCreacion, anadirUsuario);
+router.post(
+  "/",
+  verifyToken,
+  requireAdmin,
+  validarUsuarioCreacion,
+  anadirUsuario
+);
 
 /**
- * PUT /usuarios/:user_id
- * Actualizar un usuario existente
+ * @route PUT /usuarios/:user_id
+ * @description Actualizar un usuario existente
  * @access Solo admin
  */
-router.put("/:user_id", verifyToken, requireAdmin, validarUsuarioEdicion, actualizarUsuario);
+router.put(
+  "/:user_id",
+  verifyToken,
+  requireAdmin,
+  validarUsuarioEdicion,
+  actualizarUsuario
+);
 
 /**
- * DELETE /usuarios/:user_id
- * Eliminar un usuario
+ * @route DELETE /usuarios/:user_id
+ * @description Eliminar un usuario
  * @access Solo admin
  */
 router.delete("/:user_id", verifyToken, requireAdmin, eliminarUsuario);
 
+// Exportar el router
 export default router;

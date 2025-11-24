@@ -1,3 +1,9 @@
+/**
+ * @file mantenimientos.controller.js
+ * @description Controlador para gestionar los mantenimientos de vehículos.
+ */
+
+// Importar la conexión a la base de datos
 import connection from "../config/db.js";
 
 /**
@@ -5,6 +11,7 @@ import connection from "../config/db.js";
  * @description Obtiene todos los mantenimientos con los datos del vehículo y del empleado relacionados.
  * @route GET /mantenimientos
  * @returns {JSON} Lista de mantenimientos
+ * @throws {500} Error al obtener mantenimientos
  */
 export const obtenerMantenimientos = (req, res) => {
   const sql = `
@@ -27,12 +34,13 @@ export const obtenerMantenimientos = (req, res) => {
   });
 };
 
-
 /**
  * @function obtenerMantenimientoPorId
  * @description Obtiene un mantenimiento concreto según su ID.
  * @route GET /mantenimientos/:mantenimiento_id
  * @returns {JSON} Mantenimiento encontrado o error 404
+ * @throws {500} Error al obtener mantenimiento
+ * @throws {404} Mantenimiento no encontrado
  */
 export const obtenerMantenimientoPorId = (req, res) => {
   const { mantenimiento_id } = req.params;
@@ -62,7 +70,6 @@ export const obtenerMantenimientoPorId = (req, res) => {
   });
 };
 
-
 /**
  * @function determinarEstadoVehiculo
  * @private
@@ -82,17 +89,27 @@ function determinarEstadoVehiculo(fecha_fin) {
   return f < hoy ? "disponible" : "mantenimiento";
 }
 
-
 /**
  * @function anadirMantenimiento
  * @description Agrega un mantenimiento a un vehículo y actualiza inmediatamente su estado.
  * @route POST /mantenimientos
+ * @returns {JSON} Mantenimiento creado
+ * @throws {500} Error al agregar mantenimiento
  */
 export const anadirMantenimiento = (req, res) => {
-  const { vehiculo_id, fecha_inicio, fecha_fin, descripcion, coste, realizado_por } = req.body;
+  const {
+    vehiculo_id,
+    fecha_inicio,
+    fecha_fin,
+    descripcion,
+    coste,
+    realizado_por,
+  } = req.body;
 
   if (!vehiculo_id || !fecha_inicio) {
-    return res.status(400).json({ error: "Vehículo y fecha de inicio son obligatorios" });
+    return res
+      .status(400)
+      .json({ error: "Vehículo y fecha de inicio son obligatorios" });
   }
 
   const sqlInsert = `
@@ -103,11 +120,20 @@ export const anadirMantenimiento = (req, res) => {
 
   connection.query(
     sqlInsert,
-    [vehiculo_id, fecha_inicio, fecha_fin || null, descripcion, coste, realizado_por],
+    [
+      vehiculo_id,
+      fecha_inicio,
+      fecha_fin || null,
+      descripcion,
+      coste,
+      realizado_por,
+    ],
     (err, result) => {
       if (err) {
         console.error("Error al agregar mantenimiento:", err);
-        return res.status(500).json({ error: "Error al agregar mantenimiento" });
+        return res
+          .status(500)
+          .json({ error: "Error al agregar mantenimiento" });
       }
 
       const nuevoEstado = determinarEstadoVehiculo(fecha_fin);
@@ -115,31 +141,45 @@ export const anadirMantenimiento = (req, res) => {
       const sqlUpdateVehiculo = `
         UPDATE vehiculos SET estado = ? WHERE matricula = ?
       `;
-      connection.query(sqlUpdateVehiculo, [nuevoEstado, vehiculo_id], (err2) => {
-        if (err2) {
-          console.error("Error al actualizar estado del vehículo:", err2);
-          return res.status(500).json({
-            error: "Mantenimiento creado, pero error al actualizar estado del vehículo"
+      connection.query(
+        sqlUpdateVehiculo,
+        [nuevoEstado, vehiculo_id],
+        (err2) => {
+          if (err2) {
+            console.error("Error al actualizar estado del vehículo:", err2);
+            return res.status(500).json({
+              error:
+                "Mantenimiento creado, pero error al actualizar estado del vehículo",
+            });
+          }
+
+          res.json({
+            mensaje: `Mantenimiento añadido correctamente y vehículo marcado como ${nuevoEstado}`,
           });
         }
-
-        res.json({
-          mensaje: `Mantenimiento añadido correctamente y vehículo marcado como ${nuevoEstado}`
-        });
-      });
+      );
     }
   );
 };
-
 
 /**
  * @function actualizarMantenimiento
  * @description Actualiza un mantenimiento existente y actualiza el estado del vehículo asociado.
  * @route PUT /mantenimientos/:mantenimiento_id
+ * @returns {JSON} Mantenimiento actualizado
+ * @throws {500} Error al actualizar mantenimiento
+ * @throws {404} Mantenimiento no encontrado
  */
 export const actualizarMantenimiento = (req, res) => {
   const { mantenimiento_id } = req.params;
-  const { vehiculo_id, fecha_inicio, fecha_fin, descripcion, coste, realizado_por } = req.body;
+  const {
+    vehiculo_id,
+    fecha_inicio,
+    fecha_fin,
+    descripcion,
+    coste,
+    realizado_por,
+  } = req.body;
 
   const sqlUpdate = `
     UPDATE mantenimientos
@@ -149,11 +189,21 @@ export const actualizarMantenimiento = (req, res) => {
 
   connection.query(
     sqlUpdate,
-    [vehiculo_id, fecha_inicio, fecha_fin || null, descripcion, coste, realizado_por, mantenimiento_id],
+    [
+      vehiculo_id,
+      fecha_inicio,
+      fecha_fin || null,
+      descripcion,
+      coste,
+      realizado_por,
+      mantenimiento_id,
+    ],
     (err, result) => {
       if (err) {
         console.error("Error al actualizar mantenimiento:", err);
-        return res.status(500).json({ error: "Error al actualizar mantenimiento" });
+        return res
+          .status(500)
+          .json({ error: "Error al actualizar mantenimiento" });
       }
 
       if (result.affectedRows === 0) {
@@ -168,23 +218,26 @@ export const actualizarMantenimiento = (req, res) => {
         if (err2) {
           console.error("Error al actualizar estado del vehículo:", err2);
           return res.status(500).json({
-            error: "Mantenimiento actualizado pero error al actualizar estado del vehículo"
+            error:
+              "Mantenimiento actualizado pero error al actualizar estado del vehículo",
           });
         }
 
         res.json({
-          mensaje: `Mantenimiento actualizado correctamente y vehículo marcado como ${nuevoEstado}`
+          mensaje: `Mantenimiento actualizado correctamente y vehículo marcado como ${nuevoEstado}`,
         });
       });
     }
   );
 };
 
-
 /**
  * @function eliminarMantenimiento
  * @description Elimina un mantenimiento y marca el vehículo como disponible.
  * @route DELETE /mantenimientos/:mantenimiento_id
+ * @returns {JSON} Mantenimiento eliminado
+ * @throws {500} Error al eliminar mantenimiento
+ * @throws {404} Mantenimiento no encontrado
  */
 export const eliminarMantenimiento = (req, res) => {
   const { mantenimiento_id } = req.params;
@@ -203,7 +256,9 @@ export const eliminarMantenimiento = (req, res) => {
     connection.query(sqlDelete, [mantenimiento_id], (err2) => {
       if (err2) {
         console.error("Error al eliminar mantenimiento:", err2);
-        return res.status(500).json({ error: "Error al eliminar mantenimiento" });
+        return res
+          .status(500)
+          .json({ error: "Error al eliminar mantenimiento" });
       }
 
       const sqlUpdateVehiculo = `
@@ -213,12 +268,13 @@ export const eliminarMantenimiento = (req, res) => {
         if (err3) {
           console.error("Error al actualizar estado del vehículo:", err3);
           return res.status(500).json({
-            error: "Mantenimiento eliminado pero error al actualizar estado del vehículo"
+            error:
+              "Mantenimiento eliminado pero error al actualizar estado del vehículo",
           });
         }
 
         res.json({
-          mensaje: "Mantenimiento eliminado y vehículo marcado como disponible"
+          mensaje: "Mantenimiento eliminado y vehículo marcado como disponible",
         });
       });
     });

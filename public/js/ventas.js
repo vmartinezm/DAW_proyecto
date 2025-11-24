@@ -1,34 +1,25 @@
 /**
- * @file ventas.js
+ * @file public/js/ventas.js
  * @description Gestión frontend del módulo de ventas.
  */
 
+// Importar utilidades de autenticación
 import { requireLogin, authFetch } from "./auth.js";
 
-// ============================================================================
-//  PROTECCIÓN DE ACCESO
-// ============================================================================
-
+// Asegurar que el usuario está logueado
 requireLogin();
 
-// ============================================================================
-//  API ENDPOINTS
-// ============================================================================
-
+// API endpoints
 const API_VENTAS = "http://localhost:3000/ventas";
 const API_VEHICULOS = "http://localhost:3000/vehiculos";
 const API_CLIENTES = "http://localhost:3000/clientes";
 const API_USUARIOS_BASIC = "http://localhost:3000/usuarios/basic";
 
-
-// ============================================================================
-//  SELECTORES DOM PRINCIPALES
-// ============================================================================
-
+// Selección de elementos DOM
 const tableBody = document.querySelector("#ventasTable tbody");
 const btnAddVenta = document.getElementById("btnAddVenta");
 const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
-const btnIrdashboard = document.getElementById("btnIrDashboard");
+const btnIrDashboard = document.getElementById("btnIrDashboard");
 const modal = document.getElementById("ventaModal");
 const cerrarModal = document.getElementById("cerrarModal");
 const formTitle = document.getElementById("formTitle");
@@ -36,26 +27,7 @@ const btnCancelar = document.getElementById("btnCancelar");
 const grupoCreado = document.getElementById("grupoCreado");
 const form = document.getElementById("ventasForm");
 
-
-// ============================================================================
-//  INPUTS FORMULARIO VENTAS
-// ============================================================================
-
-/**
- * Referencias a los campos del formulario de venta
- * @typedef {Object} VentaInputs
- * @property {HTMLInputElement} id
- * @property {HTMLSelectElement} vehiculo_id
- * @property {HTMLSelectElement} cliente_dni
- * @property {HTMLInputElement} fecha
- * @property {HTMLSelectElement} tipo
- * @property {HTMLInputElement} precio_venta
- * @property {HTMLSelectElement} vendedor_id
- * @property {HTMLTextAreaElement} notas
- * @property {HTMLInputElement} creado_at
- */
-
-/** @type {VentaInputs} */
+// Inputs del formulario agrupados en un objeto
 const inputs = {
   id: document.getElementById("venta_id"),
   vehiculo_id: document.getElementById("vehiculo_id"),
@@ -68,28 +40,22 @@ const inputs = {
   creado_at: document.getElementById("creado_at"),
 };
 
-
 // ============================================================================
 //  MODAL NUEVO CLIENTE (ELEMENTOS DOM)
 // ============================================================================
 
-/** @type {HTMLElement} */
 const clienteModal = document.getElementById("clienteModal");
-/** @type {HTMLButtonElement} */
 const btnAddCliente = document.getElementById("btnAddCliente");
-/** @type {HTMLElement} */
 const cerrarClienteModal = document.getElementById("cerrarClienteModal");
-/** @type {HTMLFormElement} */
 const clienteForm = document.getElementById("clienteForm");
-
 
 // ============================================================================
 //  UTILIDAD GLOBAL: FETCH + JSON + CONTROL DE ERRORES
 // ============================================================================
 
 /**
- * Realiza un fetch y devuelve JSON, lanzando Error si el status no es OK.
- *
+ * @function fetchJSON
+ * @description Realiza un fetch y devuelve JSON, lanzando Error si el status no es OK.
  * @param {string} url - URL a la que hacer la petición
  * @param {RequestInit} [options={}] - Opciones adicionales para fetch
  * @returns {Promise<any>} - JSON parseado de la respuesta
@@ -112,28 +78,26 @@ async function fetchJSON(url, options = {}) {
   return data;
 }
 
-
 // ============================================================================
 //  FUNCIONES DE MODAL VENTA
 // ============================================================================
 
-/** Abre el modal de venta */
+// Abrir el modal de venta
 const abrirModalFn = () => {
   modal.style.display = "block";
 };
 
-/** Cierra el modal de venta */
+// Cerrar el modal de venta
 const cerrarModalFn = () => {
   modal.style.display = "none";
 };
 
-// Eventos de modal principal
+// Eventos de cierre del modal
 cerrarModal.addEventListener("click", cerrarModalFn);
 btnCancelar.addEventListener("click", cerrarModalFn);
 window.addEventListener("click", (e) => {
   if (e.target === modal) cerrarModalFn();
 });
-
 
 // ============================================================================
 //  NAVEGACIÓN
@@ -143,19 +107,14 @@ btnVolverVehiculos.addEventListener("click", () => {
   window.location.href = "vehiculos.html";
 });
 
-btnIrdashboard.addEventListener("click", () => {
+btnIrDashboard.addEventListener("click", () => {
   window.location.href = "index.html";
 });
-
 
 // ============================================================================
 //  ABRIR FORMULARIO PARA NUEVA VENTA
 // ============================================================================
 
-/**
- * Prepara el formulario para crear una nueva venta/reserva.
- * Limpia campos, carga selects y muestra modal.
- */
 btnAddVenta.addEventListener("click", async () => {
   formTitle.textContent = "Añadir nueva venta";
   form.dataset.modo = "crear";
@@ -182,15 +141,15 @@ btnAddVenta.addEventListener("click", async () => {
   abrirModalFn();
 });
 
-
 // ============================================================================
 //  SELECT: VEHÍCULOS
 // ============================================================================
 
 /**
- * Llena el <select> de vehículos con matrículas disponibles.
+ * @function cargarVehiculosSelect
+ * @async
+ * @description Llena el <select> de vehículos con matrículas disponibles.
  * Bloquea vehículos NO disponibles, salvo que coincidan con vehiculoActual (modo edición).
- *
  * @param {boolean} disabled - Si true, el select queda deshabilitado (modo edición).
  * @param {string|null} [vehiculoActual=null] - Matrícula permitida aunque no esté disponible.
  * @returns {Promise<void>}
@@ -228,14 +187,14 @@ async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
   }
 }
 
-
 // ============================================================================
 //  SELECT: CLIENTES
 // ============================================================================
 
 /**
- * Llena el <select> de clientes (DNI - nombre completo).
- *
+ * @function cargarClientesSelect
+ * @async
+ * @description Llena el <select> de clientes (DNI - nombre completo).
  * @param {boolean} disabled - Si true, el select queda deshabilitado.
  * @param {string|null} [clienteActual=null] - DNI a seleccionar automáticamente.
  * @returns {Promise<void>}
@@ -268,14 +227,14 @@ async function cargarClientesSelect(disabled = false, clienteActual = null) {
   }
 }
 
-
 // ============================================================================
 //  SELECT: USUARIOS (VENDEDORES)
 // ============================================================================
 
 /**
- * Llena el <select> con usuarios del sistema (empleados/vendedores).
- *
+ * @function cargarUsuariosSelect
+ * @async
+ * @description Llena el <select> con usuarios del sistema (empleados/vendedores).
  * @param {boolean} disabled - Si true, el select queda deshabilitado.
  * @param {string|null} [vendedorActual=null] - ID de usuario a seleccionar.
  * @returns {Promise<void>}
@@ -307,14 +266,14 @@ async function cargarUsuariosSelect(disabled = false, vendedorActual = null) {
   }
 }
 
-
 // ============================================================================
 //  CARGAR LISTA DE VENTAS EN TABLA
 // ============================================================================
 
 /**
- * Obtiene todas las ventas del backend y las renderiza en la tabla HTML.
- *
+ * @function cargarVentas
+ * @async
+ * @description Obtiene todas las ventas del backend y las renderiza en la tabla HTML.
  * @returns {Promise<void>}
  */
 async function cargarVentas() {
@@ -327,8 +286,12 @@ async function cargarVentas() {
     ventas.forEach((v) => {
       const row = document.createElement("tr");
 
-      const fechaFmt = v.fecha ? new Date(v.fecha).toLocaleDateString("es-ES") : "";
-      const creadoFmt = v.creado_at ? new Date(v.creado_at).toLocaleDateString("es-ES") : "";
+      const fechaFmt = v.fecha
+        ? new Date(v.fecha).toLocaleDateString("es-ES")
+        : "";
+      const creadoFmt = v.creado_at
+        ? new Date(v.creado_at).toLocaleDateString("es-ES")
+        : "";
       const precioFmt =
         v.precio_venta != null
           ? new Intl.NumberFormat("es-ES", {
@@ -378,15 +341,10 @@ async function cargarVentas() {
   }
 }
 
-
 // ============================================================================
 //  EDITAR VENTA
 // ============================================================================
 
-/**
- * Maneja el click en botón "Editar" dentro de la tabla de ventas.
- * Carga la venta seleccionada en el formulario.
- */
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-editar")) {
     const id = e.target.dataset.id;
@@ -409,7 +367,9 @@ tableBody.addEventListener("click", async (e) => {
       inputs.precio_venta.value = venta.precio_venta;
       inputs.vendedor_id.value = venta.vendedor_id;
       inputs.notas.value = venta.notas ?? "";
-      inputs.creado_at.value = venta.creado_at ? venta.creado_at.split("T")[0] : "";
+      inputs.creado_at.value = venta.creado_at
+        ? venta.creado_at.split("T")[0]
+        : "";
 
       grupoCreado.style.display = "block";
       inputs.creado_at.disabled = true;
@@ -425,14 +385,10 @@ tableBody.addEventListener("click", async (e) => {
   }
 });
 
-
 // ============================================================================
 //  GUARDAR VENTA (CREAR / EDITAR)
 // ============================================================================
 
-/**
- * Maneja el envío del formulario de venta tanto para crear como para editar.
- */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -471,14 +427,10 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-
 // ============================================================================
 //  ELIMINAR VENTA
 // ============================================================================
 
-/**
- * Maneja el click en botón "Eliminar" y realiza petición DELETE.
- */
 tableBody.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-eliminar")) {
     const id = e.target.dataset.id;
@@ -495,7 +447,6 @@ tableBody.addEventListener("click", async (e) => {
     }
   }
 });
-
 
 // ============================================================================
 //  MODAL NUEVO CLIENTE DESDE VENTAS
@@ -516,30 +467,38 @@ window.addEventListener("click", (e) => {
   if (e.target === clienteModal) clienteModal.style.display = "none";
 });
 
-
 // ============================================================================
 //  SUBMIT NUEVO CLIENTE (DESDE MODAL)
 // ============================================================================
 
-/**
- * Envía datos del mini-formulario de cliente al backend.
- * Si se crea correctamente, recarga el select de clientes y selecciona el nuevo.
- */
 clienteForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const dni = document.getElementById("cliente_dni_nuevo").value.trim();
   const nombre = document.getElementById("cliente_nombre_nuevo").value.trim();
-  const apellidos = document.getElementById("cliente_apellidos_nuevo").value.trim();
+  const apellidos = document
+    .getElementById("cliente_apellidos_nuevo")
+    .value.trim();
   const email = document.getElementById("cliente_email_nuevo").value.trim();
-  const telefono = document.getElementById("cliente_telefono_nuevo").value.trim();
-  const direccion = document.getElementById("cliente_direccion_nuevo").value.trim();
+  const telefono = document
+    .getElementById("cliente_telefono_nuevo")
+    .value.trim();
+  const direccion = document
+    .getElementById("cliente_direccion_nuevo")
+    .value.trim();
 
   try {
     const data = await fetchJSON(API_CLIENTES, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ dni, nombre, apellidos, email, telefono, direccion }),
+      body: JSON.stringify({
+        dni,
+        nombre,
+        apellidos,
+        email,
+        telefono,
+        direccion,
+      }),
     });
 
     alert(data.mensaje || "Cliente creado correctamente");
@@ -549,19 +508,14 @@ clienteForm.addEventListener("submit", async (e) => {
     // Recargar el select de clientes y seleccionar al nuevo
     await cargarClientesSelect(false, dni);
     btnAddCliente.style.display = "none";
-
   } catch (err) {
     console.error("Error al crear cliente:", err);
     alert(err.message);
   }
 });
 
-
 // ============================================================================
 //  INICIALIZACIÓN
 // ============================================================================
 
-/**
- * Al cargar la página se obtienen las ventas existentes y se pintan en la tabla.
- */
 window.addEventListener("DOMContentLoaded", cargarVentas);

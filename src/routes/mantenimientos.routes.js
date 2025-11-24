@@ -1,60 +1,71 @@
 /**
- * Rutas relacionadas con la gestión de mantenimientos
+ * @file mantenimientos.routes.js
+ * @description Rutas relacionadas con la gestión de mantenimientos
  * @module routes/mantenimientos
  */
 
+// Importar dependencias
 import express from "express";
+
+// Importar controladores
 import {
   obtenerMantenimientos,
   obtenerMantenimientoPorId,
   anadirMantenimiento,
   actualizarMantenimiento,
-  eliminarMantenimiento
+  eliminarMantenimiento,
 } from "../controllers/mantenimientos.controller.js";
 
+// Importar validadores
 import {
   validarMantenimiento,
-  validarMantenimientoEdicion
+  validarMantenimientoEdicion,
 } from "../middlewares/validators/mantenimientos.validator.js";
 
 // Importar middleware de autenticación
 import { verifyToken } from "../middlewares/auth.middleware.js";
 
+// Crear el router
 const router = express.Router();
 
 // Todas las rutas requieren login
 router.use(verifyToken);
 
 /**
- * GET /mantenimientos
- * Obtener todos los mantenimientos
+ * @route GET /mantenimientos
+ * @description Obtener todos los mantenimientos
  */
 router.get("/", obtenerMantenimientos);
 
 /**
- * GET /mantenimientos/:mantenimiento_id
- * Obtener un mantenimiento por ID
+ * @route GET /mantenimientos/:mantenimiento_id
+ * @description Obtener un mantenimiento por ID
  */
 router.get("/:mantenimiento_id", obtenerMantenimientoPorId);
 
 /**
- * POST /mantenimientos
- * Crear un nuevo mantenimiento
+ * @route POST /mantenimientos
+ * @description Crear un nuevo mantenimiento
  * Valida los datos del mantenimiento antes de crear
  */
 router.post("/", validarMantenimiento, anadirMantenimiento);
 
 /**
- * PUT /mantenimientos/:mantenimiento_id
- * Actualizar un mantenimiento existente
+ * @route PUT /mantenimientos/:mantenimiento_id
+ * @description Actualizar un mantenimiento existente
  * Valida los datos del mantenimiento antes de actualizar
  */
-router.put("/:mantenimiento_id", validarMantenimientoEdicion, actualizarMantenimiento);
+router.put(
+  "/:mantenimiento_id",
+  validarMantenimientoEdicion,
+  actualizarMantenimiento
+);
 
 /**
- * DELETE /mantenimientos/:mantenimiento_id
- * Eliminar mantenimiento por ID
+ * @route DELETE /mantenimientos/:mantenimiento_id
+ * @description Eliminar mantenimiento por ID
  */
 router.delete("/:mantenimiento_id", eliminarMantenimiento);
 
+// Exportar el router
 export default router;

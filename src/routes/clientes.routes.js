@@ -1,10 +1,13 @@
 /**
- * Rutas relacionadas con la gestión de clientes
+ * @file clientes.routes.js
+ * @description Rutas relacionadas con la gestión de clientes
  * @module routes/clientes
  */
 
+// Importar express
 import express from "express";
 
+// Importar controladores de clientes
 import {
     obtenerClientes,
     obtenerClientePorDni,
@@ -13,6 +16,7 @@ import {
     eliminarCliente
 } from "../controllers/clientes.controller.js";
 
+// Importar validadores de clientes
 import {
   validarCliente,
   validarClienteEdicion
@@ -21,43 +25,41 @@ import {
 // Importar middleware de autenticación
 import { verifyToken } from "../middlewares/auth.middleware.js";
 
+// Crear el router
 const router = express.Router();
 
 // Todas las operaciones con clientes requieren login
 router.use(verifyToken);
 
 /**
- * GET /clientes
- * Obtener listado completo de clientes
- * Visible para cualquier usuario autenticado
+ * @route GET /clientes
+ * @description Obtener listado completo de clientes. Visible para cualquier usuario autenticado
  */
 router.get("/", obtenerClientes);
 
 /**
- * GET /clientes/:dni
- * Obtener un cliente por DNI
- * Visible para cualquier usuario autenticado
+ * @route GET /clientes/:dni
+ * @description Obtener un cliente por DNI. Visible para cualquier usuario autenticado
  */
 router.get("/:dni", obtenerClientePorDni);
 
 /**
- * POST /clientes
- * Registrar un nuevo cliente
- * Valida los datos del cliente antes de crear
+ * @route POST /clientes
+ * @description Registrar un nuevo cliente. Valida los datos del cliente antes de crear
  */
 router.post("/", validarCliente, anadirCliente);
 
 /**
- * PUT /clientes/:dni
- * Editar datos de un cliente existente
- * Valida los datos del cliente antes de actualizar
+ * @route PUT /clientes/:dni
+ * @description Editar datos de un cliente existente. Valida los datos del cliente antes de actualizar
  */
 router.put("/:dni", validarClienteEdicion, actualizarCliente);
 
 /**
- * DELETE /clientes/:dni
- * Eliminar un cliente
+ * @route DELETE /clientes/:dni
+ * @description Eliminar un cliente
  */
 router.delete("/:dni", eliminarCliente);
 
+// Exportar el router
 export default router;

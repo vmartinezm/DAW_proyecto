@@ -1,11 +1,16 @@
 /**
- * Rutas de autenticación de usuarios
+ * @file src/routes/auth.routes.js
+ * @description Rutas de autenticación de usuarios
  * @module routes/auth
  */
 
+// Importar dependencias
 import express from "express";
+
+// Importar controlador de autenticación
 import { login } from "../controllers/auth.controller.js";
 
+// Crear router
 const router = express.Router();
 
 /**
@@ -15,4 +20,5 @@ const router = express.Router();
  */
 router.post("/login", login);
 
+// Exportar router
 export default router;

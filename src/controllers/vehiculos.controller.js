@@ -1,9 +1,19 @@
-// src/controllers/vehiculos.controller.js
+/** 
+ * @file vehiculos.controller.js
+ * @description Controlador para la gestión de vehículos.
+*/
+
+// Importar la conexión a la base de datos
 import connection from "../config/db.js";
 
 /**
- * Obtiene todos los vehículos de la base de datos.
+ * @function obtenerVehiculos
+ * @description Obtiene todos los vehículos de la base de datos.
  * @route GET /vehiculos
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @returns {JSON} Lista de vehículos
+ * @throws {500} Error al obtener vehículos
  */
 export const obtenerVehiculos = (req, res) => {
   const sql = "SELECT * FROM vehiculos";
@@ -18,8 +28,14 @@ export const obtenerVehiculos = (req, res) => {
 };
 
 /**
- * Obtiene un vehículo según su matrícula.
+ * @function obtenerVehiculoPorMatricula
+ * @description Obtiene un vehículo según su matrícula.
  * @route GET /vehiculos/:matricula
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @returns {JSON} Vehículo encontrado
+ * @throws {404} Vehículo no encontrado
+ * @throws {500} Error al obtener vehículo
  */
 export const obtenerVehiculoPorMatricula = (req, res) => {
   const { matricula } = req.params;
@@ -39,8 +55,15 @@ export const obtenerVehiculoPorMatricula = (req, res) => {
 };
 
 /**
- * Crea un nuevo vehículo en la base de datos.
+ * @function anadirVehiculo
+ * @description Crea un nuevo vehículo en la base de datos.
  * @route POST /vehiculos
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {400} Faltan campos obligatorios
+ * @throws {400} Ya existe un vehículo con esa matrícula
+ * @throws {500} Error al insertar vehículo
  */
 export const anadirVehiculo = (req, res) => {
   const {
@@ -94,8 +117,15 @@ export const anadirVehiculo = (req, res) => {
 };
 
 /**
- * Actualiza la información de un vehículo según matrícula.
+ * @function actualizarVehiculo
+ * @description Actualiza la información de un vehículo según matrícula.
  * @route PUT /vehiculos/:matricula
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {404} Vehículo no encontrado
+ * @throws {500} Error al actualizar vehículo
+ * @throws {400} Ya existe un vehículo con esa matrícula
  */
 export const actualizarVehiculo = (req, res) => {
   const { matricula } = req.params;
@@ -126,8 +156,14 @@ export const actualizarVehiculo = (req, res) => {
 };
 
 /**
- * Elimina un vehículo de la base de datos.
+ * @function eliminarVehiculo
+ * @description Elimina un vehículo de la base de datos.
  * @route DELETE /vehiculos/:matricula
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {404} Vehículo no encontrado
+ * @throws {500} Error al eliminar vehículo
  */
 export const eliminarVehiculo = (req, res) => {
   const { matricula } = req.params;

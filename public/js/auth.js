@@ -1,8 +1,12 @@
-/* ---------------------------------------------------
-   auth.js — Módulo de protección universal
----------------------------------------------------- */
+/**
+ * @file public/js/auth.js
+ * @description Módulo de autenticación y gestión de sesión.
+ * Proporciona funciones para manejar la sesión del usuario, verificar roles y proteger rutas.
+ */
 
 /**
+ * @function getSession
+ * @description Obtiene la sesión del usuario guardada en sessionStorage.
  * Devuelve el objeto de sesión guardado en sessionStorage.
  * Si no existe una sesión guardada, devuelve un objeto vacío.
  * @returns {Object} El objeto de sesión guardado en sessionStorage.
@@ -14,9 +18,9 @@ export function getSession() {
 }
 
 /**
- * Comprueba si el usuario está logueado.
+ * @function requireLogin
+ * @description Comprueba si el usuario está logueado.
  * Si no lo está → redirige automáticamente a login.html
- *
  * @returns {boolean} true si el usuario está logueado
  */
 export function requireLogin() {
@@ -31,7 +35,8 @@ export function requireLogin() {
 }
 
 /**
- * Protege una página exclusiva para administradores.
+ * @function requireAdmin
+ * @description Protege una página exclusiva para administradores.
  * Si el rol no es admin → redirige al dashboard.
  */
 export function requireAdmin() {
@@ -52,7 +57,9 @@ export function requireAdmin() {
 }
 
 /**
- * Cierra la sesión actual y redirige a login.html.
+ * @function logout
+ * @description Cierra la sesión actual del usuario y redirige a login.html
+ * Elimina la sesión guardada en sessionStorage.
  */
 export function logout() {
   sessionStorage.removeItem("session");
@@ -60,7 +67,8 @@ export function logout() {
 }
 
 /**
- * Realiza una petición a la API con token de autenticación
+ * @function authFetch
+ * @description Realiza una petición a la API con token de autenticación
  * Si no hay token en session, redirige a login.html
  * @param {string} url - URL de la API
  * @param {Object} options - Opciones adicionales para fetch

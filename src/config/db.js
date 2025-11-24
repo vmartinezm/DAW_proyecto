@@ -1,13 +1,16 @@
 /**
- * Configuración y conexión a MySQL.
- * Este módulo exporta una única conexión reutilizable en toda la aplicación.
+ * @file db.js
+ * @description Configuración y conexión a MySQL. Este módulo exporta una única conexión reutilizable en toda la aplicación.
  */
 
+// Importar dependencias
 import mysql from "mysql";
 import dotenv from "dotenv";
 
+// Cargar variables de entorno desde el archivo .env
 dotenv.config();
 
+// Crear la conexión a MySQL
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -24,4 +27,5 @@ connection.connect((err) => {
   console.log("✅ Conexión a MySQL establecida.");
 });
 
+// Exportar la conexión para su uso en otros módulos
 export default connection;

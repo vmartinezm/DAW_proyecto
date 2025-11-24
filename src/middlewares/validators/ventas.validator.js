@@ -1,14 +1,21 @@
 /**
- * @fileoverview Middleware de validación para ventas y reservas.
+ * @file ventas.validator.js
+ * @description Middlewares de validación para las rutas de ventas y reservas
+ * @module middlewares/validators/ventas.validator
  */
 
+// Importar la conexión a la base de datos
 import connection from "../../config/db.js";
+
+// Utilidad para usar promesas con consultas SQL
 import { promisify } from "util";
 
+// Promisificar el método query de la conexión
 const queryAsync = promisify(connection.query).bind(connection);
 
 /**
- * Verifica si una fecha cumple con formato ISO yyyy-mm-dd
+ * @function validarFechaISO
+ * @description Verifica si una fecha cumple con formato ISO yyyy-mm-dd
  * @param {string} f - Cadena de fecha
  * @returns {boolean} True si el formato es correcto
  */
@@ -17,7 +24,8 @@ function validarFechaISO(f) {
 }
 
 /**
- * Comprueba si un cliente existe en la base de datos
+ * @function existeCliente
+ * @description Comprueba si un cliente existe en la base de datos
  * @param {string} dni - DNI del cliente
  * @returns {Promise<boolean>} True si el cliente existe, false en caso contrario
  */
@@ -27,37 +35,49 @@ async function existeCliente(dni) {
 }
 
 /**
- * Comprueba si un usuario existe en la base de datos.
+ * @function existeUsuario
+ * @description Comprueba si un usuario existe en la base de datos.
  * @param {number|string} id - user_id del empleado
  * @returns {Promise<boolean>} True si el usuario existe, false en caso contrario
  */
 async function existeUsuario(id) {
-  const r = await queryAsync("SELECT user_id FROM usuarios WHERE user_id = ?", [id]);
+  const r = await queryAsync("SELECT user_id FROM usuarios WHERE user_id = ?", [
+    id,
+  ]);
   return r.length > 0;
 }
 
 /**
- * Comprueba si un vehículo existe en la base de datos
+ * @function existeVehiculo
+ * @description Comprueba si un vehículo existe en la base de datos
  * @param {string} matricula Matrícula del vehículo
  * @returns {Promise<boolean>} True si el vehículo existe, false en caso contrario
  */
 async function existeVehiculo(matricula) {
-  const r = await queryAsync("SELECT matricula FROM vehiculos WHERE matricula = ?", [matricula]);
+  const r = await queryAsync(
+    "SELECT matricula FROM vehiculos WHERE matricula = ?",
+    [matricula]
+  );
   return r.length > 0;
 }
 
 /**
- * Devuelve el estado actual de un vehículo
+ * @function estadoVehiculo
+ * @description Comprueba y devuelve el estado actual de un vehículo
  * @param {string} matricula Matrícula del vehículo
  * @returns {Promise<string|null>} Estado actual del vehículo o null si no existe
  */
 async function estadoVehiculo(matricula) {
-  const r = await queryAsync("SELECT estado FROM vehiculos WHERE matricula = ?", [matricula]);
+  const r = await queryAsync(
+    "SELECT estado FROM vehiculos WHERE matricula = ?",
+    [matricula]
+  );
   return r.length > 0 ? r[0].estado : null;
 }
 
 /**
- * Middleware de validación para crear o editar una venta o reserva.
+ * @function validarVenta
+ * @description Middleware de validación para crear o editar una venta o reserva.
  * Valida los datos de la venta: vehículo, cliente, fecha, tipo, precio_venta y vendedor_id.
  * Comprueba que el vehículo, cliente y vendedor existen.
  * Comprueba que la fecha es válida.
@@ -65,11 +85,15 @@ async function estadoVehiculo(matricula) {
  * Comprueba que el precio_venta sea un número mayor que 0.
  * Comprueba que el vehículo no esté vendido ni en mantenimiento en caso de venta.
  * Comprueba que el vehículo no esté reservado en caso de reserva.
- * Si hay algún error, devuelve un 400 con un mensaje de error.
- * Si no hay errores, pasa a la siguiente función en la cadena de middlewares.
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @param {Function} next - Función para pasar al siguiente middleware
+ * @returns {void|JSON} Llama a next() si todo es correcto, o devuelve un error 400 con el mensaje de error
+ * @throws {400} Error de validación con el mensaje correspondiente
  */
 export async function validarVenta(req, res, next) {
-  const { vehiculo_id, cliente_dni, fecha, tipo, precio_venta, vendedor_id } = req.body;
+  const { vehiculo_id, cliente_dni, fecha, tipo, precio_venta, vendedor_id } =
+    req.body;
 
   if (!vehiculo_id || !(await existeVehiculo(vehiculo_id))) {
     return res.status(400).json({ error: "Debe indicarse un vehículo válido" });
@@ -88,11 +112,15 @@ export async function validarVenta(req, res, next) {
   }
 
   if (!["venta", "reserva"].includes(tipo)) {
-    return res.status(400).json({ error: "El tipo debe ser 'venta' o 'reserva'" });
+    return res
+      .status(400)
+      .json({ error: "El tipo debe ser 'venta' o 'reserva'" });
   }
 
   if (precio_venta == null || isNaN(precio_venta) || precio_venta <= 0) {
-    return res.status(400).json({ error: "El precio debe ser un número mayor que 0" });
+    return res
+      .status(400)
+      .json({ error: "El precio debe ser un número mayor que 0" });
   }
 
   const estado = await estadoVehiculo(vehiculo_id);
@@ -101,7 +129,9 @@ export async function validarVenta(req, res, next) {
     return res.status(400).json({ error: "El vehículo ya está vendido" });
   }
   if (estado === "mantenimiento" && tipo === "venta") {
-    return res.status(400).json({ error: "No se puede vender un vehículo en mantenimiento" });
+    return res
+      .status(400)
+      .json({ error: "No se puede vender un vehículo en mantenimiento" });
   }
   if (estado === "reservado" && tipo === "reserva") {
     return res.status(400).json({ error: "El vehículo ya está reservado" });
@@ -111,11 +141,14 @@ export async function validarVenta(req, res, next) {
 }
 
 /**
- * Middleware para validar una venta o reserva cuando se va a EDITAR (PUT).
+ * @function validarVentaEdicion
+ * @description  Middleware para validar una venta o reserva cuando se va a EDITAR (PUT).
  * Valida los datos de la venta: fecha, tipo, precio_venta y vendedor_id.
- * @param req 
- * @param res
- * @param next
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @param {Function} next - Función para pasar al siguiente middleware
+ * @returns {void|JSON} Llama a next() si todo es correcto, o devuelve un error 400 con el mensaje de error
+ * @throws {400} Error de validación con el mensaje correspondiente
  */
 export async function validarVentaEdicion(req, res, next) {
   const { fecha, tipo, precio_venta, vendedor_id } = req.body;
@@ -125,11 +158,15 @@ export async function validarVentaEdicion(req, res, next) {
   }
 
   if (tipo && !["venta", "reserva"].includes(tipo)) {
-    return res.status(400).json({ error: "El tipo debe ser 'venta' o 'reserva'" });
+    return res
+      .status(400)
+      .json({ error: "El tipo debe ser 'venta' o 'reserva'" });
   }
 
   if (precio_venta != null && (isNaN(precio_venta) || precio_venta <= 0)) {
-    return res.status(400).json({ error: "El precio debe ser un número mayor que 0" });
+    return res
+      .status(400)
+      .json({ error: "El precio debe ser un número mayor que 0" });
   }
 
   if (vendedor_id && !(await existeUsuario(vendedor_id))) {

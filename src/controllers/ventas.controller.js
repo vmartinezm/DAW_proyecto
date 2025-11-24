@@ -1,3 +1,10 @@
+/**
+ * @file ventas.controller.js
+ * @description Controlador para gestionar las operaciones relacionadas con las ventas de vehículos.
+ * @module controllers/ventas.controller
+ */
+
+// Importar la conexión a la base de datos
 import connection from "../config/db.js";
 
 /**
@@ -5,6 +12,7 @@ import connection from "../config/db.js";
  * @description Obtiene todas las ventas incluyendo información del vehículo, cliente y vendedor.
  * @route GET /ventas
  * @returns {JSON} Lista de ventas
+ * @throws {500} Error al obtener ventas
  */
 export const obtenerVentas = (req, res) => {
   const sql = `
@@ -33,6 +41,8 @@ export const obtenerVentas = (req, res) => {
  * @route GET /ventas/:venta_id
  * @param {number} venta_id ID de la venta
  * @returns {JSON} Venta encontrada o error 404
+ * @throws {500} Error al obtener venta
+ * @throws {404} Venta no encontrada
  */
 export const obtenerVentaPorId = (req, res) => {
   const { venta_id } = req.params;
@@ -71,43 +81,88 @@ export const obtenerVentaPorId = (req, res) => {
  * @param {number} vendedor_id ID del usuario vendedor
  * @param {string} notas Observaciones (opcional)
  * @param {"venta"|"reserva"} tipo Tipo de transacción
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {500} Error al agregar venta o actualizar estado del vehículo
  */
 export const anadirVenta = (req, res) => {
-  const { vehiculo_id, cliente_dni, fecha, precio_venta, vendedor_id, notas, tipo } = req.body;
+  const {
+    vehiculo_id,
+    cliente_dni,
+    fecha,
+    precio_venta,
+    vendedor_id,
+    notas,
+    tipo,
+  } = req.body;
 
   const sql = `
     INSERT INTO ventas (vehiculo_id, cliente_dni, fecha, precio_venta, vendedor_id, notas, tipo)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
-  connection.query(sql, [vehiculo_id, cliente_dni, fecha, precio_venta, vendedor_id, notas, tipo], (err, result) => {
-    if (err) {
-      console.error("Error al agregar venta:", err);
-      return res.status(500).json({ error: "Error al agregar venta" });
-    }
-
-    const estadoVehiculo = tipo === 'reserva' ? 'reservado' : 'vendido';
-
-    const updateSql = 'UPDATE vehiculos SET estado = ? WHERE matricula = ?';
-    connection.query(updateSql, [estadoVehiculo, vehiculo_id], (updateErr) => {
-      if (updateErr) {
-        console.error("Error al actualizar estado del vehículo:", updateErr);
-        return res.status(500).json({ error: "Venta creada, pero error al actualizar estado del vehículo" });
+  connection.query(
+    sql,
+    [vehiculo_id, cliente_dni, fecha, precio_venta, vendedor_id, notas, tipo],
+    (err, result) => {
+      if (err) {
+        console.error("Error al agregar venta:", err);
+        return res.status(500).json({ error: "Error al agregar venta" });
       }
-      res.json({ mensaje: `Venta agregada correctamente y vehículo marcado como ${estadoVehiculo}` });
-    });
-  });
-};
 
+      const estadoVehiculo = tipo === "reserva" ? "reservado" : "vendido";
+
+      const updateSql = "UPDATE vehiculos SET estado = ? WHERE matricula = ?";
+      connection.query(
+        updateSql,
+        [estadoVehiculo, vehiculo_id],
+        (updateErr) => {
+          if (updateErr) {
+            console.error(
+              "Error al actualizar estado del vehículo:",
+              updateErr
+            );
+            return res
+              .status(500)
+              .json({
+                error:
+                  "Venta creada, pero error al actualizar estado del vehículo",
+              });
+          }
+          res.json({
+            mensaje: `Venta agregada correctamente y vehículo marcado como ${estadoVehiculo}`,
+          });
+        }
+      );
+    }
+  );
+};
 
 /**
  * @function actualizarVenta
  * @description Actualiza los datos de una venta existente, y si cambia el tipo, actualiza el estado del vehículo.
  * @route PUT /ventas/:venta_id
  * @param {number} venta_id ID de la venta
+ * @param {string} vehiculo_id Matrícula del vehículo
+ * @param {string} cliente_dni DNI del cliente
+ * @param {string} fecha Fecha de la venta
+ * @param {number} precio_venta Precio final
+ * @param {number} vendedor_id ID del usuario vendedor
+ * @param {string} notas Observaciones (opcional)
+ * @param {"venta"|"reserva"} tipo Tipo de transacción
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {500} Error al actualizar venta o estado del vehículo
+ * @throws {404} Venta no encontrada
  */
 export const actualizarVenta = (req, res) => {
   const { venta_id } = req.params;
-  const { vehiculo_id, cliente_dni, fecha, precio_venta, vendedor_id, notas, tipo } = req.body;
+  const {
+    vehiculo_id,
+    cliente_dni,
+    fecha,
+    precio_venta,
+    vendedor_id,
+    notas,
+    tipo,
+  } = req.body;
 
   const sqlSelect = "SELECT tipo FROM ventas WHERE venta_id = ?";
   connection.query(sqlSelect, [venta_id], (err, results) => {
@@ -123,36 +178,63 @@ export const actualizarVenta = (req, res) => {
       SET vehiculo_id = ?, cliente_dni = ?, fecha = ?, precio_venta = ?, vendedor_id = ?, notas = ?, tipo = ?
       WHERE venta_id = ?
     `;
-    connection.query(sqlUpdate, [vehiculo_id, cliente_dni, fecha, precio_venta, vendedor_id, notas, tipo, venta_id], (err2, result) => {
-      if (err2) {
-        console.error("Error al actualizar venta:", err2);
-        return res.status(500).json({ error: "Error al actualizar venta" });
-      }
+    connection.query(
+      sqlUpdate,
+      [
+        vehiculo_id,
+        cliente_dni,
+        fecha,
+        precio_venta,
+        vendedor_id,
+        notas,
+        tipo,
+        venta_id,
+      ],
+      (err2, result) => {
+        if (err2) {
+          console.error("Error al actualizar venta:", err2);
+          return res.status(500).json({ error: "Error al actualizar venta" });
+        }
 
-      let estadoVehiculo;
-      if (tipoAnterior !== tipo) {
-        estadoVehiculo = tipo === 'reserva' ? 'reservado' : 'vendido';
-        const updateVehiculoSql = "UPDATE vehiculos SET estado = ? WHERE matricula = ?";
-        connection.query(updateVehiculoSql, [estadoVehiculo, vehiculo_id], (err3) => {
-          if (err3) {
-            console.error("Error al actualizar estado del vehículo:", err3);
-            return res.status(500).json({ error: "Venta actualizada, pero error al actualizar estado del vehículo" });
-          }
-          res.json({ mensaje: `Venta actualizada correctamente y vehículo marcado como ${estadoVehiculo}` });
-        });
-      } else {
-        res.json({ mensaje: "Venta actualizada correctamente" });
+        let estadoVehiculo;
+        if (tipoAnterior !== tipo) {
+          estadoVehiculo = tipo === "reserva" ? "reservado" : "vendido";
+          const updateVehiculoSql =
+            "UPDATE vehiculos SET estado = ? WHERE matricula = ?";
+          connection.query(
+            updateVehiculoSql,
+            [estadoVehiculo, vehiculo_id],
+            (err3) => {
+              if (err3) {
+                console.error("Error al actualizar estado del vehículo:", err3);
+                return res
+                  .status(500)
+                  .json({
+                    error:
+                      "Venta actualizada, pero error al actualizar estado del vehículo",
+                  });
+              }
+              res.json({
+                mensaje: `Venta actualizada correctamente y vehículo marcado como ${estadoVehiculo}`,
+              });
+            }
+          );
+        } else {
+          res.json({ mensaje: "Venta actualizada correctamente" });
+        }
       }
-    });
+    );
   });
 };
-
 
 /**
  * @function eliminarVenta
  * @description Elimina una venta y marca el vehículo relacionado como disponible.
  * @route DELETE /ventas/:venta_id
  * @param {number} venta_id ID de la venta
+ * @returns {JSON} Mensaje de éxito o error
+ * @throws {500} Error al eliminar venta o actualizar estado del vehículo
+ * @throws {404} Venta no encontrada
  */
 export const eliminarVenta = (req, res) => {
   const { venta_id } = req.params;
@@ -173,14 +255,23 @@ export const eliminarVenta = (req, res) => {
         return res.status(500).json({ error: "Error al eliminar venta" });
       }
 
-      const sqlUpdateVehiculo = "UPDATE vehiculos SET estado = 'disponible' WHERE matricula = ?";
+      const sqlUpdateVehiculo =
+        "UPDATE vehiculos SET estado = 'disponible' WHERE matricula = ?";
       connection.query(sqlUpdateVehiculo, [vehiculo_id], (err3) => {
         if (err3) {
           console.error("Error al actualizar estado del vehículo:", err3);
-          return res.status(500).json({ error: "Venta eliminada, pero error al actualizar estado del vehículo" });
+          return res
+            .status(500)
+            .json({
+              error:
+                "Venta eliminada, pero error al actualizar estado del vehículo",
+            });
         }
 
-        res.json({ mensaje: "Venta eliminada y vehículo marcado como disponible correctamente" });
+        res.json({
+          mensaje:
+            "Venta eliminada y vehículo marcado como disponible correctamente",
+        });
       });
     });
   });

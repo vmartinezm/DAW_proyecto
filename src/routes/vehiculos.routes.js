@@ -1,9 +1,12 @@
 /**
- * Rutas de gestión de vehículos.
- * Estas rutas permiten realizar operaciones CRUD sobre la tabla "vehiculos".
+ * @file vehiculos.routes.js
+ * @description Rutas de gestión de vehículos. Permiten realizar operaciones CRUD sobre la tabla "vehiculos".
  */
 
+//Importar dependencia Express
 import express from "express";
+
+// Importar controladores
 import {
   obtenerVehiculos,
   obtenerVehiculoPorMatricula,
@@ -12,13 +15,16 @@ import {
   eliminarVehiculo,
 } from "../controllers/vehiculos.controller.js";
 
+// Importar middlewares de validación
 import {
   validarVehiculoPOST,
   validarVehiculoPUT,
 } from "../middlewares/validators/vehiculos.validator.js";
 
+// Importar middleware de autenticación
 import { verifyToken } from "../middlewares/auth.middleware.js";
 
+// Crear el router
 const router = express.Router();
 
 // Todas las rutas de vehículos requieren estar autenticado
@@ -54,4 +60,5 @@ router.put("/:matricula", validarVehiculoPUT, actualizarVehiculo);
  */
 router.delete("/:matricula", eliminarVehiculo);
 
+// Exportar el router
 export default router;
