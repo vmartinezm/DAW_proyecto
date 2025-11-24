@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> public/js/vehiculos.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="controllers_auth.module_controller.html">controllers/auth.controller</a></li><li><a href="controllers_clientes.module_controller.html">controllers/clientes.controller</a></li><li><a href="controllers_mantenimientos.module_controller.html">controllers/mantenimientos.controller</a></li><li><a href="controllers_usuarios.module_controller.html">controllers/usuarios.controller</a></li><li><a href="controllers_vehiculos.module_controller.html">controllers/vehiculos.controller</a></li><li><a href="controllers_ventas.module_controller.html">controllers/ventas.controller</a></li><li><a href="middlewares_auth.module_middleware.html">middlewares/auth.middleware</a></li><li><a href="middlewares_validators_clientes.module_validator.html">middlewares/validators/clientes.validator</a></li><li><a href="middlewares_validators_mantenimientos.module_validator.html">middlewares/validators/mantenimientos.validator</a></li><li><a href="middlewares_validators_usuarios.module_validator.html">middlewares/validators/usuarios.validator</a></li><li><a href="middlewares_validators_vehiculos.module_validator.html">middlewares/validators/vehiculos.validator</a></li><li><a href="middlewares_validators_ventas.module_validator.html">middlewares/validators/ventas.validator</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-clientes.html">clientes</a></li><li><a href="module-dashboard.html">dashboard</a></li><li><a href="module-login.html">login</a></li><li><a href="module-mantenimientos.html">mantenimientos</a></li><li><a href="module-routes_auth.html">routes/auth</a></li><li><a href="module-routes_clientes.html">routes/clientes</a></li><li><a href="module-routes_mantenimientos.html">routes/mantenimientos</a></li><li><a href="module-routes_usuarios.html">routes/usuarios</a></li><li><a href="module-routes_vehiculos.html">routes/vehiculos</a></li><li><a href="module-routes_ventas.html">routes/ventas</a></li><li><a href="module-usuarios.html">usuarios</a></li><li><a href="module-vehiculos.html">vehiculos</a></li><li><a href="module-ventas.html">ventas</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>public/js/vehiculos.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file public/js/vehiculos.js
+ * @description Lógica frontend para gestión de vehículos en la aplicación.
+ * Incluye protección por sesión (JWT), carga dinámica de datos, modal CRUD y
+ * comunicación con el backend usando authFetch().
+ * @module vehiculos
+ */
+
+// Módulo de autenticación
+import { requireLogin, authFetch } from "./auth.js";
+
+// Asegura que el usuario esté autenticado
+requireLogin();
+
+// API base URL para vehículos
+const API_URL = "http://localhost:3000/vehiculos";
+
+// Refencias DOM
+const tableBody = document.querySelector("#vehiculosTable tbody");
+const btnAddVehiculo = document.getElementById("btnAddVehiculo");
+const modal = document.getElementById("vehiculoModal");
+const cerrarModal = document.getElementById("cerrarModal");
+const vehiculoForm = document.getElementById("vehiculoForm");
+const formTitle = document.getElementById("form-title");
+const btnCancelar = document.getElementById("btnCancelar");
+
+// Inputs del formulario agrupados en un objeto
+const inputs = {
+  matricula: document.getElementById("matricula"),
+  marca: document.getElementById("marca"),
+  modelo: document.getElementById("modelo"),
+  version: document.getElementById("version"),
+  color: document.getElementById("color"),
+  ano: document.getElementById("ano"),
+  kilometros: document.getElementById("kilometros"),
+  combustible: document.getElementById("combustible"),
+  precio: document.getElementById("precio"),
+  estado: document.getElementById("estado"),
+};
+
+// Estado interno para distinguir entre creación y edición
+let modoEdicion = false;
+
+/**
+ * @function abrirModal
+ * @description Abre el modal de formulario
+ */
+function abrirModal() {
+  modal.style.display = "block";
+}
+
+/**
+ * @function cerrarModalFn
+ * @description Cierra el modal y resetea el formulario
+ */
+function cerrarModalFn() {
+  modal.style.display = "none";
+  resetFormulario();
+}
+
+// Eventos para abrir/cerrar modal
+cerrarModal.addEventListener("click", cerrarModalFn);
+btnCancelar.addEventListener("click", cerrarModalFn);
+window.addEventListener("click", (e) => {
+  if (e.target === modal) cerrarModalFn();
+});
+
+// ============================
+// CARGA DE VEHÍCULOS
+// ============================
+
+/**
+ * @function cargarVehiculos
+ * @description Carga la lista de vehículos desde el backend y los muestra en la tabla
+ * @async
+ * @return {Promise&lt;void>}
+ * @throws {Error} Si ocurre un error al obtener los vehículos
+ */
+async function cargarVehiculos() {
+  try {
+    const res = await authFetch(API_URL);
+    const data = await res.json();
+
+    tableBody.textContent = "";
+    const fragment = document.createDocumentFragment();
+
+    data.forEach((v) => {
+      const row = document.createElement("tr");
+
+      const precioFmt =
+        v.precio != null
+          ? new Intl.NumberFormat("es-ES", {
+              style: "currency",
+              currency: "EUR",
+            }).format(v.precio)
+          : "";
+
+      const kmFmt =
+        v.kilometros != null
+          ? new Intl.NumberFormat("es-ES", {
+              style: "unit",
+              unit: "kilometer",
+              unitDisplay: "short",
+            }).format(v.kilometros)
+          : "";
+
+      [
+        v.matricula,
+        v.marca,
+        v.modelo,
+        v.version ?? "",
+        v.color ?? "",
+        v.ano ?? "",
+        kmFmt,
+        v.combustible ?? "",
+        precioFmt,
+        v.estado ?? "",
+      ].forEach((valor) => {
+        const td = document.createElement("td");
+        td.textContent = valor;
+        row.appendChild(td);
+      });
+
+      const accionesTd = document.createElement("td");
+
+      const btnEditar = document.createElement("button");
+      btnEditar.className = "btn-editar";
+      btnEditar.textContent = "Editar";
+      btnEditar.addEventListener("click", () => editarVehiculo(v));
+
+      const btnEliminar = document.createElement("button");
+      btnEliminar.className = "btn-eliminar";
+      btnEliminar.textContent = "Eliminar";
+      btnEliminar.addEventListener("click", () =>
+        eliminarVehiculo(v.matricula)
+      );
+
+      accionesTd.append(btnEditar, btnEliminar);
+      row.appendChild(accionesTd);
+      fragment.appendChild(row);
+    });
+
+    tableBody.appendChild(fragment);
+  } catch (err) {
+    alert("Error cargando vehículos: " + err.message);
+  }
+}
+
+// ============================
+// NUEVO VEHÍCULO
+// ============================
+
+// Evento para abrir modal en modo creación
+btnAddVehiculo.addEventListener("click", () => {
+  formTitle.textContent = "Añadir nuevo vehículo";
+  abrirModal();
+  resetFormulario();
+  modoEdicion = false;
+  inputs.matricula.disabled = false;
+});
+
+// ============================
+// EDITAR VEHÍCULO
+// ============================
+
+/**
+ * @function editarVehiculo
+ * @description Rellena el formulario con los datos de un vehículo para edición
+ * @param {Object} v Objeto vehículo
+ */
+function editarVehiculo(v) {
+  formTitle.textContent = "Editar vehículo";
+  Object.keys(inputs).forEach((k) => (inputs[k].value = v[k] ?? ""));
+  abrirModal();
+  modoEdicion = true;
+  inputs.matricula.disabled = true;
+}
+
+// ============================
+// RESET FORMULARIO
+// ============================
+
+/**
+ * @function resetFormulario
+ * @description Vacía el formulario y restaura estado interno
+ */
+function resetFormulario() {
+  vehiculoForm.reset();
+  inputs.matricula.disabled = false;
+  modoEdicion = false;
+}
+
+// ============================
+// GUARDAR — CREAR / EDITAR
+// ============================
+
+// Evento submit del formulario (crear o editar)
+vehiculoForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // Construir objeto vehículo desde inputs
+  const vehiculo = {
+    marca: inputs.marca.value.trim(),
+    modelo: inputs.modelo.value.trim(),
+    version: inputs.version.value.trim(),
+    color: inputs.color.value.trim(),
+    ano: parseInt(inputs.ano.value) || null,
+    kilometros: parseInt(inputs.kilometros.value) || null,
+    combustible: inputs.combustible.value,
+    precio: parseFloat(inputs.precio.value) || null,
+    estado: inputs.estado.value,
+  };
+
+  let url = API_URL;
+  let method = "POST";
+
+  if (modoEdicion) {
+    method = "PUT";
+    url = `${API_URL}/${inputs.matricula.value}`;
+  } else {
+    vehiculo.matricula = inputs.matricula.value.trim();
+  }
+
+  try {
+    const res = await authFetch(url, {
+      method,
+      body: JSON.stringify(vehiculo),
+    });
+
+    // Obtener respuesta JSON
+    const data = await res.json();
+
+    // Manejar errores
+    if (data.error) {
+      alert(data.error);
+      return;
+    }
+
+    alert(data.mensaje || "Vehículo guardado correctamente");
+    cerrarModalFn();
+    cargarVehiculos();
+  } catch (err) {
+    alert("Error guardando vehículo: " + err.message);
+  }
+});
+
+// ============================
+// ELIMINAR VEHÍCULO
+// ============================
+
+/**
+ * @function eliminarVehiculo
+ * @description Solicita confirmación y elimina vehículo en backend
+ * @async
+ * @param {string} matricula
+ * @return {Promise&lt;void>}
+ * @throws {Error} Si ocurre un error al eliminar el vehículo
+ */
+async function eliminarVehiculo(matricula) {
+  if (!confirm("¿Seguro que quieres eliminar este vehículo?")) return;
+
+  try {
+    await authFetch(`${API_URL}/${matricula}`, { method: "DELETE" });
+    cargarVehiculos();
+  } catch (err) {
+    alert("Error eliminando vehículo: " + err.message);
+  }
+}
+
+// ============================
+// NAVEGACIÓN
+// ============================
+
+document.getElementById("btnAddMantenimiento").addEventListener("click", () => {
+  window.location.href = "mantenimientos.html";
+});
+
+document.getElementById("btnAddVenta").addEventListener("click", () => {
+  window.location.href = "ventas.html";
+});
+
+document.getElementById("btnIrDashboard").addEventListener("click", () => {
+  window.location.href = "index.html";
+});
+
+// ============================
+// EJECUCIÓN INICIAL
+// ============================
+
+window.addEventListener("DOMContentLoaded", cargarVehiculos);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

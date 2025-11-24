@@ -1,0 +1,400 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> src/controllers/mantenimientos.controller.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="controllers_auth.module_controller.html">controllers/auth.controller</a></li><li><a href="controllers_clientes.module_controller.html">controllers/clientes.controller</a></li><li><a href="controllers_mantenimientos.module_controller.html">controllers/mantenimientos.controller</a></li><li><a href="controllers_usuarios.module_controller.html">controllers/usuarios.controller</a></li><li><a href="controllers_vehiculos.module_controller.html">controllers/vehiculos.controller</a></li><li><a href="controllers_ventas.module_controller.html">controllers/ventas.controller</a></li><li><a href="middlewares_auth.module_middleware.html">middlewares/auth.middleware</a></li><li><a href="middlewares_validators_clientes.module_validator.html">middlewares/validators/clientes.validator</a></li><li><a href="middlewares_validators_mantenimientos.module_validator.html">middlewares/validators/mantenimientos.validator</a></li><li><a href="middlewares_validators_usuarios.module_validator.html">middlewares/validators/usuarios.validator</a></li><li><a href="middlewares_validators_vehiculos.module_validator.html">middlewares/validators/vehiculos.validator</a></li><li><a href="middlewares_validators_ventas.module_validator.html">middlewares/validators/ventas.validator</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-clientes.html">clientes</a></li><li><a href="module-dashboard.html">dashboard</a></li><li><a href="module-login.html">login</a></li><li><a href="module-mantenimientos.html">mantenimientos</a></li><li><a href="module-routes_auth.html">routes/auth</a></li><li><a href="module-routes_clientes.html">routes/clientes</a></li><li><a href="module-routes_mantenimientos.html">routes/mantenimientos</a></li><li><a href="module-routes_usuarios.html">routes/usuarios</a></li><li><a href="module-routes_vehiculos.html">routes/vehiculos</a></li><li><a href="module-routes_ventas.html">routes/ventas</a></li><li><a href="module-usuarios.html">usuarios</a></li><li><a href="module-vehiculos.html">vehiculos</a></li><li><a href="module-ventas.html">ventas</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>src/controllers/mantenimientos.controller.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file src/controllers/mantenimientos.controller.js
+ * @description Controlador para gestionar los mantenimientos de vehículos.
+ * @module controllers/mantenimientos.controller
+ */
+
+// Importar la conexión a la base de datos
+import connection from "../config/db.js";
+
+/**
+ * @function obtenerMantenimientos
+ * @description Obtiene todos los mantenimientos con los datos del vehículo y del empleado relacionados.
+ * @route GET /mantenimientos
+ * @returns {JSON} Lista de mantenimientos
+ * @throws {500} Error al obtener mantenimientos
+ */
+export const obtenerMantenimientos = (req, res) => {
+  const sql = `
+    SELECT 
+      m.*, 
+      v.matricula, v.marca, v.modelo,
+      u.nombre AS empleado_nombre, u.apellidos AS empleado_apellidos
+    FROM mantenimientos m
+    LEFT JOIN vehiculos v ON m.vehiculo_id = v.matricula
+    LEFT JOIN usuarios u ON m.realizado_por = u.user_id
+    ORDER BY m.fecha_inicio DESC
+  `;
+
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error al obtener mantenimientos:", err);
+      return res.status(500).json({ error: "Error al obtener mantenimientos" });
+    }
+    res.status(200).json(results);
+  });
+};
+
+/**
+ * @function obtenerMantenimientoPorId
+ * @description Obtiene un mantenimiento concreto según su ID.
+ * @route GET /mantenimientos/:mantenimiento_id
+ * @returns {JSON} Mantenimiento encontrado o error 404
+ * @throws {500} Error al obtener mantenimiento
+ * @throws {404} Mantenimiento no encontrado
+ */
+export const obtenerMantenimientoPorId = (req, res) => {
+  const { mantenimiento_id } = req.params;
+
+  const sql = `
+    SELECT 
+      m.*, 
+      v.matricula, v.marca, v.modelo,
+      u.nombre AS empleado_nombre, u.apellidos AS empleado_apellidos
+    FROM mantenimientos m
+    LEFT JOIN vehiculos v ON m.vehiculo_id = v.matricula
+    LEFT JOIN usuarios u ON m.realizado_por = u.user_id
+    WHERE m.mantenimiento_id = ?
+  `;
+
+  connection.query(sql, [mantenimiento_id], (err, results) => {
+    if (err) {
+      console.error("Error al obtener mantenimiento:", err);
+      return res.status(500).json({ error: "Error al obtener mantenimiento" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Mantenimiento no encontrado" });
+    }
+
+    res.status(200).json(results[0]);
+  });
+};
+
+/**
+ * @function determinarEstadoVehiculo
+ * @private
+ * @description Determina el estado correcto del vehículo según la fecha de finalización.
+ * @param {string|null} fecha_fin Fecha final del mantenimiento
+ * @returns {"disponible" | "mantenimiento"}
+ */
+function determinarEstadoVehiculo(fecha_fin) {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
+  if (!fecha_fin) return "mantenimiento";
+
+  const f = new Date(fecha_fin);
+  f.setHours(0, 0, 0, 0);
+
+  return f &lt; hoy ? "disponible" : "mantenimiento";
+}
+
+/**
+ * @function anadirMantenimiento
+ * @description Agrega un mantenimiento a un vehículo y actualiza inmediatamente su estado.
+ * @route POST /mantenimientos
+ * @returns {JSON} Mantenimiento creado
+ * @throws {500} Error al agregar mantenimiento
+ */
+export const anadirMantenimiento = (req, res) => {
+  const {
+    vehiculo_id,
+    fecha_inicio,
+    fecha_fin,
+    descripcion,
+    coste,
+    realizado_por,
+  } = req.body;
+
+  if (!vehiculo_id || !fecha_inicio) {
+    return res
+      .status(400)
+      .json({ error: "Vehículo y fecha de inicio son obligatorios" });
+  }
+
+  const sqlInsert = `
+    INSERT INTO mantenimientos
+    (vehiculo_id, fecha_inicio, fecha_fin, descripcion, coste, realizado_por)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+
+  connection.query(
+    sqlInsert,
+    [
+      vehiculo_id,
+      fecha_inicio,
+      fecha_fin || null,
+      descripcion,
+      coste,
+      realizado_por,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error al agregar mantenimiento:", err);
+        return res
+          .status(500)
+          .json({ error: "Error al agregar mantenimiento" });
+      }
+
+      const nuevoEstado = determinarEstadoVehiculo(fecha_fin);
+
+      const sqlUpdateVehiculo = `
+        UPDATE vehiculos SET estado = ? WHERE matricula = ?
+      `;
+      connection.query(
+        sqlUpdateVehiculo,
+        [nuevoEstado, vehiculo_id],
+        (err2) => {
+          if (err2) {
+            console.error("Error al actualizar estado del vehículo:", err2);
+            return res.status(500).json({
+              error:
+                "Mantenimiento creado, pero error al actualizar estado del vehículo",
+            });
+          }
+
+          res.json({
+            mensaje: `Mantenimiento añadido correctamente y vehículo marcado como ${nuevoEstado}`,
+          });
+        }
+      );
+    }
+  );
+};
+
+/**
+ * @function actualizarMantenimiento
+ * @description Actualiza un mantenimiento existente y actualiza el estado del vehículo asociado.
+ * @route PUT /mantenimientos/:mantenimiento_id
+ * @returns {JSON} Mantenimiento actualizado
+ * @throws {500} Error al actualizar mantenimiento
+ * @throws {404} Mantenimiento no encontrado
+ */
+export const actualizarMantenimiento = (req, res) => {
+  const { mantenimiento_id } = req.params;
+  const {
+    vehiculo_id,
+    fecha_inicio,
+    fecha_fin,
+    descripcion,
+    coste,
+    realizado_por,
+  } = req.body;
+
+  const sqlUpdate = `
+    UPDATE mantenimientos
+    SET vehiculo_id = ?, fecha_inicio = ?, fecha_fin = ?, descripcion = ?, coste = ?, realizado_por = ?
+    WHERE mantenimiento_id = ?
+  `;
+
+  connection.query(
+    sqlUpdate,
+    [
+      vehiculo_id,
+      fecha_inicio,
+      fecha_fin || null,
+      descripcion,
+      coste,
+      realizado_por,
+      mantenimiento_id,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error al actualizar mantenimiento:", err);
+        return res
+          .status(500)
+          .json({ error: "Error al actualizar mantenimiento" });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Mantenimiento no encontrado" });
+      }
+
+      const nuevoEstado = determinarEstadoVehiculo(fecha_fin);
+
+      const sqlVehiculo = `UPDATE vehiculos SET estado = ? WHERE matricula = ?`;
+
+      connection.query(sqlVehiculo, [nuevoEstado, vehiculo_id], (err2) => {
+        if (err2) {
+          console.error("Error al actualizar estado del vehículo:", err2);
+          return res.status(500).json({
+            error:
+              "Mantenimiento actualizado pero error al actualizar estado del vehículo",
+          });
+        }
+
+        res.json({
+          mensaje: `Mantenimiento actualizado correctamente y vehículo marcado como ${nuevoEstado}`,
+        });
+      });
+    }
+  );
+};
+
+/**
+ * @function eliminarMantenimiento
+ * @description Elimina un mantenimiento y marca el vehículo como disponible.
+ * @route DELETE /mantenimientos/:mantenimiento_id
+ * @returns {JSON} Mantenimiento eliminado
+ * @throws {500} Error al eliminar mantenimiento
+ * @throws {404} Mantenimiento no encontrado
+ */
+export const eliminarMantenimiento = (req, res) => {
+  const { mantenimiento_id } = req.params;
+
+  const sqlSelect = `SELECT vehiculo_id FROM mantenimientos WHERE mantenimiento_id = ?`;
+
+  connection.query(sqlSelect, [mantenimiento_id], (err, results) => {
+    if (err || results.length === 0) {
+      console.error("Error al obtener mantenimiento:", err);
+      return res.status(404).json({ error: "Mantenimiento no encontrado" });
+    }
+
+    const vehiculo_id = results[0].vehiculo_id;
+
+    const sqlDelete = `DELETE FROM mantenimientos WHERE mantenimiento_id = ?`;
+    connection.query(sqlDelete, [mantenimiento_id], (err2) => {
+      if (err2) {
+        console.error("Error al eliminar mantenimiento:", err2);
+        return res
+          .status(500)
+          .json({ error: "Error al eliminar mantenimiento" });
+      }
+
+      const sqlUpdateVehiculo = `
+        UPDATE vehiculos SET estado = 'disponible' WHERE matricula = ?
+      `;
+      connection.query(sqlUpdateVehiculo, [vehiculo_id], (err3) => {
+        if (err3) {
+          console.error("Error al actualizar estado del vehículo:", err3);
+          return res.status(500).json({
+            error:
+              "Mantenimiento eliminado pero error al actualizar estado del vehículo",
+          });
+        }
+
+        res.json({
+          mensaje: "Mantenimiento eliminado y vehículo marcado como disponible",
+        });
+      });
+    });
+  });
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

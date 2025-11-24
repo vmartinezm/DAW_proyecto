@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> middlewares/auth.middleware</title>
+  <title> middlewares/validators/clientes.validator</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>middlewares/auth.middleware</h1>
+                    <h1>middlewares/validators/clientes.validator</h1>
                 </header>
                 
 
@@ -91,7 +91,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Middlewares de autenticación y autorización de usuarios.</div>
+            <div class="description">Middleware de validación para creación y edición de clientes</div>
         
 
         
@@ -130,9 +130,9 @@
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="src_middlewares_validators_clientes.validator.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line1">line 1</a>
+                <a href="src_middlewares_validators_clientes.validator.js.html">src/middlewares/validators/clientes.validator.js</a>, <a href="src_middlewares_validators_clientes.validator.js.html#line1">line 1</a>
             </span>
         </p>
     
@@ -166,8 +166,8 @@
 
 
     
-    <h4 class="name" id="~requireAdmin">
-        <a class="href-link" href="#~requireAdmin">#</a>
+    <h4 class="name" id="~calcularLetraDNI">
+        <a class="href-link" href="#~calcularLetraDNI">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -175,7 +175,7 @@
         
         <span class="code-name">
             
-                requireAdmin<span class="signature">()</span><span class="type-signature"></span>
+                calcularLetraDNI<span class="signature">(identificacion)</span><span class="type-signature"> &rarr; {string}</span>
             
         </span>
     </h4>
@@ -184,112 +184,7 @@
     
     
     <div class="description">
-        Middleware específico para exigir rol administrador.
-Equivalente a requireRole("admin").
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line89">line 89</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~requireRole">
-        <a class="href-link" href="#~requireRole">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                requireRole<span class="signature">(&hellip;roles, req, res, next)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Middleware que verifica si el usuario autenticado tiene el rol necesario para acceder a una ruta.
-Se pasa un número variable de roles como argumentos, y se verifica si el usuario tiene alguno de ellos.
-Si no tiene el rol necesario, devuelve un objeto JSON con un error de acceso denegado.
-Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error interno.
+        Calcula la letra correcta para un DNI o NIE
     </div>
     
 
@@ -314,8 +209,6 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
             <th>Type</th>
 
             
-            <th>Attributes</th>
-            
 
             
 
@@ -329,7 +222,7 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>roles</code></td>
+      <td class="name"><code>identificacion</code></td>
   
 
   <td class="type">
@@ -342,119 +235,10 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
   </td>
 
   
-      <td class="attributes">
-      
-
-      
-
-      
-          &lt;repeatable><br>
-      
-      </td>
-  
 
   
 
-  <td class="description last">roles necesarios para acceder a la ruta</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>req</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">objeto Request de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>res</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">objeto Response de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">function</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">función middleware siguiente a ejecutar</td>
+  <td class="description last">DNI o NIE sin la letra</td>
 </tr>
 
 
@@ -500,9 +284,236 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="src_middlewares_validators_clientes.validator.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line57">line 57</a>
+                <a href="src_middlewares_validators_clientes.validator.js.html">src/middlewares/validators/clientes.validator.js</a>, <a href="src_middlewares_validators_clientes.validator.js.html#line16">line 16</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Letra correspondiente</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">string</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~validarCliente">
+        <a class="href-link" href="#~validarCliente">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                validarCliente<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Valida los datos del cliente para su creación. Verifica si el DNI o NIE es válido, si el nombre tiene al menos 2 caracteres y si el número de teléfono tiene exactamente 9 dígitos.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>req</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">El objeto de solicitud.</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>res</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">El objeto de respuesta.</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>next</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">function</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">La siguiente función middleware.</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_middlewares_validators_clientes.validator.js.html" class="button">View Source</a>
+            <span>
+                <a href="src_middlewares_validators_clientes.validator.js.html">src/middlewares/validators/clientes.validator.js</a>, <a href="src_middlewares_validators_clientes.validator.js.html#line52">line 52</a>
             </span>
         </p>
     
@@ -530,10 +541,10 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
                     
 <div class="columns">
     
-    <div class='param-desc column is-7'>Si el usuario no tiene el rol necesario</div>
+    <div class='param-desc column is-7'>- Devuelve un objeto JSON con un mensaje de error si alguna de las validaciones falla.</div>
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
-<code class="param-type">403</code>
+<code class="param-type">Object</code>
 
 
     </div>
@@ -544,7 +555,21 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
                     
 <div class="columns">
     
-    <div class='param-desc column is-7'>Si no hay información del usuario en la petición</div>
+    <div class='param-desc column is-7'>- Si los datos proporcionados no son válidos.</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">400</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>- Si hay un error interno al validar el cliente.</div>
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
 <code class="param-type">500</code>
@@ -560,6 +585,29 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
 
 
 
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">void</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
 
 
 
@@ -569,8 +617,8 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
 
 
     
-    <h4 class="name" id="~verifyToken">
-        <a class="href-link" href="#~verifyToken">#</a>
+    <h4 class="name" id="~validarClienteEdicion">
+        <a class="href-link" href="#~validarClienteEdicion">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -578,7 +626,7 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
         
         <span class="code-name">
             
-                verifyToken<span class="signature">(req, res, next)</span><span class="type-signature"></span>
+                validarClienteEdicion<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void}</span>
             
         </span>
     </h4>
@@ -587,10 +635,7 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
     
     
     <div class="description">
-        Middleware que verifica el token JWT en las peticiones protegidas.
-Verifica que el token JWT sea válido y esté asociado a una sesión de usuario.
-En caso de error, devuelve un objeto JSON con el error correspondiente.
-Si el token es válido, guarda información útil del usuario en la request.
+        Middleware de validación para edición de clientes. Verifica que se envíen todos los campos necesarios y que tengan un formato válido. Revisa que el usuario y email no estén ya en uso por otro usuario. Si se encuentra un error, se devuelve un objeto JSON con el error correspondiente.
     </div>
     
 
@@ -740,9 +785,9 @@ Si el token es válido, guarda información útil del usuario en la request.
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="src_middlewares_validators_clientes.validator.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line13">line 13</a>
+                <a href="src_middlewares_validators_clientes.validator.js.html">src/middlewares/validators/clientes.validator.js</a>, <a href="src_middlewares_validators_clientes.validator.js.html#line114">line 114</a>
             </span>
         </p>
     
@@ -770,10 +815,38 @@ Si el token es válido, guarda información útil del usuario en la request.
                     
 <div class="columns">
     
-    <div class='param-desc column is-7'>Si el token no es proporcionado, inválido o expirado</div>
+    <div class='param-desc column is-7'>- Devuelve un objeto JSON con un mensaje de error si alguna de las validaciones falla.</div>
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
-<code class="param-type">401</code>
+<code class="param-type">Object</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>- Si los datos proporcionados no son válidos.</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">400</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>- Si hay un error interno al validar el cliente.</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
 
 
     </div>
@@ -785,6 +858,206 @@ Si el token es válido, guarda información útil del usuario en la request.
     </div>
 
 
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">void</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~validarDNI_o_NIE">
+        <a class="href-link" href="#~validarDNI_o_NIE">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                validarDNI_o_NIE<span class="signature">(dni)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Valida si un DNI o NIE es válido.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>dni</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">DNI o NIE a validar</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_middlewares_validators_clientes.validator.js.html" class="button">View Source</a>
+            <span>
+                <a href="src_middlewares_validators_clientes.validator.js.html">src/middlewares/validators/clientes.validator.js</a>, <a href="src_middlewares_validators_clientes.validator.js.html#line35">line 35</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Verdadero si el DNI o NIE es válido</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
 
 
 

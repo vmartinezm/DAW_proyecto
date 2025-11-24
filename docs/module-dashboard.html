@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> routes/ventas</title>
+  <title> dashboard</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>routes/ventas</h1>
+                    <h1>dashboard</h1>
                 </header>
                 
 
@@ -95,7 +95,8 @@
     <div class="container-overview">
     
         
-            <div class="description">Rutas relacionadas con la gestión de ventas y reservas</div>
+            <div class="description">Maneja la lógica de la página de dashboard, 
+incluyendo la inicialización de la interfaz y la navegación basada en el rol del usuario.</div>
         
 
         
@@ -147,9 +148,9 @@
 
     
         <p class="tag-source">
-            <a href="src_routes_ventas.routes.js.html" class="button">View Source</a>
+            <a href="public_js_dashboard.js.html" class="button">View Source</a>
             <span>
-                <a href="src_routes_ventas.routes.js.html">src/routes/ventas.routes.js</a>, <a href="src_routes_ventas.routes.js.html#line1">line 1</a>
+                <a href="public_js_dashboard.js.html">public/js/dashboard.js</a>, <a href="public_js_dashboard.js.html#line1">line 1</a>
             </span>
         </p>
     
@@ -194,6 +195,325 @@
 
     
 
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~inicializarDashboard">
+        <a class="href-link" href="#~inicializarDashboard">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                inicializarDashboard<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Inicializa la página de dashboard, mostrando una alerta con el nombre del usuario que ha iniciado sesión, y configurando la navegación según el rol del usuario.
+Si el usuario no es administrador, elimina el botón de usuarios del DOM.
+Agrega listeners a los botones de navegación, y al botón de logout.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="public_js_dashboard.js.html" class="button">View Source</a>
+            <span>
+                <a href="public_js_dashboard.js.html">public/js/dashboard.js</a>, <a href="public_js_dashboard.js.html#line19">line 19</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~mostrarAlerta">
+        <a class="href-link" href="#~mostrarAlerta">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                mostrarAlerta<span class="signature">(mensaje, duracion<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Muestra un mensaje de alerta en la pantalla durante un tiempo determinado.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>mensaje</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last">El mensaje a mostrar.</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>duracion</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">number</code>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          3000
+      
+      </td>
+  
+
+  <td class="description last">El tiempo en milisegundos para mostrar el mensaje.</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="public_js_dashboard.js.html" class="button">View Source</a>
+            <span>
+                <a href="public_js_dashboard.js.html">public/js/dashboard.js</a>, <a href="public_js_dashboard.js.html#line76">line 76</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
     
 
     

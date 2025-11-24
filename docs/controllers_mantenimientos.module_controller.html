@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> middlewares/validators/mantenimientos.validator</title>
+  <title> controllers/mantenimientos.controller</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>middlewares/validators/mantenimientos.validator</h1>
+                    <h1>controllers/mantenimientos.controller</h1>
                 </header>
                 
 
@@ -91,7 +91,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Middlewares para validar los datos de mantenimientos antes de crear o editar.</div>
+            <div class="description">Controlador para gestionar los mantenimientos de vehículos.</div>
         
 
         
@@ -130,9 +130,9 @@
 
     
         <p class="tag-source">
-            <a href="src_middlewares_validators_mantenimientos.validator.js.html" class="button">View Source</a>
+            <a href="src_controllers_mantenimientos.controller.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_validators_mantenimientos.validator.js.html">src/middlewares/validators/mantenimientos.validator.js</a>, <a href="src_middlewares_validators_mantenimientos.validator.js.html#line1">line 1</a>
+                <a href="src_controllers_mantenimientos.controller.js.html">src/controllers/mantenimientos.controller.js</a>, <a href="src_controllers_mantenimientos.controller.js.html#line1">line 1</a>
             </span>
         </p>
     
@@ -166,8 +166,8 @@
 
 
     
-    <h4 class="name" id="~existeUsuario">
-        <a class="href-link" href="#~existeUsuario">#</a>
+    <h4 class="name" id="~actualizarMantenimiento">
+        <a class="href-link" href="#~actualizarMantenimiento">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -175,7 +175,7 @@
         
         <span class="code-name">
             
-                existeUsuario<span class="signature">(id)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span>
+                actualizarMantenimiento<span class="signature">()</span><span class="type-signature"> &rarr; {JSON}</span>
             
         </span>
     </h4>
@@ -184,7 +184,7 @@
     
     
     <div class="description">
-        Comprueba si un usuario existe en la base de datos.
+        Actualiza un mantenimiento existente y actualiza el estado del vehículo asociado.
     </div>
     
 
@@ -195,60 +195,6 @@
 
 
 
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>id</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">number</code>
-|
-
-<code class="param-type">string</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">user_id del usuario</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
 
 
 
@@ -287,596 +233,9 @@
 
     
         <p class="tag-source">
-            <a href="src_middlewares_validators_mantenimientos.validator.js.html" class="button">View Source</a>
+            <a href="src_controllers_mantenimientos.controller.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_validators_mantenimientos.validator.js.html">src/middlewares/validators/mantenimientos.validator.js</a>, <a href="src_middlewares_validators_mantenimientos.validator.js.html#line26">line 26</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>True si el usuario existe, false en caso contrario</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type">Promise.&lt;boolean></code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~existeVehiculo">
-        <a class="href-link" href="#~existeVehiculo">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                existeVehiculo<span class="signature">(matricula)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Comprueba si un vehículo existe en la base de datos
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>matricula</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">string</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">matrícula del vehículo</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_validators_mantenimientos.validator.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_validators_mantenimientos.validator.js.html">src/middlewares/validators/mantenimientos.validator.js</a>, <a href="src_middlewares_validators_mantenimientos.validator.js.html#line39">line 39</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>True si el vehículo existe, false en caso contrario</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type">Promise.&lt;boolean></code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~validarFechaISO-">
-        <a class="href-link" href="#~validarFechaISO-">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                validarFechaISO -<span class="signature">(f)</span><span class="type-signature"> &rarr; {boolean}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Comprueba si una fecha cumple con formato ISO yyyy-mm-dd
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>f</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">string</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">cadenas de fecha</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_validators_mantenimientos.validator.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_validators_mantenimientos.validator.js.html">src/middlewares/validators/mantenimientos.validator.js</a>, <a href="src_middlewares_validators_mantenimientos.validator.js.html#line16">line 16</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>True si el formato es correcto</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type">boolean</code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~validarMantenimiento">
-        <a class="href-link" href="#~validarMantenimiento">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                validarMantenimiento<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void|JSON}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Middleware para validar un mantenimiento antes de crear o editar.
-Valida los datos del mantenimiento: vehículo, fecha de inicio, fecha de fin, descripción, coste y empleado asociado.
-Comprueba que el vehículo, empleado y usuario existen.
-Comprueba que la fecha de inicio y fin sean válidas.
-Comprueba que el coste sea un número mayor que 0.
-Comprueba que el vehículo no esté vendido ni en mantenimiento en caso de crear.
-Comprueba que el vehículo no esté reservado en caso de crear.
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>req</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">object</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">Objeto de solicitud de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>res</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">object</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">Objeto de respuesta de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">function</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">Función para pasar al siguiente middleware</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_validators_mantenimientos.validator.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_validators_mantenimientos.validator.js.html">src/middlewares/validators/mantenimientos.validator.js</a>, <a href="src_middlewares_validators_mantenimientos.validator.js.html#line53">line 53</a>
+                <a href="src_controllers_mantenimientos.controller.js.html">src/controllers/mantenimientos.controller.js</a>, <a href="src_controllers_mantenimientos.controller.js.html#line166">line 166</a>
             </span>
         </p>
     
@@ -904,10 +263,24 @@ Comprueba que el vehículo no esté reservado en caso de crear.
                     
 <div class="columns">
     
-    <div class='param-desc column is-7'>Error de validación de datos</div>
+    <div class='param-desc column is-7'>Error al actualizar mantenimiento</div>
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
-<code class="param-type">400</code>
+<code class="param-type">500</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Mantenimiento no encontrado</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">404</code>
 
 
     </div>
@@ -928,15 +301,12 @@ Comprueba que el vehículo no esté reservado en caso de crear.
 
 <div class="columns">
     
-    <div class='param-desc column is-7'>Llama a next() si todo es correcto, o devuelve un error 400 con el mensaje de error</div>
+    <div class='param-desc column is-7'>Mantenimiento actualizado</div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
-<code class="param-type">void</code>
-|
-
 <code class="param-type">JSON</code>
 
 
@@ -957,8 +327,8 @@ Comprueba que el vehículo no esté reservado en caso de crear.
 
 
     
-    <h4 class="name" id="~validarMantenimientoEdicion">
-        <a class="href-link" href="#~validarMantenimientoEdicion">#</a>
+    <h4 class="name" id="~anadirMantenimiento">
+        <a class="href-link" href="#~anadirMantenimiento">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -966,7 +336,7 @@ Comprueba que el vehículo no esté reservado en caso de crear.
         
         <span class="code-name">
             
-                validarMantenimientoEdicion<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void|JSON}</span>
+                anadirMantenimiento<span class="signature">()</span><span class="type-signature"> &rarr; {JSON}</span>
             
         </span>
     </h4>
@@ -975,10 +345,7 @@ Comprueba que el vehículo no esté reservado en caso de crear.
     
     
     <div class="description">
-        Middleware para validar un mantenimiento antes de editar.
-Valida los datos de mantenimiento antes de editar y actualiza
-los datos del mantenimiento correspondientes a la edición.
-Valida la fecha de inicio y fin, coste y empleado asociado.
+        Agrega un mantenimiento a un vehículo y actualiza inmediatamente su estado.
     </div>
     
 
@@ -989,107 +356,6 @@ Valida la fecha de inicio y fin, coste y empleado asociado.
 
 
 
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>req</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">object</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">Objeto de solicitud de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>res</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">object</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">Objeto de respuesta de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">function</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">Función para pasar al siguiente middleware</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
 
 
 
@@ -1128,9 +394,9 @@ Valida la fecha de inicio y fin, coste y empleado asociado.
 
     
         <p class="tag-source">
-            <a href="src_middlewares_validators_mantenimientos.validator.js.html" class="button">View Source</a>
+            <a href="src_controllers_mantenimientos.controller.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_validators_mantenimientos.validator.js.html">src/middlewares/validators/mantenimientos.validator.js</a>, <a href="src_middlewares_validators_mantenimientos.validator.js.html#line138">line 138</a>
+                <a href="src_controllers_mantenimientos.controller.js.html">src/controllers/mantenimientos.controller.js</a>, <a href="src_controllers_mantenimientos.controller.js.html#line93">line 93</a>
             </span>
         </p>
     
@@ -1158,10 +424,10 @@ Valida la fecha de inicio y fin, coste y empleado asociado.
                     
 <div class="columns">
     
-    <div class='param-desc column is-7'>Error de validación de datos</div>
+    <div class='param-desc column is-7'>Error al agregar mantenimiento</div>
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
-<code class="param-type">400</code>
+<code class="param-type">500</code>
 
 
     </div>
@@ -1182,15 +448,481 @@ Valida la fecha de inicio y fin, coste y empleado asociado.
 
 <div class="columns">
     
-    <div class='param-desc column is-7'>Llama a next() si todo es correcto, o devuelve un error 400 con el mensaje de error</div>
+    <div class='param-desc column is-7'>Mantenimiento creado</div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
-<code class="param-type">void</code>
-|
+<code class="param-type">JSON</code>
 
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~eliminarMantenimiento">
+        <a class="href-link" href="#~eliminarMantenimiento">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                eliminarMantenimiento<span class="signature">()</span><span class="type-signature"> &rarr; {JSON}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Elimina un mantenimiento y marca el vehículo como disponible.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_controllers_mantenimientos.controller.js.html" class="button">View Source</a>
+            <span>
+                <a href="src_controllers_mantenimientos.controller.js.html">src/controllers/mantenimientos.controller.js</a>, <a href="src_controllers_mantenimientos.controller.js.html#line235">line 235</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error al eliminar mantenimiento</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Mantenimiento no encontrado</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">404</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Mantenimiento eliminado</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">JSON</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~obtenerMantenimientoPorId">
+        <a class="href-link" href="#~obtenerMantenimientoPorId">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                obtenerMantenimientoPorId<span class="signature">()</span><span class="type-signature"> &rarr; {JSON}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Obtiene un mantenimiento concreto según su ID.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_controllers_mantenimientos.controller.js.html" class="button">View Source</a>
+            <span>
+                <a href="src_controllers_mantenimientos.controller.js.html">src/controllers/mantenimientos.controller.js</a>, <a href="src_controllers_mantenimientos.controller.js.html#line38">line 38</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error al obtener mantenimiento</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Mantenimiento no encontrado</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">404</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Mantenimiento encontrado o error 404</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">JSON</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~obtenerMantenimientos">
+        <a class="href-link" href="#~obtenerMantenimientos">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                obtenerMantenimientos<span class="signature">()</span><span class="type-signature"> &rarr; {JSON}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Obtiene todos los mantenimientos con los datos del vehículo y del empleado relacionados.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_controllers_mantenimientos.controller.js.html" class="button">View Source</a>
+            <span>
+                <a href="src_controllers_mantenimientos.controller.js.html">src/controllers/mantenimientos.controller.js</a>, <a href="src_controllers_mantenimientos.controller.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error al obtener mantenimientos</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Lista de mantenimientos</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
 <code class="param-type">JSON</code>
 
 

@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> middlewares/validators/ventas.validator</title>
+  <title> controllers/vehiculos.controller</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>middlewares/validators/ventas.validator</h1>
+                    <h1>controllers/vehiculos.controller</h1>
                 </header>
                 
 
@@ -91,7 +91,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Middlewares de validación para las rutas de ventas y reservas</div>
+            <div class="description">Controlador para la gestión de vehículos.</div>
         
 
         
@@ -130,9 +130,9 @@
 
     
         <p class="tag-source">
-            <a href="src_middlewares_validators_ventas.validator.js.html" class="button">View Source</a>
+            <a href="src_controllers_vehiculos.controller.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_validators_ventas.validator.js.html">src/middlewares/validators/ventas.validator.js</a>, <a href="src_middlewares_validators_ventas.validator.js.html#line1">line 1</a>
+                <a href="src_controllers_vehiculos.controller.js.html">src/controllers/vehiculos.controller.js</a>, <a href="src_controllers_vehiculos.controller.js.html#line1">line 1</a>
             </span>
         </p>
     
@@ -166,8 +166,8 @@
 
 
     
-    <h4 class="name" id="~estadoVehiculo">
-        <a class="href-link" href="#~estadoVehiculo">#</a>
+    <h4 class="name" id="~actualizarVehiculo">
+        <a class="href-link" href="#~actualizarVehiculo">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -175,7 +175,7 @@
         
         <span class="code-name">
             
-                estadoVehiculo<span class="signature">(matricula)</span><span class="type-signature"> &rarr; {Promise.&lt;(string|null)>}</span>
+                actualizarVehiculo<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {JSON}</span>
             
         </span>
     </h4>
@@ -184,902 +184,7 @@
     
     
     <div class="description">
-        Comprueba y devuelve el estado actual de un vehículo
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>matricula</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">string</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">Matrícula del vehículo</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_validators_ventas.validator.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_validators_ventas.validator.js.html">src/middlewares/validators/ventas.validator.js</a>, <a href="src_middlewares_validators_ventas.validator.js.html#line64">line 64</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Estado actual del vehículo o null si no existe</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type">Promise.&lt;(string|null)></code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~existeCliente">
-        <a class="href-link" href="#~existeCliente">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                existeCliente<span class="signature">(dni)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Comprueba si un cliente existe en la base de datos
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>dni</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">string</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">DNI del cliente</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_validators_ventas.validator.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_validators_ventas.validator.js.html">src/middlewares/validators/ventas.validator.js</a>, <a href="src_middlewares_validators_ventas.validator.js.html#line26">line 26</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>True si el cliente existe, false en caso contrario</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type">Promise.&lt;boolean></code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~existeUsuario">
-        <a class="href-link" href="#~existeUsuario">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                existeUsuario<span class="signature">(id)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Comprueba si un usuario existe en la base de datos.
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>id</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">number</code>
-|
-
-<code class="param-type">string</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">user_id del empleado</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_validators_ventas.validator.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_validators_ventas.validator.js.html">src/middlewares/validators/ventas.validator.js</a>, <a href="src_middlewares_validators_ventas.validator.js.html#line37">line 37</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>True si el usuario existe, false en caso contrario</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type">Promise.&lt;boolean></code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~existeVehiculo">
-        <a class="href-link" href="#~existeVehiculo">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                existeVehiculo<span class="signature">(matricula)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Comprueba si un vehículo existe en la base de datos
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>matricula</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">string</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">Matrícula del vehículo</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_validators_ventas.validator.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_validators_ventas.validator.js.html">src/middlewares/validators/ventas.validator.js</a>, <a href="src_middlewares_validators_ventas.validator.js.html#line50">line 50</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>True si el vehículo existe, false en caso contrario</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type">Promise.&lt;boolean></code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~validarFechaISO">
-        <a class="href-link" href="#~validarFechaISO">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                validarFechaISO<span class="signature">(f)</span><span class="type-signature"> &rarr; {boolean}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Verifica si una fecha cumple con formato ISO yyyy-mm-dd
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>f</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">string</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">Cadena de fecha</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_validators_ventas.validator.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_validators_ventas.validator.js.html">src/middlewares/validators/ventas.validator.js</a>, <a href="src_middlewares_validators_ventas.validator.js.html#line16">line 16</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>True si el formato es correcto</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<code class="param-type">boolean</code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~validarVenta">
-        <a class="href-link" href="#~validarVenta">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                validarVenta<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void|JSON}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Middleware de validación para crear o editar una venta o reserva.
-Valida los datos de la venta: vehículo, cliente, fecha, tipo, precio_venta y vendedor_id.
-Comprueba que el vehículo, cliente y vendedor existen.
-Comprueba que la fecha es válida.
-Comprueba que el tipo sea 'venta' o 'reserva'.
-Comprueba que el precio_venta sea un número mayor que 0.
-Comprueba que el vehículo no esté vendido ni en mantenimiento en caso de venta.
-Comprueba que el vehículo no esté reservado en caso de reserva.
+        Actualiza la información de un vehículo según matrícula.
     </div>
     
 
@@ -1163,31 +268,6 @@ Comprueba que el vehículo no esté reservado en caso de reserva.
 
 
         
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">function</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">Función para pasar al siguiente middleware</td>
-</tr>
-
-
-        
         </tbody>
     </table>
 </div>
@@ -1229,9 +309,9 @@ Comprueba que el vehículo no esté reservado en caso de reserva.
 
     
         <p class="tag-source">
-            <a href="src_middlewares_validators_ventas.validator.js.html" class="button">View Source</a>
+            <a href="src_controllers_vehiculos.controller.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_validators_ventas.validator.js.html">src/middlewares/validators/ventas.validator.js</a>, <a href="src_middlewares_validators_ventas.validator.js.html#line78">line 78</a>
+                <a href="src_controllers_vehiculos.controller.js.html">src/controllers/vehiculos.controller.js</a>, <a href="src_controllers_vehiculos.controller.js.html#line120">line 120</a>
             </span>
         </p>
     
@@ -1259,7 +339,35 @@ Comprueba que el vehículo no esté reservado en caso de reserva.
                     
 <div class="columns">
     
-    <div class='param-desc column is-7'>Error de validación con el mensaje correspondiente</div>
+    <div class='param-desc column is-7'>Vehículo no encontrado</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">404</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error al actualizar vehículo</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Ya existe un vehículo con esa matrícula</div>
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
 <code class="param-type">400</code>
@@ -1283,15 +391,12 @@ Comprueba que el vehículo no esté reservado en caso de reserva.
 
 <div class="columns">
     
-    <div class='param-desc column is-7'>Llama a next() si todo es correcto, o devuelve un error 400 con el mensaje de error</div>
+    <div class='param-desc column is-7'>Mensaje de éxito o error</div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
-<code class="param-type">void</code>
-|
-
 <code class="param-type">JSON</code>
 
 
@@ -1312,8 +417,8 @@ Comprueba que el vehículo no esté reservado en caso de reserva.
 
 
     
-    <h4 class="name" id="~validarVentaEdicion">
-        <a class="href-link" href="#~validarVentaEdicion">#</a>
+    <h4 class="name" id="~anadirVehiculo">
+        <a class="href-link" href="#~anadirVehiculo">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -1321,7 +426,7 @@ Comprueba que el vehículo no esté reservado en caso de reserva.
         
         <span class="code-name">
             
-                validarVentaEdicion<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void|JSON}</span>
+                anadirVehiculo<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {JSON}</span>
             
         </span>
     </h4>
@@ -1330,8 +435,7 @@ Comprueba que el vehículo no esté reservado en caso de reserva.
     
     
     <div class="description">
-        Middleware para validar una venta o reserva cuando se va a EDITAR (PUT).
-Valida los datos de la venta: fecha, tipo, precio_venta y vendedor_id.
+        Crea un nuevo vehículo en la base de datos.
     </div>
     
 
@@ -1415,17 +519,218 @@ Valida los datos de la venta: fecha, tipo, precio_venta y vendedor_id.
 
 
         
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_controllers_vehiculos.controller.js.html" class="button">View Source</a>
+            <span>
+                <a href="src_controllers_vehiculos.controller.js.html">src/controllers/vehiculos.controller.js</a>, <a href="src_controllers_vehiculos.controller.js.html#line58">line 58</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Faltan campos obligatorios</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">400</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Ya existe un vehículo con esa matrícula</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">400</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error al insertar vehículo</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Mensaje de éxito o error</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">JSON</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~eliminarVehiculo">
+        <a class="href-link" href="#~eliminarVehiculo">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                eliminarVehiculo<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {JSON}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Elimina un vehículo de la base de datos.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
 
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>next</code></td>
+      <td class="name"><code>req</code></td>
   
 
   <td class="type">
   
       
-<code class="param-type">function</code>
+<code class="param-type">Object</code>
 
 
   
@@ -1435,7 +740,32 @@ Valida los datos de la venta: fecha, tipo, precio_venta y vendedor_id.
 
   
 
-  <td class="description last">Función para pasar al siguiente middleware</td>
+  <td class="description last">Objeto de solicitud</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>res</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Objeto de respuesta</td>
 </tr>
 
 
@@ -1481,9 +811,9 @@ Valida los datos de la venta: fecha, tipo, precio_venta y vendedor_id.
 
     
         <p class="tag-source">
-            <a href="src_middlewares_validators_ventas.validator.js.html" class="button">View Source</a>
+            <a href="src_controllers_vehiculos.controller.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_validators_ventas.validator.js.html">src/middlewares/validators/ventas.validator.js</a>, <a href="src_middlewares_validators_ventas.validator.js.html#line143">line 143</a>
+                <a href="src_controllers_vehiculos.controller.js.html">src/controllers/vehiculos.controller.js</a>, <a href="src_controllers_vehiculos.controller.js.html#line159">line 159</a>
             </span>
         </p>
     
@@ -1511,10 +841,24 @@ Valida los datos de la venta: fecha, tipo, precio_venta y vendedor_id.
                     
 <div class="columns">
     
-    <div class='param-desc column is-7'>Error de validación con el mensaje correspondiente</div>
+    <div class='param-desc column is-7'>Vehículo no encontrado</div>
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
-<code class="param-type">400</code>
+<code class="param-type">404</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error al eliminar vehículo</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
 
 
     </div>
@@ -1535,15 +879,472 @@ Valida los datos de la venta: fecha, tipo, precio_venta y vendedor_id.
 
 <div class="columns">
     
-    <div class='param-desc column is-7'>Llama a next() si todo es correcto, o devuelve un error 400 con el mensaje de error</div>
+    <div class='param-desc column is-7'>Mensaje de éxito o error</div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
-<code class="param-type">void</code>
-|
+<code class="param-type">JSON</code>
 
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~obtenerVehiculoPorMatricula">
+        <a class="href-link" href="#~obtenerVehiculoPorMatricula">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                obtenerVehiculoPorMatricula<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {JSON}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Obtiene un vehículo según su matrícula.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>req</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Objeto de solicitud</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>res</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Objeto de respuesta</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_controllers_vehiculos.controller.js.html" class="button">View Source</a>
+            <span>
+                <a href="src_controllers_vehiculos.controller.js.html">src/controllers/vehiculos.controller.js</a>, <a href="src_controllers_vehiculos.controller.js.html#line31">line 31</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Vehículo no encontrado</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">404</code>
+
+
+    </div>
+    
+</div>
+
+                
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error al obtener vehículo</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Vehículo encontrado</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">JSON</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~obtenerVehiculos">
+        <a class="href-link" href="#~obtenerVehiculos">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                obtenerVehiculos<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {JSON}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Obtiene todos los vehículos de la base de datos.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>req</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Objeto de solicitud</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>res</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Objeto de respuesta</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_controllers_vehiculos.controller.js.html" class="button">View Source</a>
+            <span>
+                <a href="src_controllers_vehiculos.controller.js.html">src/controllers/vehiculos.controller.js</a>, <a href="src_controllers_vehiculos.controller.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Error al obtener vehículos</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">500</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Lista de vehículos</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
 <code class="param-type">JSON</code>
 
 

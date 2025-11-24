@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> public/js/mantenimientos.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="controllers_auth.module_controller.html">controllers/auth.controller</a></li><li><a href="controllers_clientes.module_controller.html">controllers/clientes.controller</a></li><li><a href="controllers_mantenimientos.module_controller.html">controllers/mantenimientos.controller</a></li><li><a href="controllers_usuarios.module_controller.html">controllers/usuarios.controller</a></li><li><a href="controllers_vehiculos.module_controller.html">controllers/vehiculos.controller</a></li><li><a href="controllers_ventas.module_controller.html">controllers/ventas.controller</a></li><li><a href="middlewares_auth.module_middleware.html">middlewares/auth.middleware</a></li><li><a href="middlewares_validators_clientes.module_validator.html">middlewares/validators/clientes.validator</a></li><li><a href="middlewares_validators_mantenimientos.module_validator.html">middlewares/validators/mantenimientos.validator</a></li><li><a href="middlewares_validators_usuarios.module_validator.html">middlewares/validators/usuarios.validator</a></li><li><a href="middlewares_validators_vehiculos.module_validator.html">middlewares/validators/vehiculos.validator</a></li><li><a href="middlewares_validators_ventas.module_validator.html">middlewares/validators/ventas.validator</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-clientes.html">clientes</a></li><li><a href="module-dashboard.html">dashboard</a></li><li><a href="module-login.html">login</a></li><li><a href="module-mantenimientos.html">mantenimientos</a></li><li><a href="module-routes_auth.html">routes/auth</a></li><li><a href="module-routes_clientes.html">routes/clientes</a></li><li><a href="module-routes_mantenimientos.html">routes/mantenimientos</a></li><li><a href="module-routes_usuarios.html">routes/usuarios</a></li><li><a href="module-routes_vehiculos.html">routes/vehiculos</a></li><li><a href="module-routes_ventas.html">routes/ventas</a></li><li><a href="module-usuarios.html">usuarios</a></li><li><a href="module-vehiculos.html">vehiculos</a></li><li><a href="module-ventas.html">ventas</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>public/js/mantenimientos.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file public/js/mantenimientos.js
+ * @description Gestión frontend del módulo de mantenimientos.
+ * Incluye protección de acceso, carga dinámica, renderizado de datos y CRUD.
+ * @module mantenimientos
+ */
+
+// Importar utilidades de autenticación
+import { requireLogin, authFetch } from "./auth.js";
+
+// Protección de acceso: requiere login
+requireLogin();
+
+// API endpoints
+const API_MANTENIMIENTOS = "http://localhost:3000/mantenimientos";
+const API_VEHICULOS = "http://localhost:3000/vehiculos";
+const API_USUARIOS_BASIC = "http://localhost:3000/usuarios/basic";
+
+// Selección de elementos del DOM
+const tableBody = document.querySelector("#mantenimientosTable tbody");
+const btnAddMantenimiento = document.getElementById("btnAddMantenimiento");
+const btnVolverVehiculos = document.getElementById("btnVolverVehiculos");
+const btnIrDashboard = document.getElementById("btnIrDashboard");
+const modal = document.getElementById("mantenimientoModal");
+const cerrarModal = document.getElementById("cerrarModal");
+const formTitle = document.getElementById("formTitle");
+const btnCancelar = document.getElementById("btnCancelar");
+const grupoCreado = document.getElementById("grupoCreado");
+const form = document.getElementById("mantenimientoForm");
+
+// Inputs del formulario agrupados en un objeto
+const inputs = {
+  id: document.getElementById("mantenimiento_id"),
+  vehiculo_id: document.getElementById("vehiculo_id"),
+  fecha_inicio: document.getElementById("fecha_inicio"),
+  fecha_fin: document.getElementById("fecha_fin"),
+  descripcion: document.getElementById("descripcion"),
+  realizado_por: document.getElementById("realizado_por"),
+  coste: document.getElementById("coste"),
+  creado_at: document.getElementById("creado_at"),
+};
+
+// ============================================================================
+//  UTILIDAD GLOBAL FETCH → JSON CON CONTROL DE ERRORES
+// ============================================================================
+
+/**
+ * @function fetchJSON
+ * @description Hace fetch autenticado + parsea JSON con manejo seguro de errores backend
+ * @param {string} url
+ * @param {RequestInit} options
+ * @returns {Promise&lt;any>}
+ */
+async function fetchJSON(url, options = {}) {
+  const res = await authFetch(url, options);
+  let data;
+
+  try {
+    data = await res.json();
+  } catch {
+    data = {};
+  }
+
+  if (!res.ok) {
+    throw new Error(data.error || `Error ${res.status}`);
+  }
+
+  return data;
+}
+
+// ============================================================================
+//  MODAL
+// ============================================================================
+
+//  Abre modal
+const abrirModalFn = () => {
+  modal.style.display = "block";
+};
+
+// Cierra modal
+const cerrarModalFn = () => {
+  modal.style.display = "none";
+};
+
+// Eventos de apertura/cierre modal
+cerrarModal.addEventListener("click", cerrarModalFn);
+btnCancelar.addEventListener("click", cerrarModalFn);
+window.addEventListener("click", (e) => {
+  if (e.target === modal) cerrarModalFn();
+});
+
+// ============================================================================
+//  NAVEGACIÓN
+// ============================================================================
+
+btnVolverVehiculos.addEventListener("click", () => {
+  window.location.href = "vehiculos.html";
+});
+
+btnIrDashboard.addEventListener("click", () => {
+  window.location.href = "index.html";
+});
+
+// ============================================================================
+//  ABRIR MODAL PARA CREAR MANTENIMIENTO
+// ============================================================================
+
+btnAddMantenimiento.addEventListener("click", async () => {
+  form.dataset.modo = "crear";
+  formTitle.textContent = "Añadir nuevo mantenimiento";
+
+  Object.values(inputs).forEach((i) => (i.value = ""));
+
+  await cargarVehiculosSelect(false);
+  await cargarUsuariosSelect(false);
+
+  grupoCreado.style.display = "none";
+
+  abrirModalFn();
+});
+
+// ============================================================================
+//  SELECT VEHÍCULOS
+// ============================================================================
+
+/**
+ * @function cargarVehiculosSelect
+ * @async
+ * @description Carga lista de vehículos en el selector
+ * @param {boolean} disabled
+ * @param {string|null} vehiculoActual
+ */
+async function cargarVehiculosSelect(disabled = false, vehiculoActual = null) {
+  try {
+    const vehiculos = await fetchJSON(API_VEHICULOS);
+    const vehiculoSelect = inputs.vehiculo_id;
+    vehiculoSelect.textContent = "";
+
+    const def = document.createElement("option");
+    def.value = "";
+    def.textContent = "Seleccionar vehículo...";
+    vehiculoSelect.appendChild(def);
+
+    vehiculos.forEach((v) => {
+      const option = document.createElement("option");
+      option.value = v.matricula;
+      option.textContent = `${v.matricula} - ${v.marca} ${v.modelo} (${v.estado})`;
+
+      if (v.estado !== "disponible" &amp;&amp; v.matricula !== vehiculoActual) {
+        option.disabled = true;
+        option.style.opacity = 0.5;
+      }
+
+      vehiculoSelect.appendChild(option);
+    });
+
+    vehiculoSelect.disabled = disabled;
+  } catch (err) {
+    alert("Error cargando vehículos: " + err.message);
+  }
+}
+
+// ============================================================================
+//  SELECT USUARIOS
+// ============================================================================
+
+/**
+ * @function cargarUsuariosSelect
+ * @async
+ * @description Carga lista de usuarios en el selector
+ * @param {boolean} disabled
+ * @param {string|null} usuarioActual
+ */
+async function cargarUsuariosSelect(disabled = false, usuarioActual = null) {
+  try {
+    const usuarios = await fetchJSON(API_USUARIOS_BASIC);
+    const usuarioSelect = inputs.realizado_por;
+    usuarioSelect.textContent = "";
+
+    usuarioSelect.append(new Option("Seleccionar empleado...", ""));
+
+    usuarios.forEach((u) => {
+      usuarioSelect.append(
+        new Option(`${u.user_id} - ${u.nombre} ${u.apellidos}`, u.user_id)
+      );
+    });
+
+    usuarioSelect.disabled = disabled;
+    if (usuarioActual) usuarioSelect.value = usuarioActual;
+  } catch (err) {
+    alert("Error cargando usuarios: " + err.message);
+  }
+}
+
+// ============================================================================
+//  PINTAR MANTENIMIENTOS EN TABLA
+// ============================================================================
+
+/**
+ * @function cargarMantenimientos
+ * @async
+ * @description Carga mantenimientos desde backend y los muestra en tabla
+ */
+async function cargarMantenimientos() {
+  try {
+    const mantenimientos = await fetchJSON(API_MANTENIMIENTOS);
+
+    tableBody.textContent = "";
+    const fragment = document.createDocumentFragment();
+
+    mantenimientos.forEach((m) => {
+      const row = document.createElement("tr");
+
+      const fechaInicioFmt = m.fecha_inicio
+        ? new Date(m.fecha_inicio).toLocaleDateString("es-ES")
+        : "";
+      const fechaFinFmt = m.fecha_fin
+        ? new Date(m.fecha_fin).toLocaleDateString("es-ES")
+        : "";
+      const creadoFmt = m.creado_at
+        ? new Date(m.creado_at).toLocaleDateString("es-ES")
+        : "";
+      const costeFmt =
+        m.coste != null
+          ? new Intl.NumberFormat("es-ES", {
+              style: "currency",
+              currency: "EUR",
+            }).format(m.coste)
+          : "";
+
+      [
+        m.mantenimiento_id,
+        m.vehiculo_id,
+        fechaInicioFmt,
+        fechaFinFmt,
+        m.descripcion,
+        m.realizado_por,
+        costeFmt,
+        creadoFmt,
+      ].forEach((valor) => {
+        row.appendChild(
+          Object.assign(document.createElement("td"), { textContent: valor })
+        );
+      });
+
+      const accionesTd = document.createElement("td");
+      accionesTd.innerHTML = `
+        &lt;button class="btn-editar" data-id="${m.mantenimiento_id}">Editar&lt;/button>
+        &lt;button class="btn-eliminar" data-id="${m.mantenimiento_id}">Eliminar&lt;/button>
+      `;
+      row.appendChild(accionesTd);
+
+      fragment.appendChild(row);
+    });
+
+    tableBody.appendChild(fragment);
+  } catch (err) {
+    alert("Error cargando mantenimientos: " + err.message);
+  }
+}
+
+// ============================================================================
+//  EDITAR MANTENIMIENTO
+// ============================================================================
+
+tableBody.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("btn-editar")) {
+    const id = e.target.dataset.id;
+    form.dataset.modo = "editar";
+    formTitle.textContent = "Editar mantenimiento";
+
+    try {
+      const m = await fetchJSON(`${API_MANTENIMIENTOS}/${id}`);
+
+      await cargarVehiculosSelect(true, m.vehiculo_id);
+      await cargarUsuariosSelect(false, m.realizado_por);
+
+      inputs.id.value = m.mantenimiento_id;
+      inputs.vehiculo_id.value = m.vehiculo_id;
+      inputs.fecha_inicio.value = m.fecha_inicio
+        ? m.fecha_inicio.split("T")[0]
+        : "";
+      inputs.fecha_fin.value = m.fecha_fin ? m.fecha_fin.split("T")[0] : "";
+      inputs.descripcion.value = m.descripcion;
+      inputs.realizado_por.value = m.realizado_por;
+      inputs.coste.value = m.coste;
+      inputs.creado_at.value = m.creado_at ? m.creado_at.split("T")[0] : "";
+
+      grupoCreado.style.display = "block";
+      inputs.creado_at.disabled = true;
+
+      abrirModalFn();
+    } catch (err) {
+      alert("Error cargando mantenimiento: " + err.message);
+    }
+  }
+});
+
+// ============================================================================
+//  ELIMINAR MANTENIMIENTO
+// ============================================================================
+
+tableBody.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("btn-eliminar")) {
+    const id = e.target.dataset.id;
+    if (!confirm("¿Seguro que deseas eliminar este mantenimiento?")) return;
+
+    try {
+      await fetchJSON(`${API_MANTENIMIENTOS}/${id}`, { method: "DELETE" });
+      alert("Mantenimiento eliminado correctamente");
+      cargarMantenimientos();
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+});
+
+// ============================================================================
+//  SUBMIT — CREAR / EDITAR
+// ============================================================================
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const mantenimiento = {
+    vehiculo_id: inputs.vehiculo_id.value,
+    fecha_inicio: inputs.fecha_inicio.value,
+    fecha_fin: inputs.fecha_fin.value || null,
+    descripcion: inputs.descripcion.value,
+    realizado_por: inputs.realizado_por.value,
+    coste: inputs.coste.value || null,
+  };
+
+  let url = API_MANTENIMIENTOS;
+  let metodo = "POST";
+
+  if (form.dataset.modo === "editar") {
+    metodo = "PUT";
+    url = `${API_MANTENIMIENTOS}/${inputs.id.value}`;
+  } else {
+    mantenimiento.mantenimiento_id = inputs.id.value;
+  }
+
+  try {
+    const data = await fetchJSON(url, {
+      method: metodo,
+      body: JSON.stringify(mantenimiento),
+    });
+
+    alert(data.mensaje || "Mantenimiento guardado correctamente");
+    cerrarModalFn();
+    cargarMantenimientos();
+  } catch (err) {
+    alert(err.message);
+  }
+});
+
+// ============================================================================
+//  INICIALIZACIÓN
+// ============================================================================
+
+window.addEventListener("DOMContentLoaded", cargarMantenimientos);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> routes/ventas</title>
+  <title> src/routes/mantenimientos.routes.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,135 +75,90 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Module</p>
-                    <h1>routes/ventas</h1>
+                    <p>Source</p>
+                    <h1>src/routes/mantenimientos.routes.js</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file src/routes/mantenimientos.routes.js
+ * @description Rutas relacionadas con la gestión de mantenimientos
+ * @module routes/mantenimientos
+ */
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Rutas relacionadas con la gestión de ventas y reservas</div>
-        
+// Importar dependencias
+import express from "express";
 
-        
-            
+// Importar controladores
+import {
+  obtenerMantenimientos,
+  obtenerMantenimientoPorId,
+  anadirMantenimiento,
+  actualizarMantenimiento,
+  eliminarMantenimiento,
+} from "../controllers/mantenimientos.controller.js";
 
+// Importar validadores
+import {
+  validarMantenimiento,
+  validarMantenimientoEdicion,
+} from "../middlewares/validators/mantenimientos.validator.js";
 
+// Importar middleware de autenticación
+import { verifyToken } from "../middlewares/auth.middleware.js";
 
+// Crear el router
+const router = express.Router();
 
+// Todas las rutas requieren login
+router.use(verifyToken);
 
+/**
+ * @route GET /mantenimientos
+ * @description Obtener todos los mantenimientos
+ */
+router.get("/", obtenerMantenimientos);
 
+/**
+ * @route GET /mantenimientos/:mantenimiento_id
+ * @description Obtener un mantenimiento por ID
+ */
+router.get("/:mantenimiento_id", obtenerMantenimientoPorId);
 
+/**
+ * @route POST /mantenimientos
+ * @description Crear un nuevo mantenimiento
+ * Valida los datos del mantenimiento antes de crear
+ */
+router.post("/", validarMantenimiento, anadirMantenimiento);
 
+/**
+ * @route PUT /mantenimientos/:mantenimiento_id
+ * @description Actualizar un mantenimiento existente
+ * Valida los datos del mantenimiento antes de actualizar
+ */
+router.put(
+  "/:mantenimiento_id",
+  validarMantenimientoEdicion,
+  actualizarMantenimiento
+);
 
+/**
+ * @route DELETE /mantenimientos/:mantenimiento_id
+ * @description Eliminar mantenimiento por ID
+ */
+router.delete("/:mantenimiento_id", eliminarMantenimiento);
 
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_routes_ventas.routes.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_routes_ventas.routes.js.html">src/routes/ventas.routes.js</a>, <a href="src_routes_ventas.routes.js.html#line1">line 1</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+// Exportar el router
+export default router;
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> middlewares/auth.middleware</title>
+  <title> vehiculos</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>middlewares/auth.middleware</h1>
+                    <h1>vehiculos</h1>
                 </header>
                 
 
@@ -85,16 +85,35 @@
 
 <header>
     
+        
+            
+        
+    
 </header>
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">Middlewares de autenticación y autorización de usuarios.</div>
+            <div class="description">Lógica frontend para gestión de vehículos en la aplicación.
+Incluye protección por sesión (JWT), carga dinámica de datos, modal CRUD y
+comunicación con el backend usando authFetch().</div>
         
 
         
+            
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <dl class="details">
@@ -130,13 +149,33 @@
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="public_js_vehiculos.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line1">line 1</a>
+                <a href="public_js_vehiculos.js.html">public/js/vehiculos.js</a>, <a href="public_js_vehiculos.js.html#line1">line 1</a>
             </span>
         </p>
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         
@@ -166,8 +205,8 @@
 
 
     
-    <h4 class="name" id="~requireAdmin">
-        <a class="href-link" href="#~requireAdmin">#</a>
+    <h4 class="name" id="~abrirModal">
+        <a class="href-link" href="#~abrirModal">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -175,7 +214,7 @@
         
         <span class="code-name">
             
-                requireAdmin<span class="signature">()</span><span class="type-signature"></span>
+                abrirModal<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -184,8 +223,7 @@
     
     
     <div class="description">
-        Middleware específico para exigir rol administrador.
-Equivalente a requireRole("admin").
+        Abre el modal de formulario
     </div>
     
 
@@ -234,9 +272,9 @@ Equivalente a requireRole("admin").
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="public_js_vehiculos.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line89">line 89</a>
+                <a href="public_js_vehiculos.js.html">public/js/vehiculos.js</a>, <a href="public_js_vehiculos.js.html#line44">line 44</a>
             </span>
         </p>
     
@@ -268,16 +306,18 @@ Equivalente a requireRole("admin").
 
 
     
-    <h4 class="name" id="~requireRole">
-        <a class="href-link" href="#~requireRole">#</a>
+    <h4 class="name" id="~cargarVehiculos">
+        <a class="href-link" href="#~cargarVehiculos">#</a>
         
+            
+                <span class='tag'>async</span>
             
                 <span class='tag'>inner</span>
             
         
         <span class="code-name">
             
-                requireRole<span class="signature">(&hellip;roles, req, res, next)</span><span class="type-signature"></span>
+                cargarVehiculos<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span>
             
         </span>
     </h4>
@@ -286,10 +326,253 @@ Equivalente a requireRole("admin").
     
     
     <div class="description">
-        Middleware que verifica si el usuario autenticado tiene el rol necesario para acceder a una ruta.
-Se pasa un número variable de roles como argumentos, y se verifica si el usuario tiene alguno de ellos.
-Si no tiene el rol necesario, devuelve un objeto JSON con un error de acceso denegado.
-Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error interno.
+        Carga la lista de vehículos desde el backend y los muestra en la tabla
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="public_js_vehiculos.js.html" class="button">View Source</a>
+            <span>
+                <a href="public_js_vehiculos.js.html">public/js/vehiculos.js</a>, <a href="public_js_vehiculos.js.html#line72">line 72</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Si ocurre un error al obtener los vehículos</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">Error</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Promise.&lt;void></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~cerrarModalFn">
+        <a class="href-link" href="#~cerrarModalFn">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                cerrarModalFn<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Cierra el modal y resetea el formulario
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="public_js_vehiculos.js.html" class="button">View Source</a>
+            <span>
+                <a href="public_js_vehiculos.js.html">public/js/vehiculos.js</a>, <a href="public_js_vehiculos.js.html#line52">line 52</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~editarVehiculo">
+        <a class="href-link" href="#~editarVehiculo">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                editarVehiculo<span class="signature">(v)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Rellena el formulario con los datos de un vehículo para edición
     </div>
     
 
@@ -314,7 +597,159 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
             <th>Type</th>
 
             
-            <th>Attributes</th>
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>v</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Objeto vehículo</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="public_js_vehiculos.js.html" class="button">View Source</a>
+            <span>
+                <a href="public_js_vehiculos.js.html">public/js/vehiculos.js</a>, <a href="public_js_vehiculos.js.html#line166">line 166</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~eliminarVehiculo">
+        <a class="href-link" href="#~eliminarVehiculo">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                eliminarVehiculo<span class="signature">(matricula)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Solicita confirmación y elimina vehículo en backend
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
             
 
             
@@ -329,7 +764,7 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>roles</code></td>
+      <td class="name"><code>matricula</code></td>
   
 
   <td class="type">
@@ -342,119 +777,10 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
   </td>
 
   
-      <td class="attributes">
-      
-
-      
-
-      
-          &lt;repeatable><br>
-      
-      </td>
-  
 
   
 
-  <td class="description last">roles necesarios para acceder a la ruta</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>req</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">objeto Request de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>res</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">objeto Response de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">function</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">función middleware siguiente a ejecutar</td>
+  <td class="description last"></td>
 </tr>
 
 
@@ -500,9 +826,9 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="public_js_vehiculos.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line57">line 57</a>
+                <a href="public_js_vehiculos.js.html">public/js/vehiculos.js</a>, <a href="public_js_vehiculos.js.html#line251">line 251</a>
             </span>
         </p>
     
@@ -530,24 +856,10 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
                     
 <div class="columns">
     
-    <div class='param-desc column is-7'>Si el usuario no tiene el rol necesario</div>
+    <div class='param-desc column is-7'>Si ocurre un error al eliminar el vehículo</div>
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
-<code class="param-type">403</code>
-
-
-    </div>
-    
-</div>
-
-                
-                    
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Si no hay información del usuario en la petición</div>
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-<code class="param-type">500</code>
+<code class="param-type">Error</code>
 
 
     </div>
@@ -559,6 +871,29 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
     </div>
 
 
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Promise.&lt;void></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
 
 
 
@@ -569,8 +904,8 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
 
 
     
-    <h4 class="name" id="~verifyToken">
-        <a class="href-link" href="#~verifyToken">#</a>
+    <h4 class="name" id="~resetFormulario">
+        <a class="href-link" href="#~resetFormulario">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -578,7 +913,7 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
         
         <span class="code-name">
             
-                verifyToken<span class="signature">(req, res, next)</span><span class="type-signature"></span>
+                resetFormulario<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -587,10 +922,7 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
     
     
     <div class="description">
-        Middleware que verifica el token JWT en las peticiones protegidas.
-Verifica que el token JWT sea válido y esté asociado a una sesión de usuario.
-En caso de error, devuelve un objeto JSON con el error correspondiente.
-Si el token es válido, guarda información útil del usuario en la request.
+        Vacía el formulario y restaura estado interno
     </div>
     
 
@@ -601,107 +933,6 @@ Si el token es válido, guarda información útil del usuario en la request.
 
 
 
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>req</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">objeto Request de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>res</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">objeto Response de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">function</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">función middleware siguiente a ejecutar</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
 
 
 
@@ -740,9 +971,9 @@ Si el token es válido, guarda información útil del usuario en la request.
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="public_js_vehiculos.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line13">line 13</a>
+                <a href="public_js_vehiculos.js.html">public/js/vehiculos.js</a>, <a href="public_js_vehiculos.js.html#line183">line 183</a>
             </span>
         </p>
     
@@ -762,27 +993,6 @@ Si el token es válido, guarda información útil del usuario en la request.
 
 
 
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Throws:</label></div>
-        <div class="column is-10">
-            
-                    
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Si el token no es proporcionado, inválido o expirado</div>
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-<code class="param-type">401</code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
 
 
 

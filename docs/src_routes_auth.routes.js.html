@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> routes/ventas</title>
+  <title> src/routes/auth.routes.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,135 +75,43 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Module</p>
-                    <h1>routes/ventas</h1>
+                    <p>Source</p>
+                    <h1>src/routes/auth.routes.js</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file src/routes/auth.routes.js
+ * @description Rutas de autenticación de usuarios
+ * @module routes/auth
+ */
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Rutas relacionadas con la gestión de ventas y reservas</div>
-        
+// Importar dependencias
+import express from "express";
 
-        
-            
+// Importar controlador de autenticación
+import { login } from "../controllers/auth.controller.js";
 
+// Crear router
+const router = express.Router();
 
+/**
+ * @route POST /auth/login
+ * @description Inicia sesión del usuario y devuelve token + datos básicos
+ * @access Público (única ruta sin auth)
+ */
+router.post("/login", login);
 
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_routes_ventas.routes.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_routes_ventas.routes.js.html">src/routes/ventas.routes.js</a>, <a href="src_routes_ventas.routes.js.html#line1">line 1</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+// Exportar router
+export default router;
+</code></pre>
+        </article>
+    </section>
 
 
 

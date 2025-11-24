@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> routes/ventas</title>
+  <title> src/config/db.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,135 +75,49 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Module</p>
-                    <h1>routes/ventas</h1>
+                    <p>Source</p>
+                    <h1>src/config/db.js</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file config/db.js
+ * @description Configuración y conexión a MySQL. Este módulo exporta una única conexión reutilizable en toda la aplicación.
+ */
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Rutas relacionadas con la gestión de ventas y reservas</div>
-        
+// Importar dependencias
+import mysql from "mysql";
+import dotenv from "dotenv";
 
-        
-            
+// Cargar variables de entorno desde el archivo .env
+dotenv.config();
 
+// Crear la conexión a MySQL
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+});
 
+// Conectar a MySQL
+connection.connect((err) => {
+  if (err) {
+    console.error("❌ Error al conectar a MySQL:", err);
+    return;
+  }
+  console.log("✅ Conexión a MySQL establecida.");
+});
 
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_routes_ventas.routes.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_routes_ventas.routes.js.html">src/routes/ventas.routes.js</a>, <a href="src_routes_ventas.routes.js.html#line1">line 1</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+// Exportar la conexión para su uso en otros módulos
+export default connection;</code></pre>
+        </article>
+    </section>
 
 
 

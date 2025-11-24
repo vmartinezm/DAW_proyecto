@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> routes/ventas</title>
+  <title> src/app.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,135 +75,65 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Module</p>
-                    <h1>routes/ventas</h1>
+                    <p>Source</p>
+                    <h1>src/app.js</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file src/app.js
+ * @description Archivo principal del servidor Express. Configura middlewares globales, rutas y arranque del servidor.
+ */
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Rutas relacionadas con la gestión de ventas y reservas</div>
-        
+// ====== Importar dependencias ======
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
 
-        
-            
+// ====== Cargar variables de entorno ======
+dotenv.config();
 
+// ====== Rutas ======
+import vehiculosRoutes from "./routes/vehiculos.routes.js";
+import mantenimientosRoutes from "./routes/mantenimientos.routes.js";
+import ventasRoutes from "./routes/ventas.routes.js";
+import usuariosRoutes from "./routes/usuarios.routes.js";
+import clientesRoutes from "./routes/clientes.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 
+// ====== Inicializar Express ======
+const app = express();
+const PORT = process.env.PORT || 3000;
 
+// ====== MIDDLEWARES GLOBALES ======
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(express.static("public"));
 
+// ====== RUTAS ======
+app.use("/vehiculos", vehiculosRoutes);
+app.use("/mantenimientos", mantenimientosRoutes);
+app.use("/ventas", ventasRoutes);
+app.use("/usuarios", usuariosRoutes);
+app.use("/clientes", clientesRoutes);
+app.use("/auth", authRoutes);
 
+// ====== ARRANCAR SERVIDOR ======
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
 
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_routes_ventas.routes.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_routes_ventas.routes.js.html">src/routes/ventas.routes.js</a>, <a href="src_routes_ventas.routes.js.html#line1">line 1</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+// ====== Exportar la aplicación ======
+export default app;</code></pre>
+        </article>
+    </section>
 
 
 

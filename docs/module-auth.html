@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> middlewares/auth.middleware</title>
+  <title> auth</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>middlewares/auth.middleware</h1>
+                    <h1>auth</h1>
                 </header>
                 
 
@@ -85,16 +85,34 @@
 
 <header>
     
+        
+            
+        
+    
 </header>
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">Middlewares de autenticación y autorización de usuarios.</div>
+            <div class="description">Módulo de autenticación y gestión de sesión.
+Proporciona funciones para manejar la sesión del usuario, verificar roles y proteger rutas.</div>
         
 
         
+            
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <dl class="details">
@@ -130,13 +148,33 @@
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="public_js_auth.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line1">line 1</a>
+                <a href="public_js_auth.js.html">public/js/auth.js</a>, <a href="public_js_auth.js.html#line1">line 1</a>
             </span>
         </p>
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         
@@ -166,6 +204,439 @@
 
 
     
+    <h4 class="name" id="~authFetch">
+        <a class="href-link" href="#~authFetch">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                authFetch<span class="signature">(url, options)</span><span class="type-signature"> &rarr; {Promise.&lt;Response>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Realiza una petición a la API con token de autenticación
+Si no hay token en session, redirige a login.html
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>url</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">string</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">URL de la API</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>options</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Opciones adicionales para fetch</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="public_js_auth.js.html" class="button">View Source</a>
+            <span>
+                <a href="public_js_auth.js.html">public/js/auth.js</a>, <a href="public_js_auth.js.html#line70">line 70</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>La promesa de la respuesta de fetch</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Promise.&lt;Response></code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getSession">
+        <a class="href-link" href="#~getSession">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getSession<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Obtiene la sesión del usuario guardada en sessionStorage.
+Devuelve el objeto de sesión guardado en sessionStorage.
+Si no existe una sesión guardada, devuelve un objeto vacío.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="public_js_auth.js.html" class="button">View Source</a>
+            <span>
+                <a href="public_js_auth.js.html">public/js/auth.js</a>, <a href="public_js_auth.js.html#line8">line 8</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>El objeto de sesión guardado en sessionStorage.</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">Object</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~logout">
+        <a class="href-link" href="#~logout">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                logout<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Cierra la sesión actual del usuario y redirige a login.html
+Elimina la sesión guardada en sessionStorage.
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="public_js_auth.js.html" class="button">View Source</a>
+            <span>
+                <a href="public_js_auth.js.html">public/js/auth.js</a>, <a href="public_js_auth.js.html#line60">line 60</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
     <h4 class="name" id="~requireAdmin">
         <a class="href-link" href="#~requireAdmin">#</a>
         
@@ -184,8 +655,8 @@
     
     
     <div class="description">
-        Middleware específico para exigir rol administrador.
-Equivalente a requireRole("admin").
+        Protege una página exclusiva para administradores.
+Si el rol no es admin → redirige al dashboard.
     </div>
     
 
@@ -234,9 +705,9 @@ Equivalente a requireRole("admin").
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="public_js_auth.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line89">line 89</a>
+                <a href="public_js_auth.js.html">public/js/auth.js</a>, <a href="public_js_auth.js.html#line38">line 38</a>
             </span>
         </p>
     
@@ -268,8 +739,8 @@ Equivalente a requireRole("admin").
 
 
     
-    <h4 class="name" id="~requireRole">
-        <a class="href-link" href="#~requireRole">#</a>
+    <h4 class="name" id="~requireLogin">
+        <a class="href-link" href="#~requireLogin">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -277,7 +748,7 @@ Equivalente a requireRole("admin").
         
         <span class="code-name">
             
-                requireRole<span class="signature">(&hellip;roles, req, res, next)</span><span class="type-signature"></span>
+                requireLogin<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span>
             
         </span>
     </h4>
@@ -286,10 +757,8 @@ Equivalente a requireRole("admin").
     
     
     <div class="description">
-        Middleware que verifica si el usuario autenticado tiene el rol necesario para acceder a una ruta.
-Se pasa un número variable de roles como argumentos, y se verifica si el usuario tiene alguno de ellos.
-Si no tiene el rol necesario, devuelve un objeto JSON con un error de acceso denegado.
-Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error interno.
+        Comprueba si el usuario está logueado.
+Si no lo está → redirige automáticamente a login.html
     </div>
     
 
@@ -300,168 +769,6 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
 
 
 
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-            <th>Attributes</th>
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>roles</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">string</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-          &lt;repeatable><br>
-      
-      </td>
-  
-
-  
-
-  <td class="description last">roles necesarios para acceder a la ruta</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>req</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">objeto Request de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>res</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">objeto Response de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">function</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">función middleware siguiente a ejecutar</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
 
 
 
@@ -500,9 +807,9 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="public_js_auth.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line57">line 57</a>
+                <a href="public_js_auth.js.html">public/js/auth.js</a>, <a href="public_js_auth.js.html#line21">line 21</a>
             </span>
         </p>
     
@@ -523,31 +830,23 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
 
 
 
+
+
     <div class='columns method-parameter'>
-        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-2"><label>Returns:</label></div>
         <div class="column is-10">
             
                     
+
 <div class="columns">
     
-    <div class='param-desc column is-7'>Si el usuario no tiene el rol necesario</div>
+    <div class='param-desc column is-7'>true si el usuario está logueado</div>
+    
+    
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
-<code class="param-type">403</code>
-
-
-    </div>
-    
-</div>
-
-                
-                    
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Si no hay información del usuario en la petición</div>
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-<code class="param-type">500</code>
+        
+<code class="param-type">boolean</code>
 
 
     </div>
@@ -557,234 +856,6 @@ Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error 
                 
         </div>
     </div>
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~verifyToken">
-        <a class="href-link" href="#~verifyToken">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                verifyToken<span class="signature">(req, res, next)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Middleware que verifica el token JWT en las peticiones protegidas.
-Verifica que el token JWT sea válido y esté asociado a una sesión de usuario.
-En caso de error, devuelve un objeto JSON con el error correspondiente.
-Si el token es válido, guarda información útil del usuario en la request.
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>req</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">objeto Request de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>res</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">objeto Response de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">function</code>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">función middleware siguiente a ejecutar</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line13">line 13</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Throws:</label></div>
-        <div class="column is-10">
-            
-                    
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Si el token no es proporcionado, inválido o expirado</div>
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-<code class="param-type">401</code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
 
 
 

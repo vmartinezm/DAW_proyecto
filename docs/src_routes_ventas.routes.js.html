@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> routes/ventas</title>
+  <title> src/routes/ventas.routes.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,135 +75,86 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Module</p>
-                    <h1>routes/ventas</h1>
+                    <p>Source</p>
+                    <h1>src/routes/ventas.routes.js</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file src/routes/ventas.routes.js
+ * @description Rutas relacionadas con la gestión de ventas y reservas
+ * @module routes/ventas
+ */
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Rutas relacionadas con la gestión de ventas y reservas</div>
-        
+// Importar dependencias
+import express from "express";
 
-        
-            
+// Importar controladores
+import {
+  obtenerVentas,
+  obtenerVentaPorId,
+  anadirVenta,
+  actualizarVenta,
+  eliminarVenta,
+} from "../controllers/ventas.controller.js";
 
+// Importar validadores
+import {
+  validarVenta,
+  validarVentaEdicion,
+} from "../middlewares/validators/ventas.validator.js";
 
+// Importar middleware de autenticación
+import { verifyToken } from "../middlewares/auth.middleware.js";
 
+// Crear el router
+const router = express.Router();
 
+// Todas las rutas de ventas requieren estar logueado
+router.use(verifyToken);
 
+/**
+ * @route GET /ventas
+ * @description Obtener todas las ventas (incluye datos de clientes, vehículos y vendedores)
+ */
+router.get("/", obtenerVentas);
 
+/**
+ * @route GET /ventas/:venta_id
+ * @description Obtener una venta específica por su ID
+ */
+router.get("/:venta_id", obtenerVentaPorId);
 
+/**
+ * @route POST /ventas
+ * @description Crear una nueva venta o reserva
+ * Valida los datos antes de crearla
+ */
+router.post("/", validarVenta, anadirVenta);
 
+/**
+ * @route PUT /ventas/:venta_id
+ * @description Editar una venta existente
+ * Valida los datos antes de actualizarla
+ */
+router.put("/:venta_id", validarVentaEdicion, actualizarVenta);
 
+/**
+ * @route DELETE /ventas/:venta_id
+ * @description Eliminar una venta por ID
+ */
+router.delete("/:venta_id", eliminarVenta);
 
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_routes_ventas.routes.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_routes_ventas.routes.js.html">src/routes/ventas.routes.js</a>, <a href="src_routes_ventas.routes.js.html#line1">line 1</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+// Exportar el router
+export default router;
+</code></pre>
+        </article>
+    </section>
 
 
 

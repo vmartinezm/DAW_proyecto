@@ -1,0 +1,408 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> public/js/usuarios.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="controllers_auth.module_controller.html">controllers/auth.controller</a></li><li><a href="controllers_clientes.module_controller.html">controllers/clientes.controller</a></li><li><a href="controllers_mantenimientos.module_controller.html">controllers/mantenimientos.controller</a></li><li><a href="controllers_usuarios.module_controller.html">controllers/usuarios.controller</a></li><li><a href="controllers_vehiculos.module_controller.html">controllers/vehiculos.controller</a></li><li><a href="controllers_ventas.module_controller.html">controllers/ventas.controller</a></li><li><a href="middlewares_auth.module_middleware.html">middlewares/auth.middleware</a></li><li><a href="middlewares_validators_clientes.module_validator.html">middlewares/validators/clientes.validator</a></li><li><a href="middlewares_validators_mantenimientos.module_validator.html">middlewares/validators/mantenimientos.validator</a></li><li><a href="middlewares_validators_usuarios.module_validator.html">middlewares/validators/usuarios.validator</a></li><li><a href="middlewares_validators_vehiculos.module_validator.html">middlewares/validators/vehiculos.validator</a></li><li><a href="middlewares_validators_ventas.module_validator.html">middlewares/validators/ventas.validator</a></li><li><a href="module-auth.html">auth</a></li><li><a href="module-clientes.html">clientes</a></li><li><a href="module-dashboard.html">dashboard</a></li><li><a href="module-login.html">login</a></li><li><a href="module-mantenimientos.html">mantenimientos</a></li><li><a href="module-routes_auth.html">routes/auth</a></li><li><a href="module-routes_clientes.html">routes/clientes</a></li><li><a href="module-routes_mantenimientos.html">routes/mantenimientos</a></li><li><a href="module-routes_usuarios.html">routes/usuarios</a></li><li><a href="module-routes_vehiculos.html">routes/vehiculos</a></li><li><a href="module-routes_ventas.html">routes/ventas</a></li><li><a href="module-usuarios.html">usuarios</a></li><li><a href="module-vehiculos.html">vehiculos</a></li><li><a href="module-ventas.html">ventas</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>public/js/usuarios.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file public/js/usuarios.js
+ * @description Gestión frontend del módulo de usuarios.
+ * Incluye protección de acceso, carga dinámica, renderizado de datos y CRUD.
+ * @module usuarios
+ */
+
+// Importar utilidades de autenticación
+import { requireAdmin, authFetch } from "./auth.js";
+
+// API ENDPOINT
+const API_USUARIOS = "http://localhost:3000/usuarios";
+
+// Protección de acceso: solo administradores
+if (!requireAdmin()) {
+  throw new Error("Acceso denegado");
+}
+
+// ============================================================================
+//  UTILIDAD FETCHJSON — UNIFICACIÓN MANEJO RESPUESTAS
+// ============================================================================
+
+/**
+ * @function fetchJSON
+ * @description Wrapper general para fetch + JSON con control de errores
+ * @param {string} url
+ * @param {RequestInit} options
+ * @returns {Promise&lt;any>}
+ * @throws {Error} Si la respuesta backend indica error
+ */
+async function fetchJSON(url, options = {}) {
+  const res = await authFetch(url, options);
+
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    data = {};
+  }
+
+  if (!res.ok) {
+    throw new Error(data.error || "Error en la operación");
+  }
+
+  return data;
+}
+
+// ============================================================================
+//  REFERENCIAS DOM
+// ============================================================================
+
+const tableBody = document.querySelector("#usuariosTable tbody");
+const btnAddUsuario = document.getElementById("btnAddUsuario");
+const btnIrDashboard = document.getElementById("btnIrDashboard");
+
+const modal = document.getElementById("usuariosModal");
+const cerrarModal = document.getElementById("cerrarModal");
+const btnCancelar = document.getElementById("btnCancelar");
+
+const form = document.getElementById("usuariosForm");
+const formTitle = document.getElementById("formTitle");
+const grupoCreado = document.getElementById("grupoCreado");
+const grupoPassword = document.getElementById("grupoPassword");
+
+// Inputs del formulario agrupados en un objeto
+const inputs = {
+  id: document.getElementById("user_id"),
+  nombre: document.getElementById("nombre"),
+  apellidos: document.getElementById("apellidos"),
+  usuario: document.getElementById("usuario"),
+  rol: document.getElementById("rol"),
+  email: document.getElementById("email"),
+  password: document.getElementById("password"),
+  creado_at: document.getElementById("creado_at"),
+};
+
+// ============================================================================
+//  MODAL
+// ============================================================================
+
+// Abre el modal usuario
+const abrirModalFn = () => (modal.style.display = "block");
+
+// Cierra el modal usuario y resetea el formulario
+const cerrarModalFn = () => {
+  modal.style.display = "none";
+  form.reset();
+};
+
+// Eventos cierre modal
+cerrarModal.addEventListener("click", cerrarModalFn);
+btnCancelar.addEventListener("click", cerrarModalFn);
+window.addEventListener("click", (e) => {
+  if (e.target === modal) cerrarModalFn();
+});
+
+// ============================================================================
+//  NAVEGACIÓN
+// ============================================================================
+
+btnIrDashboard.addEventListener("click", () => {
+  window.location.href = "index.html";
+});
+
+// ============================================================================
+//  NUEVO USUARIO
+// ============================================================================
+
+btnAddUsuario.addEventListener("click", () => {
+  form.dataset.modo = "crear";
+  formTitle.textContent = "Añadir nuevo usuario";
+
+  inputs.id.value = "";
+  inputs.nombre.value = "";
+  inputs.apellidos.value = "";
+  inputs.usuario.value = "";
+  inputs.email.value = "";
+  inputs.rol.value = "empleado";
+
+  inputs.password.value = "";
+  inputs.password.placeholder = "Obligatorio para nuevo usuario";
+
+  grupoPassword.style.display = "block";
+  grupoCreado.style.display = "none";
+
+  abrirModalFn();
+});
+
+// ============================================================================
+//  CARGAR USUARIOS
+// ============================================================================
+
+/**
+ * @function cargarUsuarios
+ * @description Obtiene la lista de usuarios y la muestra en tabla
+ * @returns {Promise&lt;void>}
+ * @throws {Error} Si hay error en la obtención de datos
+ */
+async function cargarUsuarios() {
+  try {
+    const usuarios = await fetchJSON(API_USUARIOS);
+
+    tableBody.textContent = "";
+    const frag = document.createDocumentFragment();
+
+    usuarios.forEach((u) => {
+      const row = document.createElement("tr");
+
+      const creadoFmt = u.creado_at
+        ? new Date(u.creado_at).toLocaleDateString("es-ES")
+        : "";
+
+      [
+        u.user_id,
+        u.nombre,
+        u.apellidos,
+        u.usuario,
+        u.rol,
+        u.email,
+        creadoFmt,
+      ].forEach((valor) => {
+        const td = document.createElement("td");
+        td.textContent = valor;
+        row.appendChild(td);
+      });
+
+      const acciones = document.createElement("td");
+      acciones.innerHTML = `
+        &lt;button class="btn-editar" data-id="${u.user_id}">Editar&lt;/button>
+        &lt;button class="btn-eliminar" data-id="${u.user_id}">Eliminar&lt;/button>
+      `;
+
+      row.appendChild(acciones);
+      frag.appendChild(row);
+    });
+
+    tableBody.appendChild(frag);
+  } catch (err) {
+    console.error("Error al cargar usuarios:", err);
+    alert(err.message);
+  }
+}
+
+// ============================================================================
+//  EDITAR
+// ============================================================================
+
+tableBody.addEventListener("click", async (e) => {
+  if (!e.target.classList.contains("btn-editar")) return;
+
+  const id = e.target.dataset.id;
+
+  try {
+    const usuario = await fetchJSON(`${API_USUARIOS}/${id}`);
+
+    form.dataset.modo = "editar";
+    formTitle.textContent = "Editar usuario";
+
+    inputs.id.value = usuario.user_id;
+    inputs.nombre.value = usuario.nombre;
+    inputs.apellidos.value = usuario.apellidos;
+    inputs.usuario.value = usuario.usuario;
+    inputs.rol.value = usuario.rol;
+    inputs.email.value = usuario.email;
+    inputs.creado_at.value = usuario.creado_at
+      ? usuario.creado_at.split("T")[0]
+      : "";
+
+    inputs.creado_at.disabled = true;
+    grupoCreado.style.display = "block";
+    grupoPassword.style.display = "block";
+
+    inputs.password.placeholder = "Vacío → mantener contraseña actual";
+
+    abrirModalFn();
+  } catch (err) {
+    console.error("Error al cargar usuario para edición:", err);
+    alert(err.message);
+  }
+});
+
+// ============================================================================
+//  ELIMINAR
+// ============================================================================
+
+tableBody.addEventListener("click", async (e) => {
+  if (!e.target.classList.contains("btn-eliminar")) return;
+
+  const id = e.target.dataset.id;
+  if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
+
+  try {
+    const data = await fetchJSON(`${API_USUARIOS}/${id}`, { method: "DELETE" });
+
+    alert(data.mensaje || "Usuario eliminado correctamente");
+    cargarUsuarios();
+  } catch (err) {
+    console.error("Error eliminando usuario:", err);
+    alert(err.message);
+  }
+});
+
+// ============================================================================
+//  GUARDAR
+// ============================================================================
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const datos = {
+    nombre: inputs.nombre.value.trim(),
+    apellidos: inputs.apellidos.value.trim(),
+    usuario: inputs.usuario.value.trim(),
+    email: inputs.email.value.trim(),
+    rol: inputs.rol.value,
+  };
+
+  // contraseña solo si se escribe
+  if (inputs.password.value.trim() !== "") {
+    datos.password = inputs.password.value.trim();
+  }
+
+  let url = API_USUARIOS;
+  let method = "POST";
+
+  if (form.dataset.modo === "editar") {
+    method = "PUT";
+    url = `${API_USUARIOS}/${inputs.id.value}`;
+  }
+
+  try {
+    const data = await fetchJSON(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos),
+    });
+
+    alert(data.mensaje || "Usuario guardado correctamente");
+    cerrarModalFn();
+    cargarUsuarios();
+  } catch (err) {
+    console.error("Error al guardar usuario:", err);
+    alert(err.message);
+  }
+});
+
+// ============================================================================
+//  INICIO
+// ============================================================================
+
+window.addEventListener("DOMContentLoaded", cargarUsuarios);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

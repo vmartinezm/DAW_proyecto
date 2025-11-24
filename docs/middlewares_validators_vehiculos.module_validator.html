@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> middlewares/auth.middleware</title>
+  <title> middlewares/validators/vehiculos.validator</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>middlewares/auth.middleware</h1>
+                    <h1>middlewares/validators/vehiculos.validator</h1>
                 </header>
                 
 
@@ -91,7 +91,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Middlewares de autenticación y autorización de usuarios.</div>
+            <div class="description">Middleware de validación para vehículos. Contiene validadores especializados para altas y modificaciones de vehículos.</div>
         
 
         
@@ -130,9 +130,9 @@
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="src_middlewares_validators_vehiculos.validator.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line1">line 1</a>
+                <a href="src_middlewares_validators_vehiculos.validator.js.html">src/middlewares/validators/vehiculos.validator.js</a>, <a href="src_middlewares_validators_vehiculos.validator.js.html#line1">line 1</a>
             </span>
         </p>
     
@@ -166,8 +166,8 @@
 
 
     
-    <h4 class="name" id="~requireAdmin">
-        <a class="href-link" href="#~requireAdmin">#</a>
+    <h4 class="name" id="~validarVehiculoPOST">
+        <a class="href-link" href="#~validarVehiculoPOST">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -175,7 +175,7 @@
         
         <span class="code-name">
             
-                requireAdmin<span class="signature">()</span><span class="type-signature"></span>
+                validarVehiculoPOST<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void|Object}</span>
             
         </span>
     </h4>
@@ -184,413 +184,14 @@
     
     
     <div class="description">
-        Middleware específico para exigir rol administrador.
-Equivalente a requireRole("admin").
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line89">line 89</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~requireRole">
-        <a class="href-link" href="#~requireRole">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                requireRole<span class="signature">(&hellip;roles, req, res, next)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Middleware que verifica si el usuario autenticado tiene el rol necesario para acceder a una ruta.
-Se pasa un número variable de roles como argumentos, y se verifica si el usuario tiene alguno de ellos.
-Si no tiene el rol necesario, devuelve un objeto JSON con un error de acceso denegado.
-Si el usuario no tiene una sesión activa, devuelve un objeto JSON con un error interno.
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-            <th>Attributes</th>
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>roles</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">string</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-          &lt;repeatable><br>
-      
-      </td>
-  
-
-  
-
-  <td class="description last">roles necesarios para acceder a la ruta</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>req</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">objeto Request de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>res</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">Object</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">objeto Response de Express</td>
-</tr>
-
-
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>next</code></td>
-  
-
-  <td class="type">
-  
-      
-<code class="param-type">function</code>
-
-
-  
-  </td>
-
-  
-      <td class="attributes">
-      
-
-      
-
-      
-      </td>
-  
-
-  
-
-  <td class="description last">función middleware siguiente a ejecutar</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line57">line 57</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Throws:</label></div>
-        <div class="column is-10">
-            
-                    
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Si el usuario no tiene el rol necesario</div>
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-<code class="param-type">403</code>
-
-
-    </div>
-    
-</div>
-
-                
-                    
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Si no hay información del usuario en la petición</div>
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-<code class="param-type">500</code>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~verifyToken">
-        <a class="href-link" href="#~verifyToken">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                verifyToken<span class="signature">(req, res, next)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Middleware que verifica el token JWT en las peticiones protegidas.
-Verifica que el token JWT sea válido y esté asociado a una sesión de usuario.
-En caso de error, devuelve un objeto JSON con el error correspondiente.
-Si el token es válido, guarda información útil del usuario en la request.
+        Middleware de validación para crear un vehículo.
+Valida los datos de la solicitud:
+  - matrícula: debe tener el formato 0000AAA (4 números + 3 consonantes en mayúsculas)
+  - marca: debe tener al menos 2 caracteres
+  - modelo: debe tener al menos 1 carácter
+  - año: debe ser numérico y estar entre 1950 y 2099
+  - kilómetros: no puede ser negativo
+  - precio: no puede ser negativo
     </div>
     
 
@@ -644,7 +245,7 @@ Si el token es válido, guarda información útil del usuario en la request.
 
   
 
-  <td class="description last">objeto Request de Express</td>
+  <td class="description last">Objeto de solicitud HTTP.</td>
 </tr>
 
 
@@ -669,7 +270,7 @@ Si el token es válido, guarda información útil del usuario en la request.
 
   
 
-  <td class="description last">objeto Response de Express</td>
+  <td class="description last">Objeto de respuesta HTTP.</td>
 </tr>
 
 
@@ -694,7 +295,7 @@ Si el token es válido, guarda información útil del usuario en la request.
 
   
 
-  <td class="description last">función middleware siguiente a ejecutar</td>
+  <td class="description last">Función para pasar al siguiente middleware.</td>
 </tr>
 
 
@@ -740,9 +341,9 @@ Si el token es válido, guarda información útil del usuario en la request.
 
     
         <p class="tag-source">
-            <a href="src_middlewares_auth.middleware.js.html" class="button">View Source</a>
+            <a href="src_middlewares_validators_vehiculos.validator.js.html" class="button">View Source</a>
             <span>
-                <a href="src_middlewares_auth.middleware.js.html">src/middlewares/auth.middleware.js</a>, <a href="src_middlewares_auth.middleware.js.html#line13">line 13</a>
+                <a href="src_middlewares_validators_vehiculos.validator.js.html">src/middlewares/validators/vehiculos.validator.js</a>, <a href="src_middlewares_validators_vehiculos.validator.js.html#line8">line 8</a>
             </span>
         </p>
     
@@ -770,10 +371,10 @@ Si el token es válido, guarda información útil del usuario en la request.
                     
 <div class="columns">
     
-    <div class='param-desc column is-7'>Si el token no es proporcionado, inválido o expirado</div>
+    <div class='param-desc column is-7'>Lanza un error 400 si la validación falla.</div>
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
-<code class="param-type">401</code>
+<code class="param-type">Object</code>
 
 
     </div>
@@ -785,6 +386,291 @@ Si el token es válido, guarda información útil del usuario en la request.
     </div>
 
 
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Devuelve un 400 con un mensaje de error si hay errores de validación, o llama a next() si no hay errores.</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">void</code>
+|
+
+<code class="param-type">Object</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~validarVehiculoPUT">
+        <a class="href-link" href="#~validarVehiculoPUT">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                validarVehiculoPUT<span class="signature">(req, res, next)</span><span class="type-signature"> &rarr; {void|Object}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Middleware de validación para actualizar un vehículo.
+Valida los datos de la solicitud:
+  - marca: debe tener al menos 2 caracteres
+  - modelo: debe tener al menos 1 carácter
+  - año: debe ser numérico y estar entre 1950 y 2099
+  - kilómetros: no puede ser negativo
+  - precio: no puede ser negativo
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>req</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Objeto de solicitud HTTP.</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>res</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">Object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Objeto de respuesta HTTP.</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>next</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">function</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Función para pasar al siguiente middleware.</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_middlewares_validators_vehiculos.validator.js.html" class="button">View Source</a>
+            <span>
+                <a href="src_middlewares_validators_vehiculos.validator.js.html">src/middlewares/validators/vehiculos.validator.js</a>, <a href="src_middlewares_validators_vehiculos.validator.js.html#line91">line 91</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Throws:</label></div>
+        <div class="column is-10">
+            
+                    
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Lanza un error 400 si la validación falla.</div>
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+<code class="param-type">Object</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Devuelve un 400 con un mensaje de error si hay errores de validación, o llama a next() si no hay errores.</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">void</code>
+|
+
+<code class="param-type">Object</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
 
 
 

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> routes/ventas</title>
+  <title> src/routes/clientes.routes.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,135 +75,83 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Module</p>
-                    <h1>routes/ventas</h1>
+                    <p>Source</p>
+                    <h1>src/routes/clientes.routes.js</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file src/routes/clientes.routes.js
+ * @description Rutas relacionadas con la gestión de clientes
+ * @module routes/clientes
+ */
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Rutas relacionadas con la gestión de ventas y reservas</div>
-        
+// Importar express
+import express from "express";
 
-        
-            
+// Importar controladores de clientes
+import {
+    obtenerClientes,
+    obtenerClientePorDni,
+    anadirCliente,
+    actualizarCliente,
+    eliminarCliente
+} from "../controllers/clientes.controller.js";
 
+// Importar validadores de clientes
+import {
+  validarCliente,
+  validarClienteEdicion
+} from "../middlewares/validators/clientes.validator.js";
 
+// Importar middleware de autenticación
+import { verifyToken } from "../middlewares/auth.middleware.js";
 
+// Crear el router
+const router = express.Router();
 
+// Todas las operaciones con clientes requieren login
+router.use(verifyToken);
 
+/**
+ * @route GET /clientes
+ * @description Obtener listado completo de clientes. Visible para cualquier usuario autenticado
+ */
+router.get("/", obtenerClientes);
 
+/**
+ * @route GET /clientes/:dni
+ * @description Obtener un cliente por DNI. Visible para cualquier usuario autenticado
+ */
+router.get("/:dni", obtenerClientePorDni);
 
+/**
+ * @route POST /clientes
+ * @description Registrar un nuevo cliente. Valida los datos del cliente antes de crear
+ */
+router.post("/", validarCliente, anadirCliente);
 
+/**
+ * @route PUT /clientes/:dni
+ * @description Editar datos de un cliente existente. Valida los datos del cliente antes de actualizar
+ */
+router.put("/:dni", validarClienteEdicion, actualizarCliente);
 
+/**
+ * @route DELETE /clientes/:dni
+ * @description Eliminar un cliente
+ */
+router.delete("/:dni", eliminarCliente);
 
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_routes_ventas.routes.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_routes_ventas.routes.js.html">src/routes/ventas.routes.js</a>, <a href="src_routes_ventas.routes.js.html#line1">line 1</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+// Exportar el router
+export default router;</code></pre>
+        </article>
+    </section>
 
 
 

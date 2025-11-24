@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> routes/ventas</title>
+  <title> src/routes/vehiculos.routes.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,135 +75,83 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Module</p>
-                    <h1>routes/ventas</h1>
+                    <p>Source</p>
+                    <h1>src/routes/vehiculos.routes.js</h1>
                 </header>
                 
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file src/routes/vehiculos.routes.js
+ * @description Rutas de gestión de vehículos. Permiten realizar operaciones CRUD sobre la tabla "vehiculos".
+ * @module routes/vehiculos
+ */
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Rutas relacionadas con la gestión de ventas y reservas</div>
-        
+//Importar dependencia Express
+import express from "express";
 
-        
-            
+// Importar controladores
+import {
+  obtenerVehiculos,
+  obtenerVehiculoPorMatricula,
+  anadirVehiculo,
+  actualizarVehiculo,
+  eliminarVehiculo,
+} from "../controllers/vehiculos.controller.js";
 
+// Importar middlewares de validación
+import {
+  validarVehiculoPOST,
+  validarVehiculoPUT,
+} from "../middlewares/validators/vehiculos.validator.js";
 
+// Importar middleware de autenticación
+import { verifyToken } from "../middlewares/auth.middleware.js";
 
+// Crear el router
+const router = express.Router();
 
+// Todas las rutas de vehículos requieren estar autenticado
+router.use(verifyToken);
 
+/**
+ * @route GET /vehiculos
+ * @description Obtener un listado de todos los vehículos
+ */
+router.get("/", obtenerVehiculos);
 
+/**
+ * @route GET /vehiculos/:matricula
+ * @description Obtener un vehículo específico por matrícula
+ */
+router.get("/:matricula", obtenerVehiculoPorMatricula);
 
+/**
+ * @route POST /vehiculos
+ * @description Crear un nuevo vehículo
+ */
+router.post("/", validarVehiculoPOST,  anadirVehiculo);
 
+/**
+ * @route PUT /vehiculos/:matricula
+ * @description Actualizar información de un vehículo
+ */
+router.put("/:matricula", validarVehiculoPUT, actualizarVehiculo);
 
+/**
+ * @route DELETE /vehiculos/:matricula
+ * @description Eliminar un vehículo del sistema
+ */
+router.delete("/:matricula", eliminarVehiculo);
 
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="src_routes_ventas.routes.js.html" class="button">View Source</a>
-            <span>
-                <a href="src_routes_ventas.routes.js.html">src/routes/ventas.routes.js</a>, <a href="src_routes_ventas.routes.js.html#line1">line 1</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+// Exportar el router
+export default router;</code></pre>
+        </article>
+    </section>
 
 
 
