@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 -- Tabla de vehículos
 CREATE TABLE IF NOT EXISTS vehiculos (
-  matricula VARCHAR(20) PRIMARY KEY,
+  matricula VARCHAR(7) PRIMARY KEY,
   marca VARCHAR(50) NOT NULL,
   modelo VARCHAR(50) NOT NULL,
   version VARCHAR(50),
@@ -55,23 +55,23 @@ CREATE TABLE IF NOT EXISTS clientes (
 -- Tabla de mantenimientos
 CREATE TABLE IF NOT EXISTS mantenimientos (
   mantenimiento_id INT AUTO_INCREMENT PRIMARY KEY,
-  vehiculo_id VARCHAR(20) NOT NULL,
-  fecha_inicio DATE NOT NULL,      -- nueva columna: fecha de inicio del mantenimiento
-  fecha_fin DATE DEFAULT NULL,  tipo VARCHAR(100),
+  vehiculo_id VARCHAR(7) NOT NULL,
+  fecha_inicio DATE NOT NULL,
+  fecha_fin DATE DEFAULT NULL,  
   descripcion TEXT,
   coste DECIMAL(10,2) DEFAULT 0.00,
   realizado_por VARCHAR(100),
   creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (vehiculo_id) REFERENCES vehiculos(matricula) ON DELETE CASCADE,
+  FOREIGN KEY (realizado_por) REFERENCES usuarios(usuario) ON DELETE SET NULL,
   INDEX (vehiculo_id),
-  INDEX (fecha),
-  INDEX (tipo)
+  INDEX (fecha_inicio)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Tabla de ventas
 CREATE TABLE IF NOT EXISTS ventas (
   venta_id INT AUTO_INCREMENT PRIMARY KEY,
-  vehiculo_id VARCHAR(20) NOT NULL,
+  vehiculo_id VARCHAR(7) NOT NULL,
   cliente_dni VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   fecha DATE NOT NULL,
   tipo ENUM('venta','reserva') NOT NULL DEFAULT 'venta',
