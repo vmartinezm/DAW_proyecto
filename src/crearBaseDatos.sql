@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS mantenimientos (
   realizado_por VARCHAR(100),
   creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (vehiculo_id) REFERENCES vehiculos(matricula) ON DELETE CASCADE,
-  FOREIGN KEY (realizado_por) REFERENCES usuarios(usuario) ON DELETE SET NULL,
+  FOREIGN KEY (realizado_por) REFERENCES usuarios(user_id) ON DELETE SET NULL,
   INDEX (vehiculo_id),
   INDEX (fecha_inicio)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
